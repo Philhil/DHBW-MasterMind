@@ -1,10 +1,8 @@
 language: android
 android:
   components:
-    # Uncomment the lines below if you want to
-    # use the latest revision of Android SDK Tools
     # - platform-tools
-    # - tools
+    - tools
 
     # The BuildTools version used by your project
     - build-tools-19.1.0
@@ -21,8 +19,7 @@ android:
     # Specify at least one system image,
     # if you need to run emulator(s) during your tests
     - sys-img-armeabi-v7a-android-22
-    #- sys-img-armeabi-v7a-android-17
 
-before_install:
-- chmod +x gradlew
+script:
+  - chmod +x ./gradlew
 
