@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.anja.master_mind.spielladen">
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Spiel Laden"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <Button
+        android:id="@+id/gespeichertesspielfortsetzen"
+        style="@style/MyButton"
+        android:layout_width="334dp"
+        android:layout_height="82dp"
+        android:text="Spiel Fortsetzen"
+        tools:layout_editor_absoluteX="25dp"
+        tools:layout_editor_absoluteY="542dp" />
+
+    <ListView
+        android:layout_width="344dp"
+        android:layout_height="399dp"
+        tools:layout_editor_absoluteX="20dp"
+        tools:layout_editor_absoluteY="99dp" />
+
+</android.support.constraint.ConstraintLayout>

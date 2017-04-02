@@ -16,6 +16,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".appstart" />
+        <activity android:name=".einstellungen" />
+        <activity android:name=".eintraghighscoreliste" />
+        <activity android:name=".highscoreliste" />
+        <activity android:name=".mastercodeeingeben" />
+        <activity android:name=".spiel" />
+        <activity android:name=".spielladen" />
+        <activity android:name=".spielpausieren" />
+        <activity android:name=".spielspeichern" />
+        <activity android:name=".spielstarten" />
+        <activity android:name=".vorspielstart"></activity>
     </application>
 
 </manifest>

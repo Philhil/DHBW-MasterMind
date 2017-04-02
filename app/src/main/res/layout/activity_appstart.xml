@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.anja.master_mind.appstart">
+
+    <Button
+        android:id="@+id/spielstarten1"
+        style="@style/MyButton"
+        android:layout_width="270dp"
+        android:layout_height="100dp"
+        android:text="Spiel Start"
+        tools:layout_editor_absoluteX="57dp"
+        tools:layout_editor_absoluteY="123dp" />
+
+    <Button
+        android:id="@+id/spielladen"
+        style="@style/MyButton"
+        android:layout_width="270dp"
+        android:layout_height="100dp"
+        android:text="Spiel laden"
+        tools:layout_editor_absoluteX="57dp"
+        tools:layout_editor_absoluteY="242dp" />
+
+    <Button
+        android:id="@+id/highscore"
+        style="@style/MyButton"
+        android:layout_width="270dp"
+        android:layout_height="100dp"
+        android:text="Highscore"
+        tools:layout_editor_absoluteX="57dp"
+        tools:layout_editor_absoluteY="360dp" />
+
+    <Button
+        android:id="@+id/einstellungen"
+        style="@style/MyButton"
+        android:layout_width="165dp"
+        android:layout_height="100dp"
+        android:text="Einstellungen"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="543dp" />
+
+    <Button
+        android:id="@+id/hilfe"
+        style="@style/MyButton"
+        android:layout_width="165dp"
+        android:layout_height="100dp"
+        android:text="Hilfe"
+        tools:layout_editor_absoluteX="203dp"
+        tools:layout_editor_absoluteY="543dp" />
+
+</android.support.constraint.ConstraintLayout>

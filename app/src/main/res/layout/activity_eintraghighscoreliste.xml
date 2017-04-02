@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.anja.master_mind.eintraghighscoreliste">
+
+    <Button
+        android:id="@+id/highscoreeintragen"
+        style="@style/MyButton"
+        android:layout_width="232dp"
+        android:layout_height="83dp"
+        android:text="Speichern"
+        tools:layout_editor_absoluteX="76dp"
+        tools:layout_editor_absoluteY="541dp" />
+
+    <EditText
+        android:id="@+id/namehighscore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        tools:layout_editor_absoluteX="14dp"
+        tools:layout_editor_absoluteY="291dp" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Eintrag in die Highscoreliste"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="60dp" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bitte Name eingeben"
+        tools:layout_editor_absoluteX="7dp"
+        tools:layout_editor_absoluteY="199dp" />
+</android.support.constraint.ConstraintLayout>

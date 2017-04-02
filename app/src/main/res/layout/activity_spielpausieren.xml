@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.anja.master_mind.spielpausieren">
+
+    <Button
+        android:id="@+id/spielfortsetzen"
+        style="@style/MyButton"
+        android:layout_width="270dp"
+        android:layout_height="100dp"
+        android:text="Spiel fortsetzen"
+        tools:layout_editor_absoluteX="57dp"
+        tools:layout_editor_absoluteY="359dp" />
+
+    <Button
+        android:id="@+id/spielabbrechen"
+        style="@style/MyButton"
+        android:layout_width="270dp"
+        android:layout_height="100dp"
+        android:text="Spiel abbrechen"
+        tools:layout_editor_absoluteX="57dp"
+        tools:layout_editor_absoluteY="159dp" />
+
+    <Button
+        android:id="@+id/spielspeichern"
+        style="@style/MyButton"
+        android:layout_width="270dp"
+        android:layout_height="100dp"
+        android:text="Spiel speichern"
+        tools:layout_editor_absoluteX="57dp"
+        tools:layout_editor_absoluteY="259dp" />
+
+    <Button
+        android:id="@+id/hilfe"
+        style="@style/MyButton"
+        android:layout_width="270dp"
+        android:layout_height="100dp"
+        android:text="Hilfe"
+        tools:layout_editor_absoluteX="57dp"
+        tools:layout_editor_absoluteY="59dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="368dp"
+        android:layout_height="wrap_content"
+        android:text="Spiel Pausiert"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp" />
+</android.support.constraint.ConstraintLayout>
