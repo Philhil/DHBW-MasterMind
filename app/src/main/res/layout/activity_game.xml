@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:text="@string/btn_dissolve" />
+            android:text="@string/btn_dissolve"/>
 
         <Chronometer
             android:id="@+id/time"
@@ -40,37 +40,24 @@
     <LinearLayout
         android:id="@+id/game_mastercode"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/game_header"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/textView_mastercode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="*** MASTERCODE VERDECKT EINBLENDEN ***" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/game_field"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/game_footer"
         android:layout_below="@+id/game_mastercode"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView22"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="*** SPIELFELD ***" />
-
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
     </LinearLayout>
 
     <LinearLayout
@@ -81,11 +68,12 @@
         android:layout_centerHorizontal="true"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/farbvorschlag"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="*** FARBVORSCHLAG ***" />
+            android:orientation="vertical">
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
