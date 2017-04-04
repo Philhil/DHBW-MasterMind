@@ -11,7 +11,9 @@
         android:text="@string/btn_start_game"
         android:layout_above="@+id/button_2playerGame"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp" />
+        android:layout_marginBottom="50dp"
+        style="@android:style/Widget.Button.Inset"
+        android:onClick="startGame"/>
 
     <Button
         android:id="@+id/button_2playerGame"
@@ -19,7 +21,9 @@
         android:layout_height="wrap_content"
         android:text="@string/btn_start_2player_game"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        style="@android:style/Widget.Button.Inset"
+        android:onClick="startGame"/>
 
     <Button
         android:id="@+id/button_loadGame"
@@ -29,6 +33,8 @@
         android:text="@string/btn_load_game"
         android:layout_below="@+id/button_2playerGame"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp" />
+        android:layout_marginTop="50dp"
+        style="@android:style/Widget.Button.Inset"
+        android:onClick="startGame"/>
 
 </RelativeLayout>
