@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Mastermind</string>
+    <string name="title_activity_start">Mastermind</string>
+    <string name="title_home">Home</string>
+    <string name="title_highscore">Highscore</string>
+    <string name="title_settings">Einstellungen</string>
+
+    <string name="btn_load_game">Spiel laden</string>
+    <string name="btn_start_game">Spiel starten</string>
+    <string name="btn_start_2player_game">Zwei Spieler Modus starten</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_home_fragment">TODO: Home fragment</string>
+    <string name="hello_highscore_fragment">TODO: Highscore fragment</string>
+    <string name="hello_settings_fragment">TODO: Setting fragment</string>
 </resources>
