@@ -4,6 +4,7 @@
     <string name="title_home">Home</string>
     <string name="title_highscore">Highscore</string>
     <string name="title_settings">Einstellungen</string>
+    <string name="title_break">Du hast das Spiel pausiert.</string>
 
     <string name="btn_load_game">Spiel laden</string>
     <string name="btn_start_game">Spiel starten</string>
@@ -13,6 +14,7 @@
     <string name="btn_revert">Zug Rückgängig</string>
     <string name="btn_check">Eingabe Prüfen</string>
 
+    <string name="label_ok">OK</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_highscore_fragment">TODO: Highscore fragment</string>
     <string name="hello_settings_fragment">TODO: Setting fragment</string>

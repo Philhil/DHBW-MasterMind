@@ -22,13 +22,7 @@ import java.util.Random;
 
 public class GameActivity extends AppCompatActivity implements OnClickListener{
 
-    /*
-        TODO:
-        - make game field scrollable if AnzRows > 12
-        - set rows in the middle of their layout
-    */
-
-    //defines, should later come from the settings or the saved game
+    //TODO: defines, should later come from the settings or the saved game
     public int AnzRows = 10;
     //TODO: if _anzFields < _anzColors -> same colors must be switched on in settings
     private int _anzFields = 4;
@@ -38,7 +32,6 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
     private int _bigPeg;
     private int _smallPeg;
     private int _smallPin;
-    private boolean _pause = false;
     private long _pause_timeDifference = 0;
 
     public int ActiveField = -1;
@@ -373,6 +366,22 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         }).create().show();
     }
 
+    private void chronometer(boolean start) {
+
+        Chronometer chronometer = (Chronometer) findViewById(R.id.time);
+        if (start)
+        {
+            chronometer.setBase(_pause_timeDifference + SystemClock.elapsedRealtime());
+            chronometer.start();
+            _pause_timeDifference = 0;
+        }
+        else
+        {
+            chronometer.stop();
+            _pause_timeDifference  = chronometer.getBase() - SystemClock.elapsedRealtime();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -410,7 +419,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         button = (Button) findViewById(R.id.btn_game_rueckgaengig);
         button.setOnClickListener(this);
 
-        ((Chronometer) findViewById(R.id.time)).start();
+        chronometer(true);
     }
 
     @Override
@@ -425,22 +434,18 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                 ShowPopup("Du hast das Spiel aufgelöst!", true);
                 break;
             case R.id.btn_game_pause:
-                ShowPopup("Du hast das Spiel pausiert.", false);
+                final Intent again = new Intent(this, GameActivity.class);
+                new AlertDialog.Builder(this)
+                        .setMessage(R.string.title_break)
+                        .setPositiveButton(R.string.label_ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(final DialogInterface dialog, final int which) {
+                                dialog.dismiss();
+                                chronometer(true);
+                            }
+                        }).create().show();
 
-                Chronometer chronometer = (Chronometer) findViewById(R.id.time);
-                if (_pause)
-                {
-                    chronometer.setBase(_pause_timeDifference + SystemClock.elapsedRealtime());
-                    chronometer.start();
-                    _pause_timeDifference = 0;
-                }
-                else
-                {
-                    chronometer.stop();
-                    _pause_timeDifference  = chronometer.getBase() - SystemClock.elapsedRealtime();
-                }
-
-                _pause = !_pause;
+                chronometer(false);
                 break;
             case R.id.btn_game_rueckgaengig:
                 if (ActiveRow>0)
