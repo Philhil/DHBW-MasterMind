@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -118,6 +119,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
     {
         LinearLayout rowLayout = new LinearLayout(context);
         rowLayout.setOrientation(LinearLayout.HORIZONTAL);
+        rowLayout.setHorizontalGravity(Gravity.CENTER);
         rowLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         for (int i = 0; i < _anzFields; i++)
@@ -134,6 +136,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
     {
         LinearLayout rowLayout = new LinearLayout(context);
         rowLayout.setOrientation(LinearLayout.HORIZONTAL);
+        rowLayout.setHorizontalGravity(Gravity.CENTER);
         rowLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         for (int i = 0; i < _anzFields; i++)
@@ -153,6 +156,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
     {
         LinearLayout rowLayout = new LinearLayout(context);
         rowLayout.setOrientation(LinearLayout.HORIZONTAL);
+        rowLayout.setHorizontalGravity(Gravity.CENTER);
         rowLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         for (int i = 0; i < _anzFields; i++)
@@ -193,6 +197,12 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                 pinsTop.addView(tmp);
                 black--;
             }
+            else
+            {
+                tmp.setImageResource(R.mipmap.ic_grey_round);
+                tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin,_smallPin));
+                pinsTop.addView(tmp);
+            }
         }
 
         for (int j = 0; j < _anzFields-4; j++)
@@ -212,6 +222,12 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                 pinsBottom.addView(tmp);
                 black--;
             }
+            else
+            {
+                tmp.setImageResource(R.mipmap.ic_grey_round);
+                tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin,_smallPin));
+                pinsTop.addView(tmp);
+            }
         }
 
         pinsLayout.addView(pinsTop);
@@ -226,6 +242,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
     {
         LinearLayout ausw = new LinearLayout(context);
         ausw.setOrientation(LinearLayout.HORIZONTAL);
+        ausw.setHorizontalGravity(Gravity.CENTER);
         ausw.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         for (int i = 0; i < _anzColors; i++)

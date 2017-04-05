@@ -2,6 +2,7 @@
 
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -16,7 +17,6 @@
 
         <Button
             android:id="@+id/btn_game_aufloesen"
-            style="@android:style/Widget.Button.Inset"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_weight="1"
@@ -26,11 +26,11 @@
             android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textAlignment="center"/>
 
         <Button
             android:id="@+id/btn_game_pause"
-            style="@android:style/Widget.Button.Inset"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_weight="1"
@@ -48,17 +48,22 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/game_field"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_above="@+id/game_footer"
         android:layout_below="@+id/game_mastercode"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:orientation="vertical">
-
-    </LinearLayout>
+        android:layout_weight="1">
+        <LinearLayout
+            android:id="@+id/game_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="bottom"
+            android:orientation="vertical">
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/game_footer"
@@ -82,19 +87,19 @@
 
             <Button
                 android:id="@+id/btn_game_rueckgaengig"
-                style="@android:style/Widget.Button.Inset"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:text="@string/btn_revert" />
+                android:text="@string/btn_revert"
+                tools:ignore="ButtonStyle" />
 
             <Button
                 android:id="@+id/btn_game_pruefen"
-                style="@android:style/Widget.Button.Inset"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:text="@string/btn_check" />
+                android:text="@string/btn_check"
+                tools:ignore="ButtonStyle" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
