@@ -109,7 +109,6 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         for (int i = 0; i < _anzFields; i++)
         {
             ImageView tmp;
-
             tmp = (ImageView) findViewById(i+10);
             tmp.setImageResource(R.mipmap.ic_slot);
         }
@@ -180,7 +179,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
 
         int white = row.RightColor;
         int black = row.RightPlace;
-        for (int j = 0; j < 4; j++)
+        for (int j = 0; j < (_anzFields-(_anzFields/2)); j++)
         {
             ImageView tmp = new ImageView(this);
             if (white > 0)
@@ -205,7 +204,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
             }
         }
 
-        for (int j = 0; j < _anzFields-4; j++)
+        for (int j = 0; j < (_anzFields/2); j++)
         {
             ImageView tmp = new ImageView(this);
             if (white > 0)
@@ -226,7 +225,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
             {
                 tmp.setImageResource(R.mipmap.ic_grey_round);
                 tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin,_smallPin));
-                pinsTop.addView(tmp);
+                pinsBottom.addView(tmp);
             }
         }
 
