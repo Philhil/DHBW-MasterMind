@@ -348,6 +348,8 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
             //delete farbauswahl and farbvorschlag
             LinearLayout farbvorschlag = (LinearLayout) findViewById(R.id.farbvorschlag);
             farbvorschlag.removeAllViewsInLayout();
+
+            ((Chronometer) findViewById(R.id.time)).stop();
         }
 
         final Intent again = new Intent(this, GameActivity.class);
@@ -465,14 +467,17 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                     Rows[ActiveRow] = FarbvorschlagRow;
                     if (EvaluateFarbvorschlagRow(ActiveRow))
                     {
+                        long minutes = (((SystemClock.elapsedRealtime() - ((Chronometer) findViewById(R.id.time)).getBase()) / 1000))/60;
+                        long seconds = (((SystemClock.elapsedRealtime() - ((Chronometer) findViewById(R.id.time)).getBase()) / 1000))%60;
+
                         gamefield.addView(CreateDisplayableRowWithPins(this, Rows[ActiveRow]));
                         if (ActiveRow == 0)
                         {
-                            ShowPopup("Glückwunsch! Du hast das Spiel in " + (ActiveRow + 1) + " Zug gewonnen!", true);
+                            ShowPopup("Glückwunsch! Du hast das Spiel nach " + minutes + ":" + seconds + " Sekunden und einem Zug gewonnen!", true);
                         }
                         else
                         {
-                            ShowPopup("Glückwunsch! Du hast das Spiel in " + (ActiveRow + 1) + " Zügen gewonnen!", true);
+                            ShowPopup("Glückwunsch! Du hast das Spiel nach " + minutes + ":" + seconds + " in " + (ActiveRow + 1) + " Zügen gewonnen!", true);
                         }
                         break;
                     }
