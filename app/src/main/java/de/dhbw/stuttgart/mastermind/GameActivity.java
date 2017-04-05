@@ -122,37 +122,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
 
         for (int i = 0; i < _anzFields; i++)
         {
-            ImageView tmp = new ImageView(this);
-            switch(row.Fields[i].getColor())
-            {
-                case 0:
-                    tmp.setImageResource(R.mipmap.ic_blue);
-                    break;
-                case 1:
-                    tmp.setImageResource(R.mipmap.ic_green);
-                    break;
-                case 2:
-                    tmp.setImageResource(R.mipmap.ic_lightblue);
-                    break;
-                case 3:
-                    tmp.setImageResource(R.mipmap.ic_pink);
-                    break;
-                case 4:
-                    tmp.setImageResource(R.mipmap.ic_red);
-                    break;
-                case 5:
-                    tmp.setImageResource(R.mipmap.ic_yellow);
-                    break;
-                case 6:
-                    tmp.setImageResource(R.mipmap.ic_grey);
-                    break;
-                case 7:
-                    tmp.setImageResource(R.mipmap.ic_purple);
-                    break;
-                default:
-                    tmp.setImageResource(R.mipmap.ic_slot);
-                    break;
-            }
+            ImageView tmp = row.Fields[i].getPicture(this);
             tmp.setLayoutParams(new LinearLayout.LayoutParams(_bigPeg,_bigPeg));
             rowLayout.addView(tmp);
         }
@@ -168,37 +138,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
 
         for (int i = 0; i < _anzFields; i++)
         {
-            ImageView tmp = new ImageView(this);
-            switch(row.Fields[i].getColor())
-            {
-                case 0:
-                    tmp.setImageResource(R.mipmap.ic_blue);
-                    break;
-                case 1:
-                    tmp.setImageResource(R.mipmap.ic_green);
-                    break;
-                case 2:
-                    tmp.setImageResource(R.mipmap.ic_lightblue);
-                    break;
-                case 3:
-                    tmp.setImageResource(R.mipmap.ic_pink);
-                    break;
-                case 4:
-                    tmp.setImageResource(R.mipmap.ic_red);
-                    break;
-                case 5:
-                    tmp.setImageResource(R.mipmap.ic_yellow);
-                    break;
-                case 6:
-                    tmp.setImageResource(R.mipmap.ic_grey);
-                    break;
-                case 7:
-                    tmp.setImageResource(R.mipmap.ic_purple);
-                    break;
-                default:
-                    tmp.setImageResource(R.mipmap.ic_slot);
-                    break;
-            }
+            ImageView tmp = row.Fields[i].getPicture(this);
             tmp.setLayoutParams(new LinearLayout.LayoutParams(_bigPeg, _bigPeg));
             tmp.setId(i+10);
             tmp.setOnClickListener(this);
@@ -217,37 +157,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
 
         for (int i = 0; i < _anzFields; i++)
         {
-            ImageView tmp = new ImageView(this);
-            switch(row.Fields[i].getColor())
-            {
-                case 0:
-                    tmp.setImageResource(R.mipmap.ic_blue);
-                    break;
-                case 1:
-                    tmp.setImageResource(R.mipmap.ic_green);
-                    break;
-                case 2:
-                    tmp.setImageResource(R.mipmap.ic_lightblue);
-                    break;
-                case 3:
-                    tmp.setImageResource(R.mipmap.ic_pink);
-                    break;
-                case 4:
-                    tmp.setImageResource(R.mipmap.ic_red);
-                    break;
-                case 5:
-                    tmp.setImageResource(R.mipmap.ic_yellow);
-                    break;
-                case 6:
-                    tmp.setImageResource(R.mipmap.ic_grey);
-                    break;
-                case 7:
-                    tmp.setImageResource(R.mipmap.ic_purple);
-                    break;
-                default:
-                    tmp.setImageResource(R.mipmap.ic_slot);
-                    break;
-            }
+            ImageView tmp = row.Fields[i].getPicture(this);
             tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPeg,_smallPeg));
             rowLayout.addView(tmp);
         }
@@ -458,8 +368,8 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         display.getSize(size);
         _displayWidth = size.x;
 
-        _bigPeg = _displayWidth/_anzFields;
-        _smallPeg = (_displayWidth/_anzFields)-20;
+        _bigPeg = _displayWidth/8;
+        _smallPeg = (_displayWidth/8)-20;
         _smallPin = _smallPeg/2;
 
         SetMaster(false);
