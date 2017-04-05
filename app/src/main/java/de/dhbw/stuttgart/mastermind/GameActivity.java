@@ -3,9 +3,11 @@ package de.dhbw.stuttgart.mastermind;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Point;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,13 +21,20 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
 
     /*
         TODO:
-        - make guesses and evaluation in one line
-        - make game field scrollable
+        - make game field scrollable if AnzRows > 12
+        - set rows in the middle of their layout
     */
 
+    //defines, should later come from the settings or the saved game
     public int AnzRows = 10;
-    private int _anzFields = 5;
-    private int _anzColors = 6;
+    //TODO: if _anzFields < _anzColors -> same colors must be switched on in settings
+    private int _anzFields = 4;
+    private int _anzColors = 5;
+
+    private int _displayWidth;
+    private int _bigPeg;
+    private int _smallPeg;
+    private int _smallPin;
 
     public int ActiveField = -1;
     public int ActiveRow = 0;
@@ -144,6 +153,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                     tmp.setImageResource(R.mipmap.ic_slot);
                     break;
             }
+            tmp.setLayoutParams(new LinearLayout.LayoutParams(_bigPeg,_bigPeg));
             rowLayout.addView(tmp);
         }
 
@@ -189,6 +199,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                     tmp.setImageResource(R.mipmap.ic_slot);
                     break;
             }
+            tmp.setLayoutParams(new LinearLayout.LayoutParams(_bigPeg, _bigPeg));
             tmp.setId(i+10);
             tmp.setOnClickListener(this);
 
@@ -201,12 +212,8 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
     public LinearLayout CreateDisplayableRowWithPins(Context context, Row row)
     {
         LinearLayout rowLayout = new LinearLayout(context);
-        rowLayout.setOrientation(LinearLayout.VERTICAL);
+        rowLayout.setOrientation(LinearLayout.HORIZONTAL);
         rowLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-        LinearLayout one = new LinearLayout(context);
-        one.setOrientation(LinearLayout.HORIZONTAL);
-        one.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         for (int i = 0; i < _anzFields; i++)
         {
@@ -241,14 +248,21 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                     tmp.setImageResource(R.mipmap.ic_slot);
                     break;
             }
-
-            one.addView(tmp);
+            tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPeg,_smallPeg));
+            rowLayout.addView(tmp);
         }
 
+        LinearLayout pinsLayout = new LinearLayout(context);
+        pinsLayout.setOrientation(LinearLayout.VERTICAL);
+        pinsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        LinearLayout two = new LinearLayout(context);
-        two.setOrientation(LinearLayout.HORIZONTAL);
-        two.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        LinearLayout pinsTop = new LinearLayout(context);
+        pinsTop.setOrientation(LinearLayout.HORIZONTAL);
+        pinsTop.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        LinearLayout pinsBottom = new LinearLayout(context);
+        pinsBottom.setOrientation(LinearLayout.HORIZONTAL);
+        pinsBottom.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         int white = row.RightColor;
         int black = row.RightPlace;
@@ -258,13 +272,15 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
             if (white > 0)
             {
                 tmp.setImageResource(R.mipmap.ic_white);
-                two.addView(tmp);
+                tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin,_smallPin));
+                pinsTop.addView(tmp);
                 white--;
             }
             else if (black > 0)
             {
                 tmp.setImageResource(R.mipmap.ic_black);
-                two.addView(tmp);
+                tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin,_smallPin));
+                pinsTop.addView(tmp);
                 black--;
             }
         }
@@ -275,19 +291,23 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
             if (white > 0)
             {
                 tmp.setImageResource(R.mipmap.ic_white);
-                two.addView(tmp);
+                tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin,_smallPin));
+                pinsBottom.addView(tmp);
                 white--;
             }
             else if (black > 0)
             {
                 tmp.setImageResource(R.mipmap.ic_black);
-                two.addView(tmp);
+                tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin,_smallPin));
+                pinsBottom.addView(tmp);
                 black--;
             }
         }
 
-        rowLayout.addView(one);
-        rowLayout.addView(two);
+        pinsLayout.addView(pinsTop);
+        pinsLayout.addView(pinsBottom);
+
+        rowLayout.addView(pinsLayout);
 
         return rowLayout;
     }
@@ -328,6 +348,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                     tmp.setImageResource(R.mipmap.ic_purple);
                     break;
             }
+            tmp.setLayoutParams(new LinearLayout.LayoutParams(_bigPeg,_bigPeg));
             tmp.setId(i);
             tmp.setOnClickListener(this);
 
@@ -384,40 +405,31 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         }
     }
 
-    private void ShowWinningMessage()
+    private void ShowPopup(String msg, boolean end)
     {
-        LinearLayout masterCode = (LinearLayout) findViewById(R.id.game_mastercode);
-        masterCode.setVisibility(LinearLayout.VISIBLE);
+        if(end == true)
+        {
+            LinearLayout masterCode = (LinearLayout) findViewById(R.id.game_mastercode);
+            masterCode.setVisibility(LinearLayout.VISIBLE);
+
+            //make all buttons unusable
+            Button button = (Button) findViewById(R.id.btn_game_rueckgaengig);
+            button.setEnabled(false);
+            button = (Button) findViewById(R.id.btn_game_aufloesen);
+            button.setEnabled(false);
+            button = (Button) findViewById(R.id.btn_game_pause);
+            button.setEnabled(false);
+            button = (Button) findViewById(R.id.btn_game_pruefen);
+            button.setEnabled(false);
+
+            //delete farbauswahl and farbvorschlag
+            LinearLayout farbvorschlag = (LinearLayout) findViewById(R.id.farbvorschlag);
+            farbvorschlag.removeAllViewsInLayout();
+        }
 
         final Intent again = new Intent(this, GameActivity.class);
         new AlertDialog.Builder(this)
-                .setMessage("Glückwunsch! Du hast das Spiel in " + (ActiveRow+1) + " Zügen gewonnen!")
-                .setCancelable(true)
-                .setNeutralButton("Neustart", new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        startActivity(again);
-                        finish();
-                    }
-                }).setNegativeButton("Zurück zum Hauptmenü", new DialogInterface.OnClickListener() {
-            public void onClick(final DialogInterface dialog, final int id) {
-                finish();
-            }
-        }).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(final DialogInterface dialog, final int which) {
-                dialog.dismiss();
-            }
-        }).create().show();
-    }
-
-    protected void ShowLoserMessage()
-    {
-        LinearLayout masterCode = (LinearLayout) findViewById(R.id.game_mastercode);
-        masterCode.setVisibility(LinearLayout.VISIBLE);
-
-        final Intent again = new Intent(this, GameActivity.class);
-        new AlertDialog.Builder(this)
-                .setMessage("Du hast es nicht geschafft den Code zu knacken!")
+                .setMessage(msg)
                 .setCancelable(true)
                 .setNeutralButton("Neustart", new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
@@ -441,6 +453,15 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        _displayWidth = size.x;
+
+        _bigPeg = _displayWidth/_anzFields;
+        _smallPeg = (_displayWidth/_anzFields)-20;
+        _smallPin = _smallPeg/2;
+
         SetMaster(false);
         CreateFarbauswahl(this);
         ResetFarbvorschlagRow();
@@ -459,6 +480,10 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         button.setOnClickListener(this);
         button = (Button) findViewById(R.id.btn_game_pruefen);
         button.setOnClickListener(this);
+        button = (Button) findViewById(R.id.btn_game_pause);
+        button.setOnClickListener(this);
+        button = (Button) findViewById(R.id.btn_game_rueckgaengig);
+        button.setOnClickListener(this);
     }
 
     @Override
@@ -470,8 +495,18 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         switch(v.getId())
         {
             case R.id.btn_game_aufloesen:
-                LinearLayout masterCode = (LinearLayout) findViewById(R.id.game_mastercode);
-                masterCode.setVisibility(LinearLayout.VISIBLE);
+                ShowPopup("Du hast das Spiel aufgelöst!", true);
+                break;
+            case R.id.btn_game_pause:
+                ShowPopup("Du hast das Spiel pausiert.", false);
+                break;
+            case R.id.btn_game_rueckgaengig:
+                if (ActiveRow>0)
+                {
+                    gamefield = (LinearLayout) findViewById(R.id.game_field);
+                    gamefield.removeViewAt(ActiveRow-1);
+                    ActiveRow--;
+                }
                 break;
             case R.id.btn_game_pruefen:
                 gamefield = (LinearLayout) findViewById(R.id.game_field);
@@ -491,14 +526,21 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                     if (EvaluateFarbvorschlagRow(ActiveRow) == true)
                     {
                         gamefield.addView(CreateDisplayableRowWithPins(this, Rows[ActiveRow]));
-                        ShowWinningMessage();
+                        if (ActiveRow == 0)
+                        {
+                            ShowPopup("Glückwunsch! Du hast das Spiel in " + (ActiveRow + 1) + " Zug gewonnen!", true);
+                        }
+                        else
+                        {
+                            ShowPopup("Glückwunsch! Du hast das Spiel in " + (ActiveRow + 1) + " Zügen gewonnen!", true);
+                        }
                         break;
                     }
                     gamefield.addView(CreateDisplayableRowWithPins(this, Rows[ActiveRow]));
                     ActiveRow++;
                     if (ActiveRow == AnzRows)
                     {
-                        ShowLoserMessage();
+                        ShowPopup("Du hast es nicht geschafft den Code zu knacken!", true);
                         break;
                     }
                     ResetFarbvorschlagRow();
