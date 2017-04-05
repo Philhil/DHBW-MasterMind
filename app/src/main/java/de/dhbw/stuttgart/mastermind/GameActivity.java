@@ -432,6 +432,14 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         {
             case R.id.btn_game_aufloesen:
                 ShowPopup("Du hast das Spiel aufgelöst!", true);
+                Button button = (Button) findViewById(R.id.btn_game_rueckgaengig);
+                button.setText(R.string.btn_main_menue);
+                button.setEnabled(true);
+                button.setId(R.id.btn_main_menue);
+                button = (Button) findViewById(R.id.btn_game_pruefen);
+                button.setText(R.string.btn_new_game);
+                button.setId(R.id.btn_new_game);
+                button.setEnabled(true);
                 break;
             case R.id.btn_game_pause:
                 final Intent again = new Intent(this, GameActivity.class);
@@ -496,6 +504,13 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                     ResetFarbvorschlagRow();
                     UpdateFarbvorschlagRow();
                 }
+                break;
+            case R.id.btn_main_menue:
+                finish();
+                break;
+            case R.id.btn_new_game:
+                Intent newGame = new Intent(this, GameActivity.class);
+                startActivity(newGame);
                 break;
             //Buttons in farbauswahl
             case 0:

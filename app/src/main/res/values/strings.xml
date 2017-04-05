@@ -13,6 +13,8 @@
     <string name="btn_break">Pause</string>
     <string name="btn_revert">Zug Rückgängig</string>
     <string name="btn_check">Eingabe Prüfen</string>
+    <string name="btn_new_game">Neustart</string>
+    <string name="btn_main_menue">Hauptmenü</string>
 
     <string name="label_ok">OK</string>
     <!-- TODO: Remove or change this placeholder text -->
