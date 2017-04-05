@@ -510,6 +510,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                 break;
             case R.id.btn_new_game:
                 Intent newGame = new Intent(this, GameActivity.class);
+                newGame.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(newGame);
                 break;
             //Buttons in farbauswahl
