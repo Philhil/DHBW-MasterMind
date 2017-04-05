@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
+import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.view.View.OnClickListener;
@@ -36,6 +38,8 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
     private int _bigPeg;
     private int _smallPeg;
     private int _smallPin;
+    private boolean _pause = false;
+    private long _pause_timeDifference = 0;
 
     public int ActiveField = -1;
     public int ActiveRow = 0;
@@ -50,7 +54,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         Row tmp = new Row(_anzFields);
         Random random = new Random();
 
-        if (same == false)
+        if (!same)
         {
             boolean[] ref = new boolean[_anzColors];
 
@@ -62,7 +66,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
 
                 do {
                     r = random.nextInt(_anzColors);
-                } while (ref[r] != false);
+                } while (ref[r]);
 
                 ref[r] = true;
 
@@ -321,19 +325,12 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         }
 
 
-        if (Rows[rowNo].RightPlace == Master.Fields.length)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return Rows[rowNo].RightPlace == Master.Fields.length;
     }
 
     private void ShowPopup(String msg, boolean end)
     {
-        if(end == true)
+        if(end)
         {
             LinearLayout masterCode = (LinearLayout) findViewById(R.id.game_mastercode);
             masterCode.setVisibility(LinearLayout.VISIBLE);
@@ -410,6 +407,8 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         button.setOnClickListener(this);
         button = (Button) findViewById(R.id.btn_game_rueckgaengig);
         button.setOnClickListener(this);
+
+        ((Chronometer) findViewById(R.id.time)).start();
     }
 
     @Override
@@ -425,6 +424,21 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                 break;
             case R.id.btn_game_pause:
                 ShowPopup("Du hast das Spiel pausiert.", false);
+
+                Chronometer chronometer = (Chronometer) findViewById(R.id.time);
+                if (_pause)
+                {
+                    chronometer.setBase(_pause_timeDifference + SystemClock.elapsedRealtime());
+                    chronometer.start();
+                    _pause_timeDifference = 0;
+                }
+                else
+                {
+                    chronometer.stop();
+                    _pause_timeDifference  = chronometer.getBase() - SystemClock.elapsedRealtime();
+                }
+
+                _pause = !_pause;
                 break;
             case R.id.btn_game_rueckgaengig:
                 if (ActiveRow>0)
@@ -446,10 +460,10 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                         break;
                     }
                 }
-                if (eval == true)
+                if (eval)
                 {
                     Rows[ActiveRow] = FarbvorschlagRow;
-                    if (EvaluateFarbvorschlagRow(ActiveRow) == true)
+                    if (EvaluateFarbvorschlagRow(ActiveRow))
                     {
                         gamefield.addView(CreateDisplayableRowWithPins(this, Rows[ActiveRow]));
                         if (ActiveRow == 0)
