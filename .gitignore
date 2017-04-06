@@ -58,3 +58,5 @@ captures/
 .Trashes
 ehthumbs.db
 Thumbs.db
+!/Releases/
+!/Releases/*.apk
