@@ -45,7 +45,8 @@ captures/
 .idea/scopes/scope_settings.xml
 .idea/vcs.xml
 *.iml
-
+/.idea/markdown-navigator.xml
+/.idea/markdown-navigator/
 # Keystore files
 *.jks
 
@@ -57,3 +58,5 @@ captures/
 .Trashes
 ehthumbs.db
 Thumbs.db
+!/Releases/
+!/Releases/*.apk

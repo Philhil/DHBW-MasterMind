@@ -12,29 +12,28 @@
         android:layout_above="@+id/button_2playerGame"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="50dp"
-        style="@android:style/Widget.Button.Inset"
         android:onClick="startGame"/>
 
     <Button
         android:id="@+id/button_2playerGame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/btn_start_2player_game"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        style="@android:style/Widget.Button.Inset"
-        android:onClick="startGame"/>
+        android:layout_centerVertical="true"
+        android:onClick="startGame"
+        android:text="@string/btn_start_2player_game"
+        android:visibility="invisible"/>
 
     <Button
         android:id="@+id/button_loadGame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/btn_load_game"
         android:layout_below="@+id/button_2playerGame"
         android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
-        style="@android:style/Widget.Button.Inset"
-        android:onClick="startGame"/>
+        android:onClick="startGame"
+        android:text="@string/btn_load_game"
+        android:visibility="invisible"/>
 
 </RelativeLayout>

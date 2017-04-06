@@ -34,6 +34,9 @@ public class StartActivity extends AppCompatActivity {
                 case R.id.navigation_settings:
                     fragment = new SettingsFragment();
                     break;
+                case R.id.navigation_help:
+                    fragment = new HelpFragment();
+                    break;
             }
             final FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(R.id.content, fragment).commit();
@@ -59,19 +62,20 @@ public class StartActivity extends AppCompatActivity {
 
     public void startGame(View view) {
 
-        Intent intent = new Intent(this, GameActivity.class);
-
-        switch(view.getId()) {
+        switch(view.getId())
+        {
             case R.id.button_startGame:
+                Intent intent = new Intent(this, GameActivity.class);
+                startActivity(intent);
                 break;
             case R.id.button_2playerGame:
-                intent.putExtra(MESSAGE_GAMEMODE, "2Player"); //TODO enum?
+                //intent.putExtra(MESSAGE_GAMEMODE, "2Player"); //TODO enum?
+                //TODO: Open view to select game mode
                 break;
             case R.id.button_loadGame:
-                intent.putExtra(MESSAGE_GAMEMODE, "load"); //TODO enum?
+                //intent.putExtra(MESSAGE_GAMEMODE, "load"); //TODO enum?
+                //TODO: Open view to load a game
                 break;
         }
-
-        startActivity(intent);
     }
 }

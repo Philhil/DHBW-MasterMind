@@ -10,10 +10,10 @@ Arbeitspaktete
 - [x] Entwurf Klassenmodell
 - [ ] Entwurf UI Design
 - [x] Erstellung Testplan
-- [ ] Implementierung Prototyp 1
-- [ ] Test Prototyp 1
-- [ ] Anpassung Prototyp1
-- [ ] (Meilenstein) Freigabe Prototyp 1
+- [x] Implementierung Prototyp 1
+- [x] Test Prototyp 1
+- [x] Anpassung Prototyp1
+- [x] (Meilenstein) Freigabe Prototyp 1
 - [ ] Überarbeitung der Modelle und Designs
 - [ ] Implementierung Prototyp 2
 - [ ] Test Prototyp 2
