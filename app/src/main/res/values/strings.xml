@@ -18,7 +18,6 @@
 
     <string name="label_ok">OK</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_highscore_fragment">TODO: Highscore fragment</string>
     <string name="hello_settings_fragment">TODO: Setting fragment</string>
     <string name="hello_help_fragment">TODO: Help fragment</string>
 

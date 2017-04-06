@@ -13,11 +13,16 @@ import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
-public class StartActivity extends AppCompatActivity {
+public class StartActivity extends AppCompatActivity implements HighscoreFragment.OnListFragmentInteractionListener {
+
+    @Override
+    public void onListFragmentInteraction(HighscoreItem item) {
+    }
 
     private Fragment fragment;
     private FragmentManager fragmentManager;
     public static final String MESSAGE_GAMEMODE = "de.dhbw.stuttgart.mastermind.GAMEMODE";
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
