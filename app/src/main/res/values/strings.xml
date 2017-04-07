@@ -11,8 +11,8 @@
     <string name="btn_start_2player_game">Zwei Spieler Modus starten</string>
     <string name="btn_dissolve">Auflösen</string>
     <string name="btn_break">Pause</string>
-    <string name="btn_revert">Zug Rückgängig</string>
-    <string name="btn_check">Eingabe Prüfen</string>
+    <string name="btn_revert">Reihe rückgängig</string>
+    <string name="btn_check">Eingabe prüfen</string>
     <string name="btn_new_game">Neustart</string>
     <string name="btn_main_menue">Hauptmenü</string>
 

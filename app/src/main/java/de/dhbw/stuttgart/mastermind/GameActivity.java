@@ -17,6 +17,7 @@ import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
 
 import java.util.Random;
 
@@ -155,6 +156,11 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         rowLayout.setHorizontalGravity(Gravity.CENTER);
         rowLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
+        TextView rowNumber = new TextView(context);
+        rowNumber.append((ActiveRow + 1) + ". ");
+        rowNumber.setTextSize(25);
+        rowLayout.addView(rowNumber);
+
         for (int i = 0; i < _anzFields; i++)
         {
             ImageView tmp = row.Fields[i].getPicture(this);
@@ -183,22 +189,21 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
             {
                 tmp.setImageResource(R.mipmap.ic_white);
                 tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin,_smallPin));
-                pinsTop.addView(tmp);
                 white--;
             }
             else if (black > 0)
             {
                 tmp.setImageResource(R.mipmap.ic_black);
                 tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin,_smallPin));
-                pinsTop.addView(tmp);
                 black--;
             }
             else
             {
                 tmp.setImageResource(R.mipmap.ic_grey_round);
                 tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin,_smallPin));
-                pinsTop.addView(tmp);
+                tmp.setVisibility(ImageView.INVISIBLE);
             }
+            pinsTop.addView(tmp);
         }
 
         for (int j = 0; j < (_anzFields/2); j++)
@@ -208,22 +213,21 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
             {
                 tmp.setImageResource(R.mipmap.ic_white);
                 tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin,_smallPin));
-                pinsBottom.addView(tmp);
                 white--;
             }
             else if (black > 0)
             {
                 tmp.setImageResource(R.mipmap.ic_black);
                 tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin,_smallPin));
-                pinsBottom.addView(tmp);
                 black--;
             }
             else
             {
                 tmp.setImageResource(R.mipmap.ic_grey_round);
                 tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin,_smallPin));
-                pinsBottom.addView(tmp);
+                tmp.setVisibility(ImageView.INVISIBLE);
             }
+            pinsBottom.addView(tmp);
         }
 
         pinsLayout.addView(pinsTop);
@@ -325,24 +329,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
     {
         if(end)
         {
-            LinearLayout masterCode = (LinearLayout) findViewById(R.id.game_mastercode);
-            masterCode.setVisibility(LinearLayout.VISIBLE);
-
-            //make all buttons unusable
-            Button button = (Button) findViewById(R.id.btn_game_rueckgaengig);
-            button.setEnabled(false);
-            button = (Button) findViewById(R.id.btn_game_aufloesen);
-            button.setEnabled(false);
-            button = (Button) findViewById(R.id.btn_game_pause);
-            button.setEnabled(false);
-            button = (Button) findViewById(R.id.btn_game_pruefen);
-            button.setEnabled(false);
-
-            //delete farbauswahl and farbvorschlag
-            LinearLayout farbvorschlag = (LinearLayout) findViewById(R.id.farbvorschlag);
-            farbvorschlag.removeAllViewsInLayout();
-
-            ((Chronometer) findViewById(R.id.time)).stop();
+            gameHasEnded();
         }
 
         final Intent again = new Intent(this, GameActivity.class);
@@ -380,6 +367,30 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
             chronometer.stop();
             _pause_timeDifference  = chronometer.getBase() - SystemClock.elapsedRealtime();
         }
+    }
+
+    private void gameHasEnded()
+    {
+        LinearLayout masterCode = (LinearLayout) findViewById(R.id.game_mastercode);
+        masterCode.setVisibility(LinearLayout.VISIBLE);
+
+        //make all buttons unusable
+        Button button = (Button) findViewById(R.id.btn_game_rueckgaengig);
+        button.setText(R.string.btn_main_menue);
+        button.setId(R.id.btn_main_menue);
+        button = (Button) findViewById(R.id.btn_game_aufloesen);
+        button.setEnabled(false);
+        button = (Button) findViewById(R.id.btn_game_pause);
+        button.setEnabled(false);
+        button = (Button) findViewById(R.id.btn_game_pruefen);
+        button.setText(R.string.btn_new_game);
+        button.setId(R.id.btn_new_game);
+
+        //delete farbauswahl and farbvorschlag
+        LinearLayout farbvorschlag = (LinearLayout) findViewById(R.id.farbvorschlag);
+        farbvorschlag.removeAllViewsInLayout();
+
+        ((Chronometer) findViewById(R.id.time)).stop();
     }
 
     @Override
@@ -432,14 +443,6 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         {
             case R.id.btn_game_aufloesen:
                 ShowPopup("Du hast das Spiel aufgelöst!", true);
-                Button button = (Button) findViewById(R.id.btn_game_rueckgaengig);
-                button.setText(R.string.btn_main_menue);
-                button.setEnabled(true);
-                button.setId(R.id.btn_main_menue);
-                button = (Button) findViewById(R.id.btn_game_pruefen);
-                button.setText(R.string.btn_new_game);
-                button.setId(R.id.btn_new_game);
-                button.setEnabled(true);
                 break;
             case R.id.btn_game_pause:
                 final Intent again = new Intent(this, GameActivity.class);
@@ -459,7 +462,8 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                 if (ActiveRow>0)
                 {
                     gamefield = (LinearLayout) findViewById(R.id.game_field);
-                    gamefield.removeViewAt(ActiveRow-1);
+                    //gamefield.removeViewAt(ActiveRow-1);
+                    gamefield.removeViewAt(0);
                     ActiveRow--;
                 }
                 break;
@@ -483,7 +487,8 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                         long minutes = (((SystemClock.elapsedRealtime() - ((Chronometer) findViewById(R.id.time)).getBase()) / 1000))/60;
                         long seconds = (((SystemClock.elapsedRealtime() - ((Chronometer) findViewById(R.id.time)).getBase()) / 1000))%60;
 
-                        gamefield.addView(CreateDisplayableRowWithPins(this, Rows[ActiveRow]));
+                        //gamefield.addView(CreateDisplayableRowWithPins(this, Rows[ActiveRow]));
+                        gamefield.addView(CreateDisplayableRowWithPins(this, Rows[ActiveRow]),0);
                         if (ActiveRow == 0)
                         {
                             ShowPopup("Glückwunsch! Du hast das Spiel nach " + String.format("%02d", minutes) + ":" + String.format("%02d", seconds) + " Sekunden und einem Zug gewonnen!", true);
@@ -494,7 +499,8 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                         }
                         break;
                     }
-                    gamefield.addView(CreateDisplayableRowWithPins(this, Rows[ActiveRow]));
+                    //gamefield.addView(CreateDisplayableRowWithPins(this, Rows[ActiveRow]));
+                    gamefield.addView(CreateDisplayableRowWithPins(this, Rows[ActiveRow]),0);
                     ActiveRow++;
                     if (ActiveRow == AnzRows)
                     {
