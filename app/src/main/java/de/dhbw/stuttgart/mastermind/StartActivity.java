@@ -10,8 +10,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.TextView;
 
 public class StartActivity extends AppCompatActivity implements HighscoreFragment.OnListFragmentInteractionListener {
 
@@ -21,8 +19,6 @@ public class StartActivity extends AppCompatActivity implements HighscoreFragmen
 
     private Fragment fragment;
     private FragmentManager fragmentManager;
-    public static final String MESSAGE_GAMEMODE = "de.dhbw.stuttgart.mastermind.GAMEMODE";
-
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -41,6 +37,9 @@ public class StartActivity extends AppCompatActivity implements HighscoreFragmen
                     break;
                 case R.id.navigation_help:
                     fragment = new HelpFragment();
+                    break;
+                case R.id.navigation_impressum:
+                    fragment = new ImpressumFragment();
                     break;
             }
             final FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -74,11 +73,9 @@ public class StartActivity extends AppCompatActivity implements HighscoreFragmen
                 startActivity(intent);
                 break;
             case R.id.button_2playerGame:
-                //intent.putExtra(MESSAGE_GAMEMODE, "2Player"); //TODO enum?
                 //TODO: Open view to select game mode
                 break;
             case R.id.button_loadGame:
-                //intent.putExtra(MESSAGE_GAMEMODE, "load"); //TODO enum?
                 //TODO: Open view to load a game
                 break;
         }
