@@ -17,8 +17,21 @@
     <string name="btn_main_menue">Hauptmenü</string>
 
     <string name="label_ok">OK</string>
+
+    <string name="impressum_description">
+        Dieses Spiel ist im Rahmen eines Projektes der Vorlesung Softwareengeneering (Wintersemester 2016/2017)
+        an der Dualen Hochschule Badenwürttemberg Stuttgart entstanden.
+    </string>
+
+    <string name="impressum_participaation">
+        \n\n <b>Teilnehmer der Projektkruppe:</b> \n\n
+        <b>Maximilian Bauknecht</b> \n (Projektmanagement und Controlling) \n \n
+        <b>Philipp Holzner</b> \n (Algorithmik und Programmierung) \n \n
+        <b>Philippe Käufer</b> \n (Testing und UI Implementierung) \n \n
+        <b>Anja Ohlhäuser</b> \n ()
+    </string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_settings_fragment">TODO: Setting fragment</string>
     <string name="hello_help_fragment">TODO: Help fragment</string>
-
 </resources>
