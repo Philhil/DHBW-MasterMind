@@ -486,11 +486,11 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                         gamefield.addView(CreateDisplayableRowWithPins(this, Rows[ActiveRow]));
                         if (ActiveRow == 0)
                         {
-                            ShowPopup("Glückwunsch! Du hast das Spiel nach " + minutes + ":" + seconds + " Sekunden und einem Zug gewonnen!", true);
+                            ShowPopup("Glückwunsch! Du hast das Spiel nach " + String.format("%02d", minutes) + ":" + String.format("%02d", seconds) + " Sekunden und einem Zug gewonnen!", true);
                         }
                         else
                         {
-                            ShowPopup("Glückwunsch! Du hast das Spiel nach " + minutes + ":" + seconds + " in " + (ActiveRow + 1) + " Zügen gewonnen!", true);
+                            ShowPopup("Glückwunsch! Du hast das Spiel nach " + String.format("%02d", minutes) + ":" + String.format("%02d", seconds) + " in " + (ActiveRow + 1) + " Zügen gewonnen!", true);
                         }
                         break;
                     }

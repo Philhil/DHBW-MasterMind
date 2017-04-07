@@ -37,8 +37,11 @@ public class HighscoreRecyclerViewAdapter extends RecyclerView.Adapter<Highscore
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(String.valueOf(mValues.get(position).id));
         holder.mNameView.setText(mValues.get(position).name);
-        holder.mDurationView.setText(String.valueOf((mValues.get(position).duration / 1000) / 60)
-                + ":" + String.valueOf((mValues.get(position).duration / 1000)%60));
+
+        long minutes = (mValues.get(position).duration / 1000) / 60;
+        long seconds = (mValues.get(position).duration / 1000) % 60;
+
+        holder.mDurationView.setText(String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
         holder.mTriesView.setText(String.valueOf(mValues.get(position).tries));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
