@@ -16,6 +16,16 @@
     <string name="btn_new_game">Neustart</string>
     <string name="btn_main_menue">Hauptmenü</string>
 
+    <string name="settings_number_of_colors">Anzahl der verschiedenen Farben für ein Sett:</string>
+    <string name="settings_number_of_holes">Anzahl der Löcher:</string>
+    <string name="settings_empty_space">Setzen von leere Stellen erlauben:</string>
+    <string name="settings_multiple_color">Das mehrfache Auftreten einer Fahrbe erlauben:</string>
+    <string name="settings_round">Anzahl der Runden:</string>
+    <string name="settings_colors">Festlegen der Farben die im Spiel zur Verfügung stehen:</string>
+    <string name="settings_matchfield">Aussehen des Spielfeldes:</string>
+    <string name="settings_save">Speichern</string>
+    <string name="settings_discard">Verwerfen</string>
+
     <string name="label_ok">OK</string>
 
     <string name="impressum_description">
