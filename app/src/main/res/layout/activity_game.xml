@@ -17,7 +17,6 @@
 
         <Button
             android:id="@+id/btn_game_aufloesen"
-            android:style="@android:style/Widget.Material.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_weight="1"
@@ -32,7 +31,6 @@
 
         <Button
             android:id="@+id/btn_game_pause"
-            android:style="@android:style/Widget.Material.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_weight="1"
@@ -89,7 +87,6 @@
 
             <Button
                 android:id="@+id/btn_game_rueckgaengig"
-                android:style="@android:style/Widget.Material.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_weight="1"
@@ -98,7 +95,6 @@
 
             <Button
                 android:id="@+id/btn_game_pruefen"
-                android:style="@android:style/Widget.Material.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_weight="1"
