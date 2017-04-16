@@ -1,6 +1,8 @@
 package de.dhbw.stuttgart.mastermind;
 
+import android.os.SystemClock;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +21,12 @@ public class HighscoreRecyclerViewAdapter extends RecyclerView.Adapter<Highscore
 
     private final List<HighscoreItem> mValues;
     private final OnListFragmentInteractionListener mListener;
+    private int _placeCount;
 
     public HighscoreRecyclerViewAdapter(List<HighscoreItem> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
+        _placeCount = 1;
     }
 
     @Override
@@ -35,14 +39,15 @@ public class HighscoreRecyclerViewAdapter extends RecyclerView.Adapter<Highscore
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(String.valueOf(mValues.get(position).id));
+
+        holder.mIdView.setText(String.valueOf(_placeCount) + ".");
+        _placeCount = _placeCount + 1;
+
         holder.mNameView.setText(mValues.get(position).name);
-
-        long minutes = (mValues.get(position).duration / 1000) / 60;
-        long seconds = (mValues.get(position).duration / 1000) % 60;
-
-        holder.mDurationView.setText(String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
+        holder.mDurationView.setText(mValues.get(position).duration);
         holder.mTriesView.setText(String.valueOf(mValues.get(position).tries));
+        holder.mColorsView.setText(String.valueOf(mValues.get(position).colors));
+        holder.mFieldsView.setText(String.valueOf(mValues.get(position).fields));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,6 +55,9 @@ public class HighscoreRecyclerViewAdapter extends RecyclerView.Adapter<Highscore
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
+
+                    //TODO: implement deleting of a line? or delete whole list from settings?
+
                     mListener.onListFragmentInteraction(holder.mItem);
                 }
             }
@@ -67,6 +75,8 @@ public class HighscoreRecyclerViewAdapter extends RecyclerView.Adapter<Highscore
         public final TextView mNameView;
         public final TextView mDurationView;
         public final TextView mTriesView;
+        public final TextView mColorsView;
+        public final TextView mFieldsView;
 
         public HighscoreItem mItem;
 
@@ -78,6 +88,8 @@ public class HighscoreRecyclerViewAdapter extends RecyclerView.Adapter<Highscore
             mNameView = (TextView) view.findViewById(R.id.name);
             mDurationView = (TextView) view.findViewById(R.id.time);
             mTriesView = (TextView) view.findViewById(R.id.tries);
+            mColorsView = (TextView) view.findViewById(R.id.colors);
+            mFieldsView = (TextView) view.findViewById(R.id.fields);
         }
 
         @Override

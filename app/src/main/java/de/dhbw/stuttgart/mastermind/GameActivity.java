@@ -8,12 +8,14 @@ import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.view.View.OnClickListener;
@@ -34,6 +36,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
     private int _smallPeg;
     private int _smallPin;
     private long _pause_timeDifference = 0;
+    private String _winTimestring;
 
     public int ActiveField = -1;
     public int ActiveRow = 0;
@@ -325,32 +328,73 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         return Rows[rowNo].RightPlace == Master.Fields.length;
     }
 
-    private void ShowPopup(String msg, boolean end)
+    private void ShowPopup(String msg, boolean end, boolean win)
     {
         if(end)
         {
             gameHasEnded();
         }
-
-        final Intent again = new Intent(this, GameActivity.class);
-        new AlertDialog.Builder(this)
-                .setMessage(msg)
-                .setCancelable(true)
-                .setNeutralButton("Neustart", new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        startActivity(again);
-                        finish();
-                    }
-                }).setNegativeButton("Zurück zum Hauptmenü", new DialogInterface.OnClickListener() {
-            public void onClick(final DialogInterface dialog, final int id) {
-                finish();
-            }
-        }).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(final DialogInterface dialog, final int which) {
-                dialog.dismiss();
-            }
-        }).create().show();
+        if (!win)
+        {
+            final Intent again = new Intent(this, GameActivity.class);
+            new AlertDialog.Builder(this)
+                    .setMessage(msg)
+                    .setCancelable(true)
+                    .setNeutralButton("Neustart", new DialogInterface.OnClickListener()
+                    {
+                        public void onClick(final DialogInterface dialog, final int id)
+                        {
+                            startActivity(again);
+                            finish();
+                        }
+                    }).setNegativeButton("Zurück zum Hauptmenü", new DialogInterface.OnClickListener()
+            {
+                public void onClick(final DialogInterface dialog, final int id)
+                {
+                    finish();
+                }
+            }).setPositiveButton("OK", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(final DialogInterface dialog, final int which)
+                {
+                    dialog.dismiss();
+                }
+            }).create().show();
+        }
+        else
+        {
+            final Intent again = new Intent(this, GameActivity.class);
+            final EditText name = new EditText(this);
+            name.setInputType(InputType.TYPE_CLASS_TEXT);
+            name.setText("Spielername");
+            new AlertDialog.Builder(this)
+                    .setMessage(msg)
+                    .setCancelable(true)
+                    .setView(name)
+                    .setNeutralButton("Neustart", new DialogInterface.OnClickListener()
+                    {
+                        public void onClick(final DialogInterface dialog, final int id)
+                        {
+                            startActivity(again);
+                            finish();
+                        }
+                    }).setNegativeButton("Zurück zum Hauptmenü", new DialogInterface.OnClickListener()
+            {
+                public void onClick(final DialogInterface dialog, final int id)
+                {
+                    finish();
+                }
+            }).setPositiveButton("Speichern", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(final DialogInterface dialog, final int which)
+                {
+                    HighscoreFragment.dataSource.createHighscoreItem(name.getText().toString(), _winTimestring, ActiveRow + 1, _anzColors, _anzFields);
+                    dialog.dismiss();
+                }
+            }).create().show();
+        }
     }
 
     private void chronometer(boolean start) {
@@ -442,7 +486,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         switch(v.getId())
         {
             case R.id.btn_game_aufloesen:
-                ShowPopup("Du hast das Spiel aufgelöst!", true);
+                ShowPopup("Du hast das Spiel aufgelöst!", true, false);
                 break;
             case R.id.btn_game_pause:
                 final Intent again = new Intent(this, GameActivity.class);
@@ -487,15 +531,17 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                         long minutes = (((SystemClock.elapsedRealtime() - ((Chronometer) findViewById(R.id.time)).getBase()) / 1000))/60;
                         long seconds = (((SystemClock.elapsedRealtime() - ((Chronometer) findViewById(R.id.time)).getBase()) / 1000))%60;
 
+                        _winTimestring = String.format("%02d", minutes) + ":" + String.format("%02d", seconds);
+
                         //gamefield.addView(CreateDisplayableRowWithPins(this, Rows[ActiveRow]));
                         gamefield.addView(CreateDisplayableRowWithPins(this, Rows[ActiveRow]),0);
                         if (ActiveRow == 0)
                         {
-                            ShowPopup("Glückwunsch! Du hast das Spiel nach " + String.format("%02d", minutes) + ":" + String.format("%02d", seconds) + " Sekunden und einem Zug gewonnen!", true);
+                            ShowPopup("Glückwunsch! Du hast das Spiel nach " + _winTimestring + " Sekunden und einem Zug gewonnen!", true, true);
                         }
                         else
                         {
-                            ShowPopup("Glückwunsch! Du hast das Spiel nach " + String.format("%02d", minutes) + ":" + String.format("%02d", seconds) + " in " + (ActiveRow + 1) + " Zügen gewonnen!", true);
+                            ShowPopup("Glückwunsch! Du hast das Spiel nach " + _winTimestring + " in " + (ActiveRow + 1) + " Zügen gewonnen!", true, true);
                         }
                         break;
                     }
@@ -504,7 +550,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                     ActiveRow++;
                     if (ActiveRow == AnzRows)
                     {
-                        ShowPopup("Du hast es nicht geschafft den Code zu knacken!", true);
+                        ShowPopup("Du hast es nicht geschafft den Code zu knacken!", true, false);
                         break;
                     }
                     ResetFarbvorschlagRow();

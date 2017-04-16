@@ -20,8 +20,9 @@ import java.util.List;
 public class HighscoreFragment extends Fragment {
 
     private OnListFragmentInteractionListener mListener;
-    public static final List<HighscoreItem> highscoreContent = new ArrayList<>();
+    public static List<HighscoreItem> highscoreContent = new ArrayList<>();
 
+    public static HighscoreDataSource dataSource;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -33,6 +34,11 @@ public class HighscoreFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        dataSource = new HighscoreDataSource(this.getContext());
+        dataSource.open();
+
+        //dataSource.deleteAllItems();
     }
 
     @Override
@@ -45,10 +51,8 @@ public class HighscoreFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
 
-            //TODO: get Highscore list
-            for (int i = 0; i < 25; i++) {
-                highscoreContent.add(new HighscoreItem(i, "Name"+String.valueOf(i), i,i,i,i));
-            }
+            //sorted by fastest time
+            highscoreContent = dataSource.getAllHighscoreItems();
 
             recyclerView.setAdapter(new HighscoreRecyclerViewAdapter(highscoreContent, mListener));
         }
