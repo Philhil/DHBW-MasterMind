@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     tools:context="de.dhbw.stuttgart.mastermind.SettingsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,8 +33,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerHorizontal="true"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:orientation="vertical" >
@@ -47,43 +44,36 @@
                 android:text="@string/settings_number_of_colors"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-
-                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="fill_parent"
+                <RadioButton
+                    android:id="@+id/number_of_colors_5"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_weight="1"
+                    android:text="5" />
 
-                    <RadioButton
-                        android:id="@+id/number_of_colors_5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="5" />
+                <RadioButton
+                    android:id="@+id/number_of_colors_6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:duplicateParentState="false"
+                    android:text="6" />
 
-                    <RadioButton
-                        android:id="@+id/number_of_colors_6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="true"
-                        android:duplicateParentState="false"
-                        android:text="6" />
+                <RadioButton
+                    android:id="@+id/number_of_colors_8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="8" />
 
-                    <RadioButton
-                        android:id="@+id/number_of_colors_8"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="8" />
+            </RadioGroup>
 
-                </RadioGroup>
-
-            </LinearLayout>
 
             <CheckBox
                 android:id="@+id/multiple_color_checkBox"
@@ -203,55 +193,49 @@
                 android:text="@string/settings_number_of_holes"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+
+
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-
-                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="fill_parent"
+                <RadioButton
+                    android:id="@+id/number_of_holes_3"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_weight="1"
+                    android:text="3" />
 
-                    <RadioButton
-                        android:id="@+id/number_of_holes_3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="3" />
+                <RadioButton
+                    android:id="@+id/number_of_holes_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="4" />
 
-                    <RadioButton
-                        android:id="@+id/number_of_holes_4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="4" />
+                <RadioButton
+                    android:id="@+id/number_of_holes_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="5" />
 
-                    <RadioButton
-                        android:id="@+id/number_of_holes_5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="true"
-                        android:text="5" />
+                <RadioButton
+                    android:id="@+id/number_of_holes_6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="6" />
 
-                    <RadioButton
-                        android:id="@+id/number_of_holes_6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="6" />
-
-                    <RadioButton
-                        android:id="@+id/number_of_holes_8"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="8" />
-                </RadioGroup>
-
-            </LinearLayout>
+                <RadioButton
+                    android:id="@+id/number_of_holes_8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="8" />
+            </RadioGroup>
 
             <TextView
                 android:id="@+id/round"
@@ -265,7 +249,7 @@
                 android:id="@+id/round_seekBar"
                 style="@style/Widget.AppCompat.SeekBar.Discrete"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:max="30"
                 android:progress="10" />
@@ -327,6 +311,5 @@
             android:layout_weight="1"
             android:text="@string/settings_save" />
     </LinearLayout>
-
 
 </RelativeLayout>

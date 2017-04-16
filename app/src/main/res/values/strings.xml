@@ -50,10 +50,9 @@
         <b>Maximilian Bauknecht</b> \n (Projektmanagement und Controlling) \n \n
         <b>Philipp Holzner</b> \n (Algorithmik und Programmierung) \n \n
         <b>Philippe Käufer</b> \n (Testing und UI Implementierung) \n \n
-        <b>Anja Ohlhäuser</b> \n ()
+        <b>Anja Ohlhäuser</b> \n (UI und Material Design)
     </string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_settings_fragment">TODO: Setting fragment</string>
     <string name="hello_help_fragment">TODO: Help fragment</string>
 </resources>
