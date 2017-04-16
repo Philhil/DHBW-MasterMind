@@ -11,8 +11,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".StartActivity"
-            android:label="@string/title_activity_start"
             android:configChanges="orientation"
+            android:label="@string/title_activity_start"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,10 +20,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GameActivity"
+        <activity
+            android:name=".GameActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"></activity>
-
+            android:screenOrientation="portrait" />
+        <activity android:name=".Colorcode" />
+        <activity android:name=".GameBreak"></activity>
     </application>
 
 </manifest>

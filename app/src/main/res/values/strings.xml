@@ -16,6 +16,28 @@
     <string name="btn_new_game">Neustart</string>
     <string name="btn_main_menue">Hauptmenü</string>
 
+    <string name="settings_number_of_colors">Anzahl der verschiedenen Farben für ein Sett</string>
+    <string name="settings_number_of_holes">Anzahl der Löcher</string>
+    <string name="settings_empty_space">Leere Stellen im Sett</string>
+    <string name="settings_multiple_color">Mehrfaches Auftreten einer Fahrbe</string>
+    <string name="settings_round">Anzahl der Runden</string>
+    <string name="settings_colors">Farben die im Spiel zur Verfügung stehen</string>
+    <string name="settings_matchfield">Aussehen des Spielfeldhintergrunds</string>
+    <string name="settings_backgroundWhite">Weiß</string>
+    <string name="settings_backgroundGrey">Grau</string>
+    <string name="settings_backgroundGreen">Grün</string>
+    <string name="settings_save">Speichern</string>
+    <string name="settings_discard">Verwerfen</string>
+
+    <string name="colorcode_text">Farbcode eingeben:</string>
+    <string name="colorcode_start">Play</string>
+
+    <string name="gamebreak_fortsetzen">Spiel fortsetzen</string>
+    <string name="gamebreak_abbrechen">Spiel abbrechen</string>
+    <string name="gamebreak_speichern">Spiel speichern</string>
+    <string name="gamebreak_hilfe">Hilfe</string>
+    <string name="gamebreak_break">Spiel pausiert</string>
+
     <string name="label_ok">OK</string>
 
     <string name="impressum_description">
@@ -28,10 +50,9 @@
         <b>Maximilian Bauknecht</b> \n (Projektmanagement und Controlling) \n \n
         <b>Philipp Holzner</b> \n (Algorithmik und Programmierung) \n \n
         <b>Philippe Käufer</b> \n (Testing und UI Implementierung) \n \n
-        <b>Anja Ohlhäuser</b> \n ()
+        <b>Anja Ohlhäuser</b> \n (UI und Material Design)
     </string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_settings_fragment">TODO: Setting fragment</string>
     <string name="hello_help_fragment">TODO: Help fragment</string>
 </resources>
