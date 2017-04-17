@@ -286,6 +286,19 @@
                     android:text="@string/settings_backgroundGreen"/>
 
             </RadioGroup>
+
+            <CheckBox
+                android:id="@+id/highscore_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_highscore_delete" />
+
+            <CheckBox
+                android:id="@+id/savedgames_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_savedgames_delete" />
+
         </LinearLayout>
     </ScrollView>
 

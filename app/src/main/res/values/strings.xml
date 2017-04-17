@@ -26,6 +26,8 @@
     <string name="settings_backgroundWhite">Weiß</string>
     <string name="settings_backgroundGrey">Grau</string>
     <string name="settings_backgroundGreen">Grün</string>
+    <string name="settings_highscore_delete">Highscore Liste löschen</string>
+    <string name="settings_savedgames_delete">Gespeicherte Spielstände löschen</string>
     <string name="settings_save">Speichern</string>
     <string name="settings_discard">Verwerfen</string>
 
@@ -55,4 +57,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_help_fragment">TODO: Help fragment</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
