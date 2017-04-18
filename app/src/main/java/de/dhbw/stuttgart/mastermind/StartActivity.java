@@ -1,5 +1,6 @@
 package de.dhbw.stuttgart.mastermind;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,6 +8,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,6 +64,29 @@ public class StartActivity extends AppCompatActivity implements HighscoreFragmen
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        new AlertDialog.Builder(this)
+                .setMessage("Möchten Sie die Anwendung wirklich verlassen?")
+                .setCancelable(true)
+                .setNegativeButton("Ja", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(final DialogInterface dialog, final int id)
+                    {
+                        System.exit(0);
+                    }
+                })
+                .setPositiveButton("Nein", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which)
+                    {
+                        dialog.dismiss();
+                    }
+                }).create().show();
     }
 
     public void startGame(View view) {

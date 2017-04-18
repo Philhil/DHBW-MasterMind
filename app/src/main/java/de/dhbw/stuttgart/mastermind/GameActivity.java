@@ -546,6 +546,28 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
     }
 
     @Override
+    public void onBackPressed(){
+        new AlertDialog.Builder(this)
+                .setMessage("Möchten Sie das Spiel wirklich beenden?")
+                .setCancelable(true)
+                .setNegativeButton("Ja", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(final DialogInterface dialog, final int id)
+                    {
+                        finish();
+                    }
+                })
+                .setPositiveButton("Nein", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which)
+                    {
+                        dialog.dismiss();
+                    }
+                }).create().show();
+    }
+
+    @Override
     public void onClick(View v)
     {
         ImageView image;
@@ -554,7 +576,25 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         switch(v.getId())
         {
             case R.id.btn_game_aufloesen:
-                ShowPopup("Du hast das Spiel aufgelöst!", true, false);
+                new AlertDialog.Builder(this)
+                        .setMessage("Möchten Sie das Spiel wirklich auflösen?")
+                        .setCancelable(true)
+                        .setNegativeButton("Ja", new DialogInterface.OnClickListener()
+                        {
+                            public void onClick(final DialogInterface dialog, final int id)
+                            {
+                                ShowPopup("Du hast das Spiel aufgelöst!", true, false);
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButton("Nein", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(final DialogInterface dialog, final int which)
+                            {
+                                dialog.dismiss();
+                            }
+                        }).create().show();
                 break;
             case R.id.btn_game_pause:
                 final Intent again = new Intent(this, GameActivity.class);
