@@ -116,11 +116,6 @@ public class HighscoreDataSource {
 
     public void deleteAllItems()
     {
-        List<HighscoreItem> items = getAllHighscoreItems();
-
-        for (HighscoreItem item: items)
-        {
-            deleteHighscoreItem(item);
-        }
+        database.delete(HighscoreDbHelper.TABLE_HIGHSCORE_LIST, null, null);
     }
 }

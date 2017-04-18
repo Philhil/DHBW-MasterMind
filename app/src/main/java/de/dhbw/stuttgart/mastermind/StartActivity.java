@@ -105,4 +105,11 @@ public class StartActivity extends AppCompatActivity implements HighscoreFragmen
                 break;
         }
     }
+
+    public void deleteHighscore(View view) {
+        HighscoreDataSource ds = new HighscoreDataSource(this);
+        ds.open();
+        ds.deleteAllItems();
+        ds.close();
+    }
 }
