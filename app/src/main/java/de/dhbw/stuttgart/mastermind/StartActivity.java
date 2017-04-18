@@ -70,7 +70,7 @@ public class StartActivity extends AppCompatActivity implements HighscoreFragmen
     public void onBackPressed()
     {
         new AlertDialog.Builder(this)
-                .setMessage("Möchten Sie die Anwendung wirklich verlassen?")
+                .setMessage(R.string.home_exitwarning)
                 .setCancelable(true)
                 .setNegativeButton("Ja", new DialogInterface.OnClickListener()
                 {

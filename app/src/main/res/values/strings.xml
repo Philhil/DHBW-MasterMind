@@ -38,6 +38,7 @@
     <string name="game_dissolved">Du hast das Spiel aufgelöst!</string>
     <string name="game_fail">Du hast es nicht geschafft den Code zu knacken!</string>
 
+    <string name="home_exitwarning">Möchtest Du die Anwendung wirklich verlassen?</string>
 
     <string name="colorcode_text">Farbcode eingeben:</string>
     <string name="colorcode_start">Play</string>
