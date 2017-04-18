@@ -11,7 +11,6 @@ import android.view.ViewGroup;
  */
 
 
-
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link HelpFragment#newInstance} factory method to

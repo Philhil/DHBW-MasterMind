@@ -3,6 +3,8 @@ package de.dhbw.stuttgart.mastermind;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
@@ -25,14 +27,20 @@ import java.util.Random;
 
 public class GameActivity extends AppCompatActivity implements OnClickListener{
 
-    //TODO: defines, should later come from the settings or the saved game
-    public int AnzRows = 10;
-    //TODO: if _anzFields < _anzColors -> same colors must be switched on in settings
-    private int _anzFields = 4;
-    private int _anzColors = 5;
+    private int _anzRows;
+    private int _anzFields;
+    private int _anzColors;
+    private boolean _multiple;
+    private boolean _empty;
+
+    private boolean _undo = false;
+
+    private int _backgroundColor;
+
 
     private int _displayWidth;
     private int _bigPeg;
+    private int _farbAuswPeg;
     private int _smallPeg;
     private int _smallPin;
     private long _pause_timeDifference = 0;
@@ -41,19 +49,19 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
     public int ActiveField = -1;
     public int ActiveRow = 0;
 
-    public Row Rows[] = new Row[AnzRows];
+    public Row Rows[];
     public Row Master;
     public LinearLayout Farbauswahl;
     public Row FarbvorschlagRow;
 
-    public void SetMaster(boolean same)
+    public void SetMaster(boolean same, boolean empty)
     {
         Row tmp = new Row(_anzFields);
         Random random = new Random();
 
         if (!same)
         {
-            boolean[] ref = new boolean[_anzColors];
+            boolean[] ref = new boolean[_anzColors + 1];
 
             for (int i = 0; i < _anzFields; i++)
             {
@@ -62,10 +70,17 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                 int r;
 
                 do {
-                    r = random.nextInt(_anzColors);
-                } while (ref[r]);
+                    if (!empty)
+                    {
+                        r = random.nextInt(_anzColors);
+                    }
+                    else
+                    {
+                        r = random.nextInt(_anzColors+1)-1;
+                    }
+                } while (ref[r+1]);
 
-                ref[r] = true;
+                ref[r+1] = true;
 
                 tmpfield.setColor(r);
                 tmp.Fields[i] = tmpfield;
@@ -77,7 +92,14 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
             {
                 Field tmpfield = new Field();
 
-                tmpfield.setColor(random.nextInt(_anzColors));
+                if (!empty)
+                {
+                    tmpfield.setColor(random.nextInt(_anzColors));
+                }
+                else
+                {
+                    tmpfield.setColor(random.nextInt(_anzColors+1)-1);
+                }
                 tmp.Fields[i] = tmpfield;
             }
         }
@@ -248,11 +270,20 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         ausw.setHorizontalGravity(Gravity.CENTER);
         ausw.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        for (int i = 0; i < _anzColors; i++)
+        int minval = 0;
+        if (_empty)
+        {
+           minval = -1;
+        }
+
+        for (int i = minval; i < _anzColors; i++)
         {
             ImageView tmp = new ImageView(this);
             switch(i)
             {
+                case -1:
+                    tmp.setImageResource(R.mipmap.ic_slot);
+                    break;
                 case 0:
                     tmp.setImageResource(R.mipmap.ic_blue);
                     break;
@@ -278,7 +309,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                     tmp.setImageResource(R.mipmap.ic_purple);
                     break;
             }
-            tmp.setLayoutParams(new LinearLayout.LayoutParams(_bigPeg,_bigPeg));
+            tmp.setLayoutParams(new LinearLayout.LayoutParams(_farbAuswPeg,_farbAuswPeg));
             tmp.setId(i);
             tmp.setOnClickListener(this);
 
@@ -334,7 +365,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         {
             gameHasEnded();
         }
-        if (!win)
+        if (!win || _undo)
         {
             final Intent again = new Intent(this, GameActivity.class);
             new AlertDialog.Builder(this)
@@ -367,7 +398,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
             final Intent again = new Intent(this, GameActivity.class);
             final EditText name = new EditText(this);
             name.setInputType(InputType.TYPE_CLASS_TEXT);
-            name.setText("Spielername");
+            name.setText("Spielername", TextView.BufferType.EDITABLE);
             new AlertDialog.Builder(this)
                     .setMessage(msg)
                     .setCancelable(true)
@@ -385,7 +416,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                 {
                     finish();
                 }
-            }).setPositiveButton("Speichern", new DialogInterface.OnClickListener()
+            }).setPositiveButton("Highscore speichern", new DialogInterface.OnClickListener()
             {
                 @Override
                 public void onClick(final DialogInterface dialog, final int which)
@@ -437,6 +468,18 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         ((Chronometer) findViewById(R.id.time)).stop();
     }
 
+    private void getSettingsFromPreferences()
+    {
+        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+
+        _anzColors = sharedPref.getInt(getString(R.string.prefkey_number_of_colors), 5);
+        _anzFields = sharedPref.getInt(getString(R.string.prefkey_number_of_holes), 4);
+        _anzRows = sharedPref.getInt(getString(R.string.prefkey_number_of_rounds), 10);
+        _multiple = sharedPref.getBoolean(getString(R.string.prefkey_multiple), false);
+        _empty = sharedPref.getBoolean(getString(R.string.prefkey_empty), false);
+        _backgroundColor = sharedPref.getInt(getString(R.string.prefkey_background_color), R.string.settings_backgroundWhite);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -447,11 +490,16 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         display.getSize(size);
         _displayWidth = size.x;
 
+        _farbAuswPeg = _displayWidth/9;
         _bigPeg = _displayWidth/8;
         _smallPeg = (_displayWidth/8)-20;
         _smallPin = _smallPeg/2;
 
-        SetMaster(false);
+        getSettingsFromPreferences();
+
+        Rows = new Row[_anzRows];
+
+        SetMaster(_multiple, _empty);
         CreateFarbauswahl(this);
         ResetFarbvorschlagRow();
 
@@ -464,6 +512,23 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         farbvorschlag.addView(Farbauswahl);
         Farbauswahl.setVisibility(LinearLayout.INVISIBLE);
         farbvorschlag.addView(CreateDisplayableRow(this, FarbvorschlagRow));
+
+        LinearLayout gamefield = (LinearLayout) findViewById(R.id.game_field);
+        int color = Color.TRANSPARENT;
+        switch(_backgroundColor)
+        {
+            case R.string.settings_backgroundGreen:
+                color = Color.GREEN;
+                break;
+            case R.string.settings_backgroundGrey:
+                color = Color.GRAY;
+                break;
+            case R.string.settings_backgroundWhite:
+                color = Color.WHITE;
+                break;
+        }
+        gamefield.setBackgroundColor(color);
+
 
         Button button = (Button) findViewById(R.id.btn_game_aufloesen);
         button.setOnClickListener(this);
@@ -505,6 +570,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
             case R.id.btn_game_rueckgaengig:
                 if (ActiveRow>0)
                 {
+                    _undo = true;
                     gamefield = (LinearLayout) findViewById(R.id.game_field);
                     //gamefield.removeViewAt(ActiveRow-1);
                     gamefield.removeViewAt(0);
@@ -513,14 +579,18 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                 break;
             case R.id.btn_game_pruefen:
                 gamefield = (LinearLayout) findViewById(R.id.game_field);
-                //if all fields are filled
+
                 boolean eval = true;
-                for (int i = 0; i < _anzFields;i++)
+                if (!_empty)
                 {
-                    if (FarbvorschlagRow.Fields[i].getColor() == -1)
+                    //if all fields are filled when duplicates aren't allowed
+                    for (int i = 0; i < _anzFields; i++)
                     {
-                        eval = false;
-                        break;
+                        if (FarbvorschlagRow.Fields[i].getColor() == -1)
+                        {
+                            eval = false;
+                            break;
+                        }
                     }
                 }
                 if (eval)
@@ -548,7 +618,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                     //gamefield.addView(CreateDisplayableRowWithPins(this, Rows[ActiveRow]));
                     gamefield.addView(CreateDisplayableRowWithPins(this, Rows[ActiveRow]),0);
                     ActiveRow++;
-                    if (ActiveRow == AnzRows)
+                    if (ActiveRow == _anzRows)
                     {
                         ShowPopup("Du hast es nicht geschafft den Code zu knacken!", true, false);
                         break;
@@ -566,6 +636,12 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                 startActivity(newGame);
                 break;
             //Buttons in farbauswahl
+            case -1:
+                image = (ImageView) findViewById(ActiveField);
+                image.setImageResource(R.mipmap.ic_slot);
+                FarbvorschlagRow.Fields[ActiveField-10].setColor(-1);
+                HideFarbauswahl();
+                break;
             case 0:
                 image = (ImageView) findViewById(ActiveField);
                 image.setImageResource(R.mipmap.ic_blue);

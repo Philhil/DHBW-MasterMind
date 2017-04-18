@@ -16,10 +16,10 @@
     <string name="btn_new_game">Neustart</string>
     <string name="btn_main_menue">Hauptmenü</string>
 
-    <string name="settings_number_of_colors">Anzahl der verschiedenen Farben für ein Sett</string>
+    <string name="settings_number_of_colors">Anzahl der verschiedenen Farben für ein Set</string>
     <string name="settings_number_of_holes">Anzahl der Löcher</string>
-    <string name="settings_empty_space">Leere Stellen im Sett</string>
-    <string name="settings_multiple_color">Mehrfaches Auftreten einer Fahrbe</string>
+    <string name="settings_empty_space">Leere Stellen im Set</string>
+    <string name="settings_multiple_color">Mehrfaches Auftreten einer Farbe</string>
     <string name="settings_round">Anzahl der Runden</string>
     <string name="settings_colors">Farben die im Spiel zur Verfügung stehen</string>
     <string name="settings_matchfield">Aussehen des Spielfeldhintergrunds</string>
@@ -54,6 +54,15 @@
         <b>Philippe Käufer</b> \n (Testing und UI Implementierung) \n \n
         <b>Anja Ohlhäuser</b> \n (UI und Material Design)
     </string>
+
+    <string name="preference_file_key">de.dhbw.stuttgart.mastermind.PREFERENCE_FILE_KEY</string>
+    <string name="prefkey_number_of_colors">NumberOfColors</string>
+    <string name="prefkey_multiple">Multiple</string>
+    <string name="prefkey_empty">Empty</string>
+    <string name="prefkey_number_of_holes">NumberOfHoles</string>
+    <string name="prefkey_number_of_rounds">NumberOfRounds</string>
+    <string name="prefkey_background_color">BackgroundColor</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_help_fragment">TODO: Help fragment</string>

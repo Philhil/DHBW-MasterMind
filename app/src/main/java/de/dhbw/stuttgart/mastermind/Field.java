@@ -32,6 +32,9 @@ public class Field
 
         switch(_color)
         {
+            case -1:
+                tmp.setImageResource(R.mipmap.ic_slot);
+                break;
             case 0:
                 tmp.setImageResource(R.mipmap.ic_blue);
                 break;
