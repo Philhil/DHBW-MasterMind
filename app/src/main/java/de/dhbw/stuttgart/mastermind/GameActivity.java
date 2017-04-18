@@ -548,16 +548,16 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
     @Override
     public void onBackPressed(){
         new AlertDialog.Builder(this)
-                .setMessage("Möchten Sie das Spiel wirklich beenden?")
+                .setMessage(R.string.game_quit)
                 .setCancelable(true)
-                .setNegativeButton("Ja", new DialogInterface.OnClickListener()
+                .setNegativeButton(R.string.btn_yes, new DialogInterface.OnClickListener()
                 {
                     public void onClick(final DialogInterface dialog, final int id)
                     {
                         finish();
                     }
                 })
-                .setPositiveButton("Nein", new DialogInterface.OnClickListener()
+                .setPositiveButton(R.string.btn_no, new DialogInterface.OnClickListener()
                 {
                     @Override
                     public void onClick(final DialogInterface dialog, final int which)
@@ -577,9 +577,9 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         {
             case R.id.btn_game_aufloesen:
                 new AlertDialog.Builder(this)
-                        .setMessage("Möchten Sie das Spiel wirklich auflösen?")
+                        .setMessage(R.string.game_dissolve)
                         .setCancelable(true)
-                        .setNegativeButton("Ja", new DialogInterface.OnClickListener()
+                        .setNegativeButton(R.string.btn_yes, new DialogInterface.OnClickListener()
                         {
                             public void onClick(final DialogInterface dialog, final int id)
                             {
@@ -587,7 +587,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                                 dialog.dismiss();
                             }
                         })
-                        .setPositiveButton("Nein", new DialogInterface.OnClickListener()
+                        .setPositiveButton(R.string.btn_no, new DialogInterface.OnClickListener()
                         {
                             @Override
                             public void onClick(final DialogInterface dialog, final int which)

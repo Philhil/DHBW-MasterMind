@@ -40,7 +40,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight=".07"
-        android:text="Colors"
         android:textAppearance="?attr/textAppearanceListItem"/>
 
     <TextView

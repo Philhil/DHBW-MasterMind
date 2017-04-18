@@ -15,6 +15,8 @@
     <string name="btn_check">Eingabe prüfen</string>
     <string name="btn_new_game">Neustart</string>
     <string name="btn_main_menue">Hauptmenü</string>
+    <string name="btn_yes">Ja</string>
+    <string name="btn_no">Nein</string>
 
     <string name="settings_number_of_colors">Anzahl der verschiedenen Farben für ein Set</string>
     <string name="settings_number_of_holes">Anzahl der Löcher</string>
@@ -30,6 +32,12 @@
     <string name="settings_savedgames_delete">Gespeicherte Spielstände löschen</string>
     <string name="settings_save">Speichern</string>
     <string name="settings_discard">Verwerfen</string>
+
+    <string name="game_quit">Möchtest Du das Spiel wirklich beenden?</string>
+    <string name="game_dissolve">Möchtest Du das Spiel wirklich auflösen?</string>
+    <string name="game_dissolved">Du hast das Spiel aufgelöst!</string>
+    <string name="game_fail">Du hast es nicht geschafft den Code zu knacken!</string>
+
 
     <string name="colorcode_text">Farbcode eingeben:</string>
     <string name="colorcode_start">Play</string>
@@ -66,7 +74,4 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_help_fragment">TODO: Help fragment</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
