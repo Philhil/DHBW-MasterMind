@@ -636,6 +636,25 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                         }
                     }
                 }
+                if (!_multiple && eval)
+                {
+                    boolean colors[];
+                    colors = new boolean[_anzColors+1];
+
+                    //if all fields are filled unique, when multiple aren't allowed
+                    for (int i = 0; i < _anzFields; i++)
+                    {
+                        if (!colors[FarbvorschlagRow.Fields[i].getColor()+1])
+                        {
+                            colors[FarbvorschlagRow.Fields[i].getColor()+1] = true;
+                        }
+                        else
+                        {
+                            eval = false;
+                            break;
+                        }
+                    }
+                }
                 if (eval)
                 {
                     Rows[ActiveRow] = FarbvorschlagRow;
