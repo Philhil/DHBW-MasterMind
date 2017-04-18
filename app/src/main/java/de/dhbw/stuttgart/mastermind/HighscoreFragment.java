@@ -59,6 +59,19 @@ public class HighscoreFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        dataSource.open();
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        dataSource.close();
+    }
 
     @Override
     public void onAttach(Context context) {

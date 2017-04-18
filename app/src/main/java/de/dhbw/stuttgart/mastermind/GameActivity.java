@@ -421,7 +421,10 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                 @Override
                 public void onClick(final DialogInterface dialog, final int which)
                 {
-                    HighscoreFragment.dataSource.createHighscoreItem(name.getText().toString(), _winTimestring, ActiveRow + 1, _anzColors, _anzFields);
+                    HighscoreDataSource ds = new HighscoreDataSource(GameActivity.this);
+                    ds.open();
+                    ds.createHighscoreItem(name.getText().toString(), _winTimestring, ActiveRow + 1, _anzColors, _anzFields);
+                    ds.close();
                     dialog.dismiss();
                 }
             }).create().show();
