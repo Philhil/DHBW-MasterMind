@@ -62,6 +62,8 @@ public class HighscoreRecyclerViewAdapter extends RecyclerView.Adapter<Highscore
                 }
             }
         });
+
+        holder.itemView.setBackgroundResource(position % 2 == 0 ? R.color.ListBackgroudOdd : R.color.ListBackgroudEven );
     }
 
     @Override
