@@ -583,8 +583,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                         {
                             public void onClick(final DialogInterface dialog, final int id)
                             {
-                                ShowPopup("Du hast das Spiel aufgelöst!", true, false);
-                                dialog.dismiss();
+                                gameHasEnded();
                             }
                         })
                         .setPositiveButton(R.string.btn_no, new DialogInterface.OnClickListener()
