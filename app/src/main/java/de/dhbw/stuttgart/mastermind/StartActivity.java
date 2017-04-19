@@ -3,6 +3,7 @@ package de.dhbw.stuttgart.mastermind;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -107,9 +108,26 @@ public class StartActivity extends AppCompatActivity implements HighscoreFragmen
     }
 
     public void deleteHighscore(View view) {
-        HighscoreDataSource ds = new HighscoreDataSource(this);
-        ds.open();
-        ds.deleteAllItems();
-        ds.close();
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.settings_highscore_delete)
+                .setCancelable(true)
+                .setNegativeButton(R.string.btn_yes, new DialogInterface.OnClickListener()
+                {
+                    public void onClick(final DialogInterface dialog, final int id)
+                    {
+                        HighscoreDataSource ds = new HighscoreDataSource(getBaseContext());
+                        ds.open();
+                        ds.deleteAllItems();
+                        ds.close();
+                    }
+                })
+                .setPositiveButton(R.string.btn_no, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which)
+                    {
+                        dialog.dismiss();
+                    }
+                }).create().show();
     }
 }
