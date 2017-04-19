@@ -45,6 +45,7 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:layout_marginBottom="0dp"
+            android:onClick="startGame"
             android:text="@string/colorcode_start" />
 
     </LinearLayout>

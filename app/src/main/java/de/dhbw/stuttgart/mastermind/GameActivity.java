@@ -56,56 +56,63 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
 
     public void SetMaster(boolean same, boolean empty)
     {
-        Row tmp = new Row(_anzFields);
-        Random random = new Random();
+        Intent intent = getIntent();
+        Row tmp = intent.getParcelableExtra("masterRow");
 
-        if (!same)
+        if(tmp == null)
         {
-            boolean[] ref = new boolean[_anzColors + 1];
+            tmp = new Row(_anzFields);;
+            Random random = new Random();
 
-            for (int i = 0; i < _anzFields; i++)
+            if (!same)
             {
-                Field tmpfield = new Field();
+                boolean[] ref = new boolean[_anzColors + 1];
 
-                int r;
+                for (int i = 0; i < _anzFields; i++)
+                {
+                    Field tmpfield = new Field();
 
-                do {
+                    int r;
+
+                    do {
+                        if (!empty)
+                        {
+                            r = random.nextInt(_anzColors);
+                        }
+                        else
+                        {
+                            r = random.nextInt(_anzColors+1)-1;
+                        }
+                    } while (ref[r+1]);
+
+                    ref[r+1] = true;
+
+                    tmpfield.setColor(r);
+                    tmp.Fields[i] = tmpfield;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < _anzFields; i++)
+                {
+                    Field tmpfield = new Field();
+
                     if (!empty)
                     {
-                        r = random.nextInt(_anzColors);
+                        tmpfield.setColor(random.nextInt(_anzColors));
                     }
                     else
                     {
-                        r = random.nextInt(_anzColors+1)-1;
+                        tmpfield.setColor(random.nextInt(_anzColors+1)-1);
                     }
-                } while (ref[r+1]);
-
-                ref[r+1] = true;
-
-                tmpfield.setColor(r);
-                tmp.Fields[i] = tmpfield;
-            }
-        }
-        else
-        {
-            for (int i = 0; i < _anzFields; i++)
-            {
-                Field tmpfield = new Field();
-
-                if (!empty)
-                {
-                    tmpfield.setColor(random.nextInt(_anzColors));
+                    tmp.Fields[i] = tmpfield;
                 }
-                else
-                {
-                    tmpfield.setColor(random.nextInt(_anzColors+1)-1);
-                }
-                tmp.Fields[i] = tmpfield;
             }
+
+            tmp.RightColor = 0;
+            tmp.RightPlace = _anzFields;
         }
 
-        tmp.RightColor = 0;
-        tmp.RightPlace = _anzFields;
 
         Master = tmp;
     }

@@ -99,7 +99,8 @@ public class StartActivity extends AppCompatActivity implements HighscoreFragmen
                 startActivity(intent);
                 break;
             case R.id.button_2playerGame:
-                //TODO: Open view to select game mode
+                Intent intent_colorcode = new Intent(this, Colorcode.class);
+                startActivity(intent_colorcode);
                 break;
             case R.id.button_loadGame:
                 //TODO: Open view to load a game
