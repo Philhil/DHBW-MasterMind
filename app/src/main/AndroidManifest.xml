@@ -27,5 +27,6 @@
         <activity android:name=".Colorcode" />
         <activity android:name=".GameBreak"></activity>
     </application>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
 </manifest>

@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.SystemClock;
+import android.os.Vibrator;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
 
     private int _backgroundColor;
 
+    private boolean _singlePlayer;
 
     private int _displayWidth;
     private int _bigPeg;
@@ -374,7 +376,15 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         }
         if (!win || _undo)
         {
-            final Intent again = new Intent(this, GameActivity.class);
+            final Intent again;
+            if (_singlePlayer)
+            {
+                again = new Intent(this, GameActivity.class);
+            }
+            else
+            {
+                again = new Intent(this, Colorcode.class);
+            }
             new AlertDialog.Builder(this)
                     .setMessage(msg)
                     .setCancelable(true)
@@ -402,7 +412,24 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         }
         else
         {
-            final Intent again = new Intent(this, GameActivity.class);
+            final Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+            if (v.hasVibrator())
+            {
+                long[] pattern = {0,500,110,500,110,450,110,200,110,170,40,450,110,200,110,170,40,500};
+
+                v.vibrate(pattern, -1);
+            }
+
+            final Intent again;
+            if (_singlePlayer)
+            {
+                again = new Intent(this, GameActivity.class);
+            }
+            else
+            {
+                again = new Intent(this, Colorcode.class);
+            }
             final EditText name = new EditText(this);
             name.setInputType(InputType.TYPE_CLASS_TEXT);
             name.setText("Spielername", TextView.BufferType.EDITABLE);
@@ -415,12 +442,14 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                         public void onClick(final DialogInterface dialog, final int id)
                         {
                             startActivity(again);
+                            v.cancel();
                             finish();
                         }
                     }).setNegativeButton("Zurück zum Hauptmenü", new DialogInterface.OnClickListener()
             {
                 public void onClick(final DialogInterface dialog, final int id)
                 {
+                    v.cancel();
                     finish();
                 }
             }).setPositiveButton("Highscore speichern", new DialogInterface.OnClickListener()
@@ -432,6 +461,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                     ds.open();
                     ds.createHighscoreItem(name.getText().toString(), _winTimestring, ActiveRow + 1, _anzColors, _anzFields);
                     ds.close();
+                    v.cancel();
                     dialog.dismiss();
                 }
             }).create().show();
@@ -509,7 +539,18 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
 
         Rows = new Row[_anzRows];
 
-        SetMaster(_multiple, _empty);
+        Intent intent = getIntent();
+        if (intent.hasExtra("masterRow"))
+        {
+            Master = intent.getParcelableExtra("masterRow");
+            _singlePlayer = false;
+        }
+        else
+        {
+            SetMaster(_multiple, _empty);
+            _singlePlayer = true;
+        }
+
         CreateFarbauswahl(this);
         ResetFarbvorschlagRow();
 
@@ -603,7 +644,6 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                         }).create().show();
                 break;
             case R.id.btn_game_pause:
-                final Intent again = new Intent(this, GameActivity.class);
                 new AlertDialog.Builder(this)
                         .setMessage(R.string.title_break)
                         .setPositiveButton(R.string.label_ok, new DialogInterface.OnClickListener() {
@@ -699,9 +739,18 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                 finish();
                 break;
             case R.id.btn_new_game:
-                Intent newGame = new Intent(this, GameActivity.class);
-                newGame.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(newGame);
+                final Intent again;
+                if (_singlePlayer)
+                {
+                    again = new Intent(this, GameActivity.class);
+                }
+                else
+                {
+                    again = new Intent(this, Colorcode.class);
+                }
+                again.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                finish();
+                startActivity(again);
                 break;
             //Buttons in farbauswahl
             case -1:

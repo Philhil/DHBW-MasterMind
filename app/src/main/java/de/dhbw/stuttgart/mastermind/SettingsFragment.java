@@ -48,6 +48,8 @@ public class SettingsFragment extends Fragment {
 
         //Multiple checkbox
         final CheckBox multipleBox = (CheckBox) view.findViewById(R.id.multiple_color_checkBox);
+        final CheckBox emptyBox = (CheckBox) view.findViewById(R.id.empty_space_checkBox);
+
         multipleBox.setChecked(_sharedPref.getBoolean(getString(R.string.prefkey_multiple), false));
         multipleBox.setOnClickListener(new View.OnClickListener()
         {
@@ -60,20 +62,33 @@ public class SettingsFragment extends Fragment {
                 }
                 else
                 {
-                    if (_anzFields <= _anzColors)
+                    if (emptyBox.isChecked())
                     {
-                        _editor.putBoolean(getString(R.string.prefkey_multiple), false);
+                        if (_anzFields <= _anzColors+1)
+                        {
+                            _editor.putBoolean(getString(R.string.prefkey_multiple), false);
+                        }
+                        else
+                        {
+                            ((CheckBox) v).setChecked(true);
+                        }
                     }
                     else
                     {
-                        ((CheckBox) v).setChecked(true);
+                        if (_anzFields <= _anzColors)
+                        {
+                            _editor.putBoolean(getString(R.string.prefkey_multiple), false);
+                        }
+                        else
+                        {
+                            ((CheckBox) v).setChecked(true);
+                        }
                     }
                 }
                 _editor.commit();
             }
         });
         //Empty checkbox
-        CheckBox emptyBox = (CheckBox) view.findViewById(R.id.empty_space_checkBox);
         emptyBox.setChecked(_sharedPref.getBoolean(getString(R.string.prefkey_empty), false));
         emptyBox.setOnClickListener(new View.OnClickListener()
         {
@@ -83,20 +98,22 @@ public class SettingsFragment extends Fragment {
                 if (((CheckBox) v).isChecked())
                 {
                     _editor.putBoolean(getString(R.string.prefkey_empty), true);
-                    _anzColors +=1;
-                    _editor.putInt(getString(R.string.prefkey_number_of_colors), _anzColors);
+                    if (_anzFields <= _anzColors+1)
+                    {
+                        multipleBox.setChecked(true);
+                        _editor.putBoolean(getString(R.string.prefkey_multiple), true);
+                    }
                 }
                 else
                 {
                     _editor.putBoolean(getString(R.string.prefkey_empty), false);
-                    _anzColors -=1;
-                    _editor.putInt(getString(R.string.prefkey_number_of_colors), _anzColors);
+                    if (_anzFields <= _anzColors)
+                    {
+                        multipleBox.setChecked(true);
+                        _editor.putBoolean(getString(R.string.prefkey_multiple), true);
+                    }
                 }
-                if (_anzFields > _anzColors)
-                {
-                    multipleBox.setChecked(true);
-                    _editor.putBoolean(getString(R.string.prefkey_multiple), true);
-                }
+
                 _editor.commit();
             }
         });
@@ -134,10 +151,21 @@ public class SettingsFragment extends Fragment {
                         _anzColors = 7;
                         break;
                 }
-                if (_anzFields > _anzColors)
+                if (emptyBox.isChecked())
                 {
-                    multipleBox.setChecked(true);
-                    _editor.putBoolean(getString(R.string.prefkey_multiple), true);
+                    if (_anzFields > _anzColors+1)
+                    {
+                        multipleBox.setChecked(true);
+                        _editor.putBoolean(getString(R.string.prefkey_multiple), true);
+                    }
+                }
+                else
+                {
+                    if (_anzFields > _anzColors)
+                    {
+                        multipleBox.setChecked(true);
+                        _editor.putBoolean(getString(R.string.prefkey_multiple), true);
+                    }
                 }
                 _editor.commit();
             }
@@ -192,10 +220,21 @@ public class SettingsFragment extends Fragment {
                         _anzFields = 8;
                         break;
                 }
-                if (_anzFields > _anzColors)
+                if (emptyBox.isChecked())
                 {
-                    multipleBox.setChecked(true);
-                    _editor.putBoolean(getString(R.string.prefkey_multiple), true);
+                    if (_anzFields > _anzColors+1)
+                    {
+                        multipleBox.setChecked(true);
+                        _editor.putBoolean(getString(R.string.prefkey_multiple), true);
+                    }
+                }
+                else
+                {
+                    if (_anzFields > _anzColors)
+                    {
+                        multipleBox.setChecked(true);
+                        _editor.putBoolean(getString(R.string.prefkey_multiple), true);
+                    }
                 }
                 _editor.commit();
             }

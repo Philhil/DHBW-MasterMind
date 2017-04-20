@@ -18,36 +18,37 @@
             android:layout_marginTop="10dp"
             android:text="@string/colorcode_text"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="100dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="50dp"
-            android:orientation="vertical"></LinearLayout>
-
-
-
     </LinearLayout>
+
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/colorcode_footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/colorcode_start"
+        <LinearLayout
+            android:id="@+id/colorcode_farbvorschlag"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:layout_marginBottom="0dp"
-            android:onClick="startGame"
-            android:text="@string/colorcode_start" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        </LinearLayout>
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/colorcode_start"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="0dp"
+                android:onClick="startGame"
+                android:text="@string/colorcode_start" />
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
 
