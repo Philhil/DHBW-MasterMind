@@ -24,9 +24,13 @@ import android.widget.LinearLayout;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.util.Random;
 
-public class GameActivity extends AppCompatActivity implements OnClickListener{
+public class GameActivity extends AppCompatActivity implements OnClickListener
+{
 
     private int _anzRows;
     private int _anzFields;
@@ -58,62 +62,56 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
 
     public void SetMaster(boolean same, boolean empty)
     {
-        Intent intent = getIntent();
-        Row tmp = intent.getParcelableExtra("masterRow");
+        Row tmp;
 
-        if(tmp == null)
+        tmp = new Row(_anzFields);
+        Random random = new Random();
+
+        if (!same)
         {
-            tmp = new Row(_anzFields);;
-            Random random = new Random();
+            boolean[] ref = new boolean[_anzColors + 1];
 
-            if (!same)
+            for (int i = 0; i < _anzFields; i++)
             {
-                boolean[] ref = new boolean[_anzColors + 1];
+                Field tmpfield = new Field();
 
-                for (int i = 0; i < _anzFields; i++)
+                int r;
+
+                do
                 {
-                    Field tmpfield = new Field();
-
-                    int r;
-
-                    do {
-                        if (!empty)
-                        {
-                            r = random.nextInt(_anzColors);
-                        }
-                        else
-                        {
-                            r = random.nextInt(_anzColors+1)-1;
-                        }
-                    } while (ref[r+1]);
-
-                    ref[r+1] = true;
-
-                    tmpfield.setColor(r);
-                    tmp.Fields[i] = tmpfield;
-                }
-            }
-            else
-            {
-                for (int i = 0; i < _anzFields; i++)
-                {
-                    Field tmpfield = new Field();
-
                     if (!empty)
                     {
-                        tmpfield.setColor(random.nextInt(_anzColors));
-                    }
-                    else
+                        r = random.nextInt(_anzColors);
+                    } else
                     {
-                        tmpfield.setColor(random.nextInt(_anzColors+1)-1);
+                        r = random.nextInt(_anzColors + 1) - 1;
                     }
-                    tmp.Fields[i] = tmpfield;
-                }
-            }
+                } while (ref[r + 1]);
 
-            tmp.RightColor = 0;
-            tmp.RightPlace = _anzFields;
+                ref[r + 1] = true;
+
+                tmpfield.setColor(r);
+                tmp.Fields[i] = tmpfield;
+            }
+        } else
+        {
+            for (int i = 0; i < _anzFields; i++)
+            {
+                Field tmpfield = new Field();
+
+                if (!empty)
+                {
+                    tmpfield.setColor(random.nextInt(_anzColors));
+                } else
+                {
+                    tmpfield.setColor(random.nextInt(_anzColors + 1) - 1);
+                }
+                tmp.Fields[i] = tmpfield;
+            }
         }
+
+        tmp.RightColor = 0;
+        tmp.RightPlace = _anzFields;
 
 
         Master = tmp;
@@ -141,7 +139,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         for (int i = 0; i < _anzFields; i++)
         {
             ImageView tmp;
-            tmp = (ImageView) findViewById(i+10);
+            tmp = (ImageView) findViewById(i + 10);
             tmp.setImageResource(R.mipmap.ic_slot);
         }
     }
@@ -156,7 +154,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         for (int i = 0; i < _anzFields; i++)
         {
             ImageView tmp = row.Fields[i].getPicture(this);
-            tmp.setLayoutParams(new LinearLayout.LayoutParams(_bigPeg,_bigPeg));
+            tmp.setLayoutParams(new LinearLayout.LayoutParams(_bigPeg, _bigPeg));
             rowLayout.addView(tmp);
         }
 
@@ -174,7 +172,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         {
             ImageView tmp = row.Fields[i].getPicture(this);
             tmp.setLayoutParams(new LinearLayout.LayoutParams(_bigPeg, _bigPeg));
-            tmp.setId(i+10);
+            tmp.setId(i + 10);
             tmp.setOnClickListener(this);
 
             rowLayout.addView(tmp);
@@ -190,15 +188,16 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         rowLayout.setHorizontalGravity(Gravity.CENTER);
         rowLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
+        /*
         TextView rowNumber = new TextView(context);
         rowNumber.append((ActiveRow + 1) + ". ");
         rowNumber.setTextSize(25);
-        rowLayout.addView(rowNumber);
+        rowLayout.addView(rowNumber);*/
 
         for (int i = 0; i < _anzFields; i++)
         {
             ImageView tmp = row.Fields[i].getPicture(this);
-            tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPeg,_smallPeg));
+            tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPeg, _smallPeg));
             rowLayout.addView(tmp);
         }
 
@@ -216,49 +215,45 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
 
         int white = row.RightColor;
         int black = row.RightPlace;
-        for (int j = 0; j < (_anzFields-(_anzFields/2)); j++)
+        for (int j = 0; j < (_anzFields - (_anzFields / 2)); j++)
         {
             ImageView tmp = new ImageView(this);
             if (white > 0)
             {
                 tmp.setImageResource(R.mipmap.ic_white);
-                tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin,_smallPin));
+                tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin, _smallPin));
                 white--;
-            }
-            else if (black > 0)
+            } else if (black > 0)
             {
                 tmp.setImageResource(R.mipmap.ic_black);
-                tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin,_smallPin));
+                tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin, _smallPin));
                 black--;
-            }
-            else
+            } else
             {
                 tmp.setImageResource(R.mipmap.ic_grey_round);
-                tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin,_smallPin));
+                tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin, _smallPin));
                 tmp.setVisibility(ImageView.INVISIBLE);
             }
             pinsTop.addView(tmp);
         }
 
-        for (int j = 0; j < (_anzFields/2); j++)
+        for (int j = 0; j < (_anzFields / 2); j++)
         {
             ImageView tmp = new ImageView(this);
             if (white > 0)
             {
                 tmp.setImageResource(R.mipmap.ic_white);
-                tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin,_smallPin));
+                tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin, _smallPin));
                 white--;
-            }
-            else if (black > 0)
+            } else if (black > 0)
             {
                 tmp.setImageResource(R.mipmap.ic_black);
-                tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin,_smallPin));
+                tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin, _smallPin));
                 black--;
-            }
-            else
+            } else
             {
                 tmp.setImageResource(R.mipmap.ic_grey_round);
-                tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin,_smallPin));
+                tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPin, _smallPin));
                 tmp.setVisibility(ImageView.INVISIBLE);
             }
             pinsBottom.addView(tmp);
@@ -282,13 +277,13 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         int minval = 0;
         if (_empty)
         {
-           minval = -1;
+            minval = -1;
         }
 
         for (int i = minval; i < _anzColors; i++)
         {
             ImageView tmp = new ImageView(this);
-            switch(i)
+            switch (i)
             {
                 case -1:
                     tmp.setImageResource(R.mipmap.ic_slot);
@@ -318,7 +313,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                     tmp.setImageResource(R.mipmap.ic_purple);
                     break;
             }
-            tmp.setLayoutParams(new LinearLayout.LayoutParams(_farbAuswPeg,_farbAuswPeg));
+            tmp.setLayoutParams(new LinearLayout.LayoutParams(_farbAuswPeg, _farbAuswPeg));
             tmp.setId(i);
             tmp.setOnClickListener(this);
 
@@ -346,17 +341,22 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         boolean[] guessUsed = new boolean[Rows[rowNo].Fields.length];
 
         // Compare correct color and position
-        for (int i = 0; i < Master.Fields.length; i++) {
-            if (Master.Fields[i].getColor() == Rows[rowNo].Fields[i].getColor()) {
+        for (int i = 0; i < Master.Fields.length; i++)
+        {
+            if (Master.Fields[i].getColor() == Rows[rowNo].Fields[i].getColor())
+            {
                 Rows[rowNo].RightPlace++;
                 codeUsed[i] = guessUsed[i] = true;
             }
         }
 
         // Compare matching colors for "pins" that were not used
-        for (int i = 0; i < Master.Fields.length; i++) {
-            for (int j = 0; j < Rows[rowNo].Fields.length; j++) {
-                if (!codeUsed[i] && !guessUsed[j] && Master.Fields[i].getColor() == Rows[rowNo].Fields[j].getColor()) {
+        for (int i = 0; i < Master.Fields.length; i++)
+        {
+            for (int j = 0; j < Rows[rowNo].Fields.length; j++)
+            {
+                if (!codeUsed[i] && !guessUsed[j] && Master.Fields[i].getColor() == Rows[rowNo].Fields[j].getColor())
+                {
                     Rows[rowNo].RightColor++;
                     codeUsed[i] = guessUsed[j] = true;
                     break;
@@ -370,7 +370,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
 
     private void ShowPopup(String msg, boolean end, boolean win)
     {
-        if(end)
+        if (end)
         {
             gameHasEnded();
         }
@@ -380,8 +380,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
             if (_singlePlayer)
             {
                 again = new Intent(this, GameActivity.class);
-            }
-            else
+            } else
             {
                 again = new Intent(this, Colorcode.class);
             }
@@ -409,14 +408,13 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                     dialog.dismiss();
                 }
             }).create().show();
-        }
-        else
+        } else
         {
             final Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
             if (v.hasVibrator())
             {
-                long[] pattern = {0,500,110,500,110,450,110,200,110,170,40,450,110,200,110,170,40,500};
+                long[] pattern = {0, 500, 110, 500, 110, 450, 110, 200, 110, 170, 40, 450, 110, 200, 110, 170, 40, 500};
 
                 v.vibrate(pattern, -1);
             }
@@ -425,8 +423,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
             if (_singlePlayer)
             {
                 again = new Intent(this, GameActivity.class);
-            }
-            else
+            } else
             {
                 again = new Intent(this, Colorcode.class);
             }
@@ -468,7 +465,8 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         }
     }
 
-    private void chronometer(boolean start) {
+    private void chronometer(boolean start)
+    {
 
         Chronometer chronometer = (Chronometer) findViewById(R.id.time);
         if (start)
@@ -476,11 +474,10 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
             chronometer.setBase(_pause_timeDifference + SystemClock.elapsedRealtime());
             chronometer.start();
             _pause_timeDifference = 0;
-        }
-        else
+        } else
         {
             chronometer.stop();
-            _pause_timeDifference  = chronometer.getBase() - SystemClock.elapsedRealtime();
+            _pause_timeDifference = chronometer.getBase() - SystemClock.elapsedRealtime();
         }
     }
 
@@ -520,6 +517,32 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         _backgroundColor = sharedPref.getInt(getString(R.string.prefkey_background_color), R.string.settings_backgroundWhite);
     }
 
+    private void loadSaveGame(Savegame tmp)
+    {
+        _anzColors = tmp.anzColors;
+        _anzFields = tmp.anzFields;
+        _anzRows = tmp.anzRows;
+        _multiple = tmp.multiple;
+        _empty = tmp.empty;
+        _backgroundColor = tmp.backgroundColor;
+        _singlePlayer = tmp.singlePlayer;
+        Rows =  tmp.game;
+        Master = tmp.master;
+        ActiveRow = tmp.activeRow;
+
+        LinearLayout gamefield;
+        gamefield = (LinearLayout) findViewById(R.id.game_field);
+        for (int i = 0; i < ActiveRow; i++)
+        {
+            gamefield.addView(CreateDisplayableRowWithPins(this, Rows[i]),0);
+        }
+    }
+
+    private Savegame getSavegame()
+    {
+        return new Savegame(Rows, Master, ActiveRow, _anzRows, _anzFields, _anzColors, _backgroundColor, _multiple, _empty, _undo, _singlePlayer);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -544,6 +567,14 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
         {
             Master = intent.getParcelableExtra("masterRow");
             _singlePlayer = false;
+        }
+        else if (intent.hasExtra("saveGame"))
+        {
+            Gson gson = new Gson();
+            String obj = intent.getStringExtra("saveGame");
+            Savegame tmp = gson.fromJson(obj, new TypeToken<Savegame>(){}.getType());
+
+            loadSaveGame(tmp);
         }
         else
         {
@@ -644,15 +675,32 @@ public class GameActivity extends AppCompatActivity implements OnClickListener{
                         }).create().show();
                 break;
             case R.id.btn_game_pause:
+                final EditText name = new EditText(this);
+                name.setInputType(InputType.TYPE_CLASS_TEXT);
+                name.setText("Name", TextView.BufferType.EDITABLE);
                 new AlertDialog.Builder(this)
+                        .setCancelable(true)
+                        .setView(name)
                         .setMessage(R.string.title_break)
-                        .setPositiveButton(R.string.label_ok, new DialogInterface.OnClickListener() {
+                        .setNeutralButton(R.string.label_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(final DialogInterface dialog, final int which) {
                                 dialog.dismiss();
                                 chronometer(true);
                             }
-                        }).create().show();
+                        }).setPositiveButton("Spiel speichern", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which)
+                    {
+                        SavegameDataSource ds = new SavegameDataSource(GameActivity.this);
+                        ds.open();
+                        ds.createSavegameItem(name.getText().toString(), getSavegame().toString());
+                        ds.close();
+                        dialog.dismiss();
+                        finish();
+                    }
+                }).create().show();
 
                 chronometer(false);
                 break;

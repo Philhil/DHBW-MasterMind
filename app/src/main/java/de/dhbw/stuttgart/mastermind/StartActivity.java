@@ -14,10 +14,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
-public class StartActivity extends AppCompatActivity implements HighscoreFragment.OnListFragmentInteractionListener {
+public class StartActivity extends AppCompatActivity implements HighscoreFragment.OnListFragmentInteractionListener, SavegameFragment.OnListFragmentInteractionListener {
 
     @Override
     public void onListFragmentInteraction(HighscoreItem item) {
+    }
+
+    @Override
+    public void onListFragmentInteraction(SavegameItem item) {
     }
 
     private Fragment fragment;
@@ -103,32 +107,10 @@ public class StartActivity extends AppCompatActivity implements HighscoreFragmen
                 startActivity(intent_colorcode);
                 break;
             case R.id.button_loadGame:
-                //TODO: Open view to load a game
+                fragment = new SavegameFragment();
+                final FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.content, fragment).commit();
                 break;
         }
-    }
-
-    public void deleteHighscore(View view) {
-        new AlertDialog.Builder(this)
-                .setMessage(R.string.settings_highscore_delete)
-                .setCancelable(true)
-                .setNegativeButton(R.string.btn_yes, new DialogInterface.OnClickListener()
-                {
-                    public void onClick(final DialogInterface dialog, final int id)
-                    {
-                        HighscoreDataSource ds = new HighscoreDataSource(getBaseContext());
-                        ds.open();
-                        ds.deleteAllItems();
-                        ds.close();
-                    }
-                })
-                .setPositiveButton(R.string.btn_no, new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which)
-                    {
-                        dialog.dismiss();
-                    }
-                }).create().show();
     }
 }

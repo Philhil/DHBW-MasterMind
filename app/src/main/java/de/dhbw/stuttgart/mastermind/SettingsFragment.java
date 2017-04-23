@@ -1,11 +1,14 @@
 package de.dhbw.stuttgart.mastermind;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
@@ -303,6 +306,65 @@ public class SettingsFragment extends Fragment {
                         break;
                 }
                 _editor.commit();
+            }
+        });
+
+        Button deleteHighscore = (Button) view.findViewById(R.id.highscore_delete);
+        deleteHighscore.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                new AlertDialog.Builder(view.getContext())
+                        .setMessage(R.string.settings_highscore_delete)
+                        .setCancelable(true)
+                        .setNegativeButton(R.string.btn_yes, new DialogInterface.OnClickListener()
+                        {
+                            public void onClick(final DialogInterface dialog, final int id)
+                            {
+                                HighscoreDataSource ds = new HighscoreDataSource(SettingsFragment.this.getContext());
+                                ds.open();
+                                ds.deleteAllItems();
+                                ds.close();
+                            }
+                        })
+                        .setPositiveButton(R.string.btn_no, new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(final DialogInterface dialog, final int which)
+                            {
+                                dialog.dismiss();
+                            }
+                        }).create().show();
+            }
+        });
+        Button deleteSavegames = (Button) view.findViewById(R.id.savedgames_delete);
+        deleteSavegames.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                new AlertDialog.Builder(view.getContext())
+                        .setMessage(R.string.settings_savedgames_delete)
+                        .setCancelable(true)
+                        .setNegativeButton(R.string.btn_yes, new DialogInterface.OnClickListener()
+                        {
+                            public void onClick(final DialogInterface dialog, final int id)
+                            {
+                                SavegameDataSource ds = new SavegameDataSource(SettingsFragment.this.getContext());
+                                ds.open();
+                                ds.deleteAllItems();
+                                ds.close();
+                            }
+                        })
+                        .setPositiveButton(R.string.btn_no, new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(final DialogInterface dialog, final int which)
+                            {
+                                dialog.dismiss();
+                            }
+                        }).create().show();
             }
         });
 

@@ -291,8 +291,7 @@
                 android:id="@+id/highscore_delete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="deleteHighscore"
-                android:text="@string/settings_highscore_delete" />
+                android:text="@string/settings_highscore_delete"/>
 
             <Button
                 android:id="@+id/savedgames_delete"

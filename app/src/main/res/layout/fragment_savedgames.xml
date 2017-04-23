@@ -10,7 +10,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_highscore_margin"
-        android:text="id"
         android:textAppearance="?attr/textAppearanceListItem" />
 
     <TextView
@@ -18,7 +17,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_highscore_margin"
-        android:text="Name"
         android:textAppearance="?attr/textAppearanceListItem" />
 
 </LinearLayout>
