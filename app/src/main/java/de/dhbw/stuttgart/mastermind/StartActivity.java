@@ -25,7 +25,7 @@ public class StartActivity extends AppCompatActivity implements HighscoreFragmen
     }
 
     private Fragment fragment;
-    private FragmentManager fragmentManager;
+    public static FragmentManager fragmentManager;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -50,7 +50,7 @@ public class StartActivity extends AppCompatActivity implements HighscoreFragmen
                     break;
             }
             final FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.content, fragment).commit();
+            transaction.replace(R.id.content, fragment).addToBackStack("Fragment").commit();
 
             return true;
         }
@@ -78,20 +78,21 @@ public class StartActivity extends AppCompatActivity implements HighscoreFragmen
                 .setMessage(R.string.home_exitwarning)
                 .setCancelable(true)
                 .setNegativeButton("Ja", new DialogInterface.OnClickListener()
-                {
-                    public void onClick(final DialogInterface dialog, final int id)
                     {
-                        System.exit(0);
-                    }
-                })
-                .setPositiveButton("Nein", new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which)
+                        public void onClick(final DialogInterface dialog, final int id)
+                        {
+                            System.exit(0);
+                        }
+                    })
+                    .setPositiveButton("Nein", new DialogInterface.OnClickListener()
                     {
-                        dialog.dismiss();
-                    }
-                }).create().show();
+                        @Override
+                        public void onClick(final DialogInterface dialog, final int which)
+                        {
+                            dialog.dismiss();
+                        }
+                    }).create().show();
+
     }
 
     public void startGame(View view) {
@@ -109,7 +110,7 @@ public class StartActivity extends AppCompatActivity implements HighscoreFragmen
             case R.id.button_loadGame:
                 fragment = new SavegameFragment();
                 final FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.content, fragment).commit();
+                transaction.replace(R.id.content, fragment).addToBackStack("SavegameFragment").commit();
                 break;
         }
     }

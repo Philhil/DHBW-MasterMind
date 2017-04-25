@@ -49,11 +49,11 @@
     <string name="gamebreak_hilfe">Hilfe</string>
     <string name="gamebreak_break">Spiel pausiert</string>
 
-    <string name="label_ok">OK</string>
+    <string name="label_weiter">Weiter</string>
 
     <string name="impressum_description">
-        Dieses Spiel ist im Rahmen eines Projektes der Vorlesung Softwareengeneering (Wintersemester 2016/2017)
-        an der Dualen Hochschule Badenwürttemberg Stuttgart entstanden.
+        Dieses Spiel ist im Rahmen eines Projektes der Vorlesung Softwareengineering (Wintersemester 2016/2017)
+        an der Dualen Hochschule Baden-Württemberg/Stuttgart entstanden.
     </string>
 
     <string name="impressum_participaation">

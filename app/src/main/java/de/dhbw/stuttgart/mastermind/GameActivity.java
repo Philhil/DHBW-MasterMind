@@ -11,9 +11,11 @@ import android.os.Vibrator;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.MenuItemHoverListener;
 import android.text.InputType;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -43,6 +45,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
     private int _backgroundColor;
 
     private boolean _singlePlayer;
+    private boolean _saveGame = false;
 
     private int _displayWidth;
     private int _bigPeg;
@@ -52,15 +55,15 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
     private long _pause_timeDifference = 0;
     private String _winTimestring;
 
-    public int ActiveField = -1;
-    public int ActiveRow = 0;
+    private int _activeField = -1;
+    private int _activeRow = 0;
 
-    public Row Rows[];
-    public Row Master;
-    public LinearLayout Farbauswahl;
-    public Row FarbvorschlagRow;
+    private Row _rows[];
+    private Row _master;
+    private LinearLayout _farbauswahl;
+    private Row _farbforschlagRow;
 
-    public void SetMaster(boolean same, boolean empty)
+    public Row SetMaster(boolean same, boolean empty)
     {
         Row tmp;
 
@@ -114,10 +117,10 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
         tmp.RightPlace = _anzFields;
 
 
-        Master = tmp;
+        return tmp;
     }
 
-    public void ResetFarbvorschlagRow()
+    public Row ResetFarbvorschlagRow()
     {
         Row tmp = new Row(_anzFields);
 
@@ -131,7 +134,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
         tmp.RightColor = 0;
         tmp.RightPlace = 0;
 
-        FarbvorschlagRow = tmp;
+        return tmp;
     }
 
     public void UpdateFarbvorschlagRow()
@@ -190,7 +193,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
 
         /*
         TextView rowNumber = new TextView(context);
-        rowNumber.append((ActiveRow + 1) + ". ");
+        rowNumber.append((_activeRow + 1) + ". ");
         rowNumber.setTextSize(25);
         rowLayout.addView(rowNumber);*/
 
@@ -267,7 +270,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
         return rowLayout;
     }
 
-    public void CreateFarbauswahl(Context context)
+    public LinearLayout CreateFarbauswahl(Context context)
     {
         LinearLayout ausw = new LinearLayout(context);
         ausw.setOrientation(LinearLayout.HORIZONTAL);
@@ -320,44 +323,44 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
             ausw.addView(tmp);
         }
 
-        Farbauswahl = ausw;
+        return ausw;
     }
 
     public void ShowFarbauswahl(int id)
     {
-        Farbauswahl.setVisibility(LinearLayout.VISIBLE);
-        ActiveField = id;
+        _farbauswahl.setVisibility(LinearLayout.VISIBLE);
+        _activeField = id;
     }
 
     public void HideFarbauswahl()
     {
-        Farbauswahl.setVisibility(LinearLayout.INVISIBLE);
-        ActiveField = -1;
+        _farbauswahl.setVisibility(LinearLayout.INVISIBLE);
+        _activeField = -1;
     }
 
     public boolean EvaluateFarbvorschlagRow(int rowNo)
     {
-        boolean[] codeUsed = new boolean[Master.Fields.length];
-        boolean[] guessUsed = new boolean[Rows[rowNo].Fields.length];
+        boolean[] codeUsed = new boolean[_master.Fields.length];
+        boolean[] guessUsed = new boolean[_rows[rowNo].Fields.length];
 
         // Compare correct color and position
-        for (int i = 0; i < Master.Fields.length; i++)
+        for (int i = 0; i < _master.Fields.length; i++)
         {
-            if (Master.Fields[i].getColor() == Rows[rowNo].Fields[i].getColor())
+            if (_master.Fields[i].getColor() == _rows[rowNo].Fields[i].getColor())
             {
-                Rows[rowNo].RightPlace++;
+                _rows[rowNo].RightPlace++;
                 codeUsed[i] = guessUsed[i] = true;
             }
         }
 
         // Compare matching colors for "pins" that were not used
-        for (int i = 0; i < Master.Fields.length; i++)
+        for (int i = 0; i < _master.Fields.length; i++)
         {
-            for (int j = 0; j < Rows[rowNo].Fields.length; j++)
+            for (int j = 0; j < _rows[rowNo].Fields.length; j++)
             {
-                if (!codeUsed[i] && !guessUsed[j] && Master.Fields[i].getColor() == Rows[rowNo].Fields[j].getColor())
+                if (!codeUsed[i] && !guessUsed[j] && _master.Fields[i].getColor() == _rows[rowNo].Fields[j].getColor())
                 {
-                    Rows[rowNo].RightColor++;
+                    _rows[rowNo].RightColor++;
                     codeUsed[i] = guessUsed[j] = true;
                     break;
                 }
@@ -365,7 +368,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
         }
 
 
-        return Rows[rowNo].RightPlace == Master.Fields.length;
+        return _rows[rowNo].RightPlace == _master.Fields.length;
     }
 
     private void ShowPopup(String msg, boolean end, boolean win)
@@ -456,7 +459,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
                 {
                     HighscoreDataSource ds = new HighscoreDataSource(GameActivity.this);
                     ds.open();
-                    ds.createHighscoreItem(name.getText().toString(), _winTimestring, ActiveRow + 1, _anzColors, _anzFields);
+                    ds.createHighscoreItem(name.getText().toString(), _winTimestring, _activeRow + 1, _anzColors, _anzFields);
                     ds.close();
                     v.cancel();
                     dialog.dismiss();
@@ -503,6 +506,15 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
         farbvorschlag.removeAllViewsInLayout();
 
         ((Chronometer) findViewById(R.id.time)).stop();
+
+        if (_saveGame)
+        {
+            //Delete Savegame from db
+            SavegameDataSource ds = new SavegameDataSource(GameActivity.this);
+            ds.open();
+            ds.deleteSavegameItem(getIntent().getLongExtra("id", -1));
+            ds.close();
+        }
     }
 
     private void getSettingsFromPreferences()
@@ -526,21 +538,23 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
         _empty = tmp.empty;
         _backgroundColor = tmp.backgroundColor;
         _singlePlayer = tmp.singlePlayer;
-        Rows =  tmp.game;
-        Master = tmp.master;
-        ActiveRow = tmp.activeRow;
+        _rows =  tmp.game;
+        _master = tmp.master;
+        _farbforschlagRow = tmp.farbvorschlag;
+        _activeRow = tmp.activeRow;
+        _pause_timeDifference = tmp.pause_timeDifference;
 
         LinearLayout gamefield;
         gamefield = (LinearLayout) findViewById(R.id.game_field);
-        for (int i = 0; i < ActiveRow; i++)
+        for (int i = 0; i < _activeRow; i++)
         {
-            gamefield.addView(CreateDisplayableRowWithPins(this, Rows[i]),0);
+            gamefield.addView(CreateDisplayableRowWithPins(this, _rows[i]),0);
         }
     }
 
     private Savegame getSavegame()
     {
-        return new Savegame(Rows, Master, ActiveRow, _anzRows, _anzFields, _anzColors, _backgroundColor, _multiple, _empty, _undo, _singlePlayer);
+        return new Savegame(_rows, _master, _farbforschlagRow,_activeRow, _anzRows, _anzFields, _anzColors, _backgroundColor, _multiple, _empty, _undo, _singlePlayer, _pause_timeDifference);
     }
 
     @Override
@@ -558,15 +572,14 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
         _smallPeg = (_displayWidth/8)-20;
         _smallPin = _smallPeg/2;
 
-        getSettingsFromPreferences();
-
-        Rows = new Row[_anzRows];
-
         Intent intent = getIntent();
         if (intent.hasExtra("masterRow"))
         {
-            Master = intent.getParcelableExtra("masterRow");
+            getSettingsFromPreferences();
+            _master = intent.getParcelableExtra("masterRow");
+            _rows = new Row[_anzRows];
             _singlePlayer = false;
+            _farbforschlagRow = ResetFarbvorschlagRow();
         }
         else if (intent.hasExtra("saveGame"))
         {
@@ -575,25 +588,30 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
             Savegame tmp = gson.fromJson(obj, new TypeToken<Savegame>(){}.getType());
 
             loadSaveGame(tmp);
+            _saveGame = true;
+
+            StartActivity.fragmentManager.popBackStack();
         }
         else
         {
-            SetMaster(_multiple, _empty);
+            getSettingsFromPreferences();
+            _master = SetMaster(_multiple, _empty);
+            _rows = new Row[_anzRows];
             _singlePlayer = true;
+            _farbforschlagRow = ResetFarbvorschlagRow();
         }
 
-        CreateFarbauswahl(this);
-        ResetFarbvorschlagRow();
+        _farbauswahl = CreateFarbauswahl(this);
 
         //add mastercode, but invisible
         LinearLayout masterCode = (LinearLayout) findViewById(R.id.game_mastercode);
         masterCode.setVisibility(LinearLayout.INVISIBLE);
-        masterCode.addView(CreateMasterRow(this, Master));
+        masterCode.addView(CreateMasterRow(this, _master));
         // add a row with the buttons to touch
         LinearLayout farbvorschlag = (LinearLayout) findViewById(R.id.farbvorschlag);
-        farbvorschlag.addView(Farbauswahl);
-        Farbauswahl.setVisibility(LinearLayout.INVISIBLE);
-        farbvorschlag.addView(CreateDisplayableRow(this, FarbvorschlagRow));
+        farbvorschlag.addView(_farbauswahl);
+        _farbauswahl.setVisibility(LinearLayout.INVISIBLE);
+        farbvorschlag.addView(CreateDisplayableRow(this, _farbforschlagRow));
 
         LinearLayout gamefield = (LinearLayout) findViewById(R.id.game_field);
         int color = Color.TRANSPARENT;
@@ -675,43 +693,75 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
                         }).create().show();
                 break;
             case R.id.btn_game_pause:
-                final EditText name = new EditText(this);
-                name.setInputType(InputType.TYPE_CLASS_TEXT);
-                name.setText("Name", TextView.BufferType.EDITABLE);
-                new AlertDialog.Builder(this)
-                        .setCancelable(true)
-                        .setView(name)
-                        .setMessage(R.string.title_break)
-                        .setNeutralButton(R.string.label_ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(final DialogInterface dialog, final int which) {
-                                dialog.dismiss();
-                                chronometer(true);
-                            }
-                        }).setPositiveButton("Spiel speichern", new DialogInterface.OnClickListener()
+                if (_saveGame)
                 {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which)
+                    new AlertDialog.Builder(this)
+                            .setCancelable(true)
+                            .setMessage(R.string.title_break)
+                            .setNeutralButton(R.string.label_weiter, new DialogInterface.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(final DialogInterface dialog, final int which)
+                                {
+                                    dialog.dismiss();
+                                    chronometer(true);
+                                }
+                            }).setPositiveButton("Spiel überspeichern", new DialogInterface.OnClickListener()
                     {
-                        SavegameDataSource ds = new SavegameDataSource(GameActivity.this);
-                        ds.open();
-                        ds.createSavegameItem(name.getText().toString(), getSavegame().toString());
-                        ds.close();
-                        dialog.dismiss();
-                        finish();
-                    }
-                }).create().show();
+                        @Override
+                        public void onClick(final DialogInterface dialog, final int which)
+                        {
+                            SavegameDataSource ds = new SavegameDataSource(GameActivity.this);
+                            ds.open();
+                            ds.updateSavegameItem(getIntent().getLongExtra("id", -1), getSavegame().toString());
+                            ds.close();
+                            dialog.dismiss();
+                            finish();
+                        }
+                    }).create().show();
+                }
+                else
+                {
+                    final EditText name = new EditText(this);
+                    name.setInputType(InputType.TYPE_CLASS_TEXT);
+                    name.setText("Name", TextView.BufferType.EDITABLE);
+                    new AlertDialog.Builder(this)
+                            .setCancelable(true)
+                            .setView(name)
+                            .setMessage(R.string.title_break)
+                            .setNeutralButton(R.string.label_weiter, new DialogInterface.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(final DialogInterface dialog, final int which)
+                                {
+                                    dialog.dismiss();
+                                    chronometer(true);
+                                }
+                            }).setPositiveButton("Spiel speichern", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(final DialogInterface dialog, final int which)
+                        {
+                            SavegameDataSource ds = new SavegameDataSource(GameActivity.this);
+                            ds.open();
+                            ds.createSavegameItem(name.getText().toString(), getSavegame().toString());
+                            ds.close();
+                            dialog.dismiss();
+                            finish();
+                        }
+                    }).create().show();
+                }
 
                 chronometer(false);
                 break;
             case R.id.btn_game_rueckgaengig:
-                if (ActiveRow>0)
+                if (_activeRow >0)
                 {
                     _undo = true;
                     gamefield = (LinearLayout) findViewById(R.id.game_field);
-                    //gamefield.removeViewAt(ActiveRow-1);
+                    //gamefield.removeViewAt(_activeRow-1);
                     gamefield.removeViewAt(0);
-                    ActiveRow--;
+                    _activeRow--;
                 }
                 break;
             case R.id.btn_game_pruefen:
@@ -723,7 +773,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
                     //if all fields are filled when duplicates aren't allowed
                     for (int i = 0; i < _anzFields; i++)
                     {
-                        if (FarbvorschlagRow.Fields[i].getColor() == -1)
+                        if (_farbforschlagRow.Fields[i].getColor() == -1)
                         {
                             eval = false;
                             break;
@@ -738,9 +788,9 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
                     //if all fields are filled unique, when multiple aren't allowed
                     for (int i = 0; i < _anzFields; i++)
                     {
-                        if (!colors[FarbvorschlagRow.Fields[i].getColor()+1])
+                        if (!colors[_farbforschlagRow.Fields[i].getColor()+1])
                         {
-                            colors[FarbvorschlagRow.Fields[i].getColor()+1] = true;
+                            colors[_farbforschlagRow.Fields[i].getColor()+1] = true;
                         }
                         else
                         {
@@ -751,35 +801,35 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
                 }
                 if (eval)
                 {
-                    Rows[ActiveRow] = FarbvorschlagRow;
-                    if (EvaluateFarbvorschlagRow(ActiveRow))
+                    _rows[_activeRow] = _farbforschlagRow;
+                    if (EvaluateFarbvorschlagRow(_activeRow))
                     {
                         long minutes = (((SystemClock.elapsedRealtime() - ((Chronometer) findViewById(R.id.time)).getBase()) / 1000))/60;
                         long seconds = (((SystemClock.elapsedRealtime() - ((Chronometer) findViewById(R.id.time)).getBase()) / 1000))%60;
 
                         _winTimestring = String.format("%02d", minutes) + ":" + String.format("%02d", seconds);
 
-                        //gamefield.addView(CreateDisplayableRowWithPins(this, Rows[ActiveRow]));
-                        gamefield.addView(CreateDisplayableRowWithPins(this, Rows[ActiveRow]),0);
-                        if (ActiveRow == 0)
+                        //gamefield.addView(CreateDisplayableRowWithPins(this, _rows[_activeRow]));
+                        gamefield.addView(CreateDisplayableRowWithPins(this, _rows[_activeRow]),0);
+                        if (_activeRow == 0)
                         {
                             ShowPopup("Glückwunsch! Du hast das Spiel nach " + _winTimestring + " Sekunden und einem Zug gewonnen!", true, true);
                         }
                         else
                         {
-                            ShowPopup("Glückwunsch! Du hast das Spiel nach " + _winTimestring + " in " + (ActiveRow + 1) + " Zügen gewonnen!", true, true);
+                            ShowPopup("Glückwunsch! Du hast das Spiel nach " + _winTimestring + " in " + (_activeRow + 1) + " Zügen gewonnen!", true, true);
                         }
                         break;
                     }
-                    //gamefield.addView(CreateDisplayableRowWithPins(this, Rows[ActiveRow]));
-                    gamefield.addView(CreateDisplayableRowWithPins(this, Rows[ActiveRow]),0);
-                    ActiveRow++;
-                    if (ActiveRow == _anzRows)
+                    //gamefield.addView(CreateDisplayableRowWithPins(this, _rows[_activeRow]));
+                    gamefield.addView(CreateDisplayableRowWithPins(this, _rows[_activeRow]),0);
+                    _activeRow++;
+                    if (_activeRow == _anzRows)
                     {
                         ShowPopup("Du hast es nicht geschafft den Code zu knacken!", true, false);
                         break;
                     }
-                    ResetFarbvorschlagRow();
+                    _farbforschlagRow = ResetFarbvorschlagRow();
                     UpdateFarbvorschlagRow();
                 }
                 break;
@@ -802,57 +852,57 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
                 break;
             //Buttons in farbauswahl
             case -1:
-                image = (ImageView) findViewById(ActiveField);
+                image = (ImageView) findViewById(_activeField);
                 image.setImageResource(R.mipmap.ic_slot);
-                FarbvorschlagRow.Fields[ActiveField-10].setColor(-1);
+                _farbforschlagRow.Fields[_activeField -10].setColor(-1);
                 HideFarbauswahl();
                 break;
             case 0:
-                image = (ImageView) findViewById(ActiveField);
+                image = (ImageView) findViewById(_activeField);
                 image.setImageResource(R.mipmap.ic_blue);
-                FarbvorschlagRow.Fields[ActiveField-10].setColor(0);
+                _farbforschlagRow.Fields[_activeField -10].setColor(0);
                 HideFarbauswahl();
                 break;
             case 1:
-                image = (ImageView) findViewById(ActiveField);
+                image = (ImageView) findViewById(_activeField);
                 image.setImageResource(R.mipmap.ic_green);
-                FarbvorschlagRow.Fields[ActiveField-10].setColor(1);
+                _farbforschlagRow.Fields[_activeField -10].setColor(1);
                 HideFarbauswahl();
                 break;
             case 2:
-                image = (ImageView) findViewById(ActiveField);
+                image = (ImageView) findViewById(_activeField);
                 image.setImageResource(R.mipmap.ic_lightblue);
-                FarbvorschlagRow.Fields[ActiveField-10].setColor(2);
+                _farbforschlagRow.Fields[_activeField -10].setColor(2);
                 HideFarbauswahl();
                 break;
             case 3:
-                image = (ImageView) findViewById(ActiveField);
+                image = (ImageView) findViewById(_activeField);
                 image.setImageResource(R.mipmap.ic_pink);
-                FarbvorschlagRow.Fields[ActiveField-10].setColor(3);
+                _farbforschlagRow.Fields[_activeField -10].setColor(3);
                 HideFarbauswahl();
                 break;
             case 4:
-                image = (ImageView) findViewById(ActiveField);
+                image = (ImageView) findViewById(_activeField);
                 image.setImageResource(R.mipmap.ic_red);
-                FarbvorschlagRow.Fields[ActiveField-10].setColor(4);
+                _farbforschlagRow.Fields[_activeField -10].setColor(4);
                 HideFarbauswahl();
                 break;
             case 5:
-                image = (ImageView) findViewById(ActiveField);
+                image = (ImageView) findViewById(_activeField);
                 image.setImageResource(R.mipmap.ic_yellow);
-                FarbvorschlagRow.Fields[ActiveField-10].setColor(5);
+                _farbforschlagRow.Fields[_activeField -10].setColor(5);
                 HideFarbauswahl();
                 break;
             case 6:
-                image = (ImageView) findViewById(ActiveField);
+                image = (ImageView) findViewById(_activeField);
                 image.setImageResource(R.mipmap.ic_grey);
-                FarbvorschlagRow.Fields[ActiveField-10].setColor(6);
+                _farbforschlagRow.Fields[_activeField -10].setColor(6);
                 HideFarbauswahl();
                 break;
             case 7:
-                image = (ImageView) findViewById(ActiveField);
+                image = (ImageView) findViewById(_activeField);
                 image.setImageResource(R.mipmap.ic_purple);
-                FarbvorschlagRow.Fields[ActiveField-10].setColor(7);
+                _farbforschlagRow.Fields[_activeField -10].setColor(7);
                 HideFarbauswahl();
                 break;
             //Buttons in Farbvorschlag
