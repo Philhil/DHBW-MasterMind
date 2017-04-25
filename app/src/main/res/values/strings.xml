@@ -20,7 +20,7 @@
 
     <string name="settings_number_of_colors">Anzahl der verschiedenen Farben für ein Set</string>
     <string name="settings_number_of_holes">Anzahl der Löcher</string>
-    <string name="settings_empty_space">Leere Stellen im Set</string>
+    <string name="settings_empty_space">Leeres Feld als Farbe</string>
     <string name="settings_multiple_color">Mehrfaches Auftreten einer Farbe</string>
     <string name="settings_round">Anzahl der Runden</string>
     <string name="settings_colors">Farben die im Spiel zur Verfügung stehen</string>
