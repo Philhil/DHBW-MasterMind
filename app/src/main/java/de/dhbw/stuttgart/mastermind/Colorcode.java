@@ -14,6 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionItemTarget;
 
 public class Colorcode extends AppCompatActivity implements View.OnClickListener{
 
@@ -63,12 +67,15 @@ public class Colorcode extends AppCompatActivity implements View.OnClickListener
         boolean eval = true;
         if (!_empty)
         {
-            //if all fields are filled when duplicates aren't allowed
+            //if all fields are filled when empty isn't allowed
             for (int i = 0; i < _anzFields; i++)
             {
                 if (_farbvorschlagRow.Fields[i].getColor() == -1)
                 {
                     eval = false;
+                    Toast toast = Toast.makeText(getApplicationContext(), "Leere Felder nicht erlaubt", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER,0,0);
+                    toast.show();
                     break;
                 }
             }
@@ -88,6 +95,9 @@ public class Colorcode extends AppCompatActivity implements View.OnClickListener
                 else
                 {
                     eval = false;
+                    Toast toast = Toast.makeText(getApplicationContext(), "Doppelte Felder nicht erlaubt", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER,0,0);
+                    toast.show();
                     break;
                 }
             }

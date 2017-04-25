@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -763,6 +764,12 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
                     gamefield.removeViewAt(0);
                     _activeRow--;
                 }
+                else
+                {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Keine Reihe verfügbar", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER,0,0);
+                    toast.show();
+                }
                 break;
             case R.id.btn_game_pruefen:
                 gamefield = (LinearLayout) findViewById(R.id.game_field);
@@ -776,6 +783,9 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
                         if (_farbforschlagRow.Fields[i].getColor() == -1)
                         {
                             eval = false;
+                            Toast toast = Toast.makeText(getApplicationContext(), "Leere Felder nicht erlaubt", Toast.LENGTH_SHORT);
+                            toast.setGravity(Gravity.CENTER,0,0);
+                            toast.show();
                             break;
                         }
                     }
@@ -795,6 +805,9 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
                         else
                         {
                             eval = false;
+                            Toast toast = Toast.makeText(getApplicationContext(), "Doppelte Felder nicht erlaubt", Toast.LENGTH_SHORT);
+                            toast.setGravity(Gravity.CENTER,0,0);
+                            toast.show();
                             break;
                         }
                     }

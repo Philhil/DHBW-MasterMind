@@ -14,6 +14,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionItemTarget;
+import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
+
 public class StartActivity extends AppCompatActivity implements HighscoreFragment.OnListFragmentInteractionListener, SavegameFragment.OnListFragmentInteractionListener {
 
     @Override
@@ -26,6 +30,7 @@ public class StartActivity extends AppCompatActivity implements HighscoreFragmen
 
     private Fragment fragment;
     public static FragmentManager fragmentManager;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
