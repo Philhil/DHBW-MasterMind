@@ -48,7 +48,6 @@ public class SavegameFragment extends Fragment
 
         // Set the adapter
         if (view instanceof RecyclerView) {
-            Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
 
             //sorted by fastest time
@@ -58,6 +57,8 @@ public class SavegameFragment extends Fragment
                 Toast toast = Toast.makeText(getContext(), "Keine Einträge vorhanden", Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER,0,0);
                 toast.show();
+
+                getFragmentManager().popBackStack();
             }
 
             recyclerView.setAdapter(new SavegameRecyclerViewAdapter(savegameContent, mListener));
