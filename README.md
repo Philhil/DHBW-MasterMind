@@ -12,7 +12,7 @@ Arbeitspaktete
 - [x] Erstellung Testplan
 - [x] Implementierung Prototyp 1
 - [x] Test Prototyp 1
-- [x] Anpassung Prototyp1
+- [x] Anpassung Prototyp 1
 - [x] (Meilenstein) Freigabe Prototyp 1
 - [x] Überarbeitung der Modelle und Designs
 - [x] Implementierung Prototyp 2
