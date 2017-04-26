@@ -21,4 +21,9 @@
         android:icon="@drawable/ic_help_black_24dp"
         android:title="Hilfe" />
 
+    <item
+        android:id="@+id/navigation_impressum"
+        android:icon="@drawable/ic_copyright_black_24dp"
+        android:title="Impressum" />
+
 </menu>

@@ -1,23 +1,36 @@
 package de.dhbw.stuttgart.mastermind;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.TextView;
 
-public class StartActivity extends AppCompatActivity {
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionItemTarget;
+import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
+
+public class StartActivity extends AppCompatActivity implements HighscoreFragment.OnListFragmentInteractionListener, SavegameFragment.OnListFragmentInteractionListener {
+
+    @Override
+    public void onListFragmentInteraction(HighscoreItem item) {
+    }
+
+    @Override
+    public void onListFragmentInteraction(SavegameItem item) {
+    }
 
     private Fragment fragment;
-    private FragmentManager fragmentManager;
-    public static final String MESSAGE_GAMEMODE = "de.dhbw.stuttgart.mastermind.GAMEMODE";
+    public static FragmentManager fragmentManager;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -37,9 +50,12 @@ public class StartActivity extends AppCompatActivity {
                 case R.id.navigation_help:
                     fragment = new HelpFragment();
                     break;
+                case R.id.navigation_impressum:
+                    fragment = new ImpressumFragment();
+                    break;
             }
             final FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.content, fragment).commit();
+            transaction.replace(R.id.content, fragment).addToBackStack("Fragment").commit();
 
             return true;
         }
@@ -60,6 +76,30 @@ public class StartActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
+    @Override
+    public void onBackPressed()
+    {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.home_exitwarning)
+                .setCancelable(true)
+                .setNegativeButton("Ja", new DialogInterface.OnClickListener()
+                    {
+                        public void onClick(final DialogInterface dialog, final int id)
+                        {
+                            System.exit(0);
+                        }
+                    })
+                    .setPositiveButton("Nein", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(final DialogInterface dialog, final int which)
+                        {
+                            dialog.dismiss();
+                        }
+                    }).create().show();
+
+    }
+
     public void startGame(View view) {
 
         switch(view.getId())
@@ -69,12 +109,13 @@ public class StartActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.button_2playerGame:
-                //intent.putExtra(MESSAGE_GAMEMODE, "2Player"); //TODO enum?
-                //TODO: Open view to select game mode
+                Intent intent_colorcode = new Intent(this, Colorcode.class);
+                startActivity(intent_colorcode);
                 break;
             case R.id.button_loadGame:
-                //intent.putExtra(MESSAGE_GAMEMODE, "load"); //TODO enum?
-                //TODO: Open view to load a game
+                fragment = new SavegameFragment();
+                final FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.content, fragment).addToBackStack("SavegameFragment").commit();
                 break;
         }
     }

@@ -33,8 +33,8 @@ proguard/
 captures/
 
 # Intellij
-.idea/workspace.xml
 .idea/libraries/
+.idea/workspace.xml
 .idea/tasks.xml
 .idea/.name
 .idea/compiler.xml
@@ -43,7 +43,14 @@ captures/
 .idea/misc.xml
 .idea/modules.xml
 .idea/scopes/scope_settings.xml
+.idea/dictionaries
 .idea/vcs.xml
+.idea/jsLibraryMappings.xml
+.idea/datasources.xml
+.idea/dataSources.ids
+.idea/sqlDataSources.xml
+.idea/dynamic.xml
+.idea/uiDesigner.xml
 *.iml
 /.idea/markdown-navigator.xml
 /.idea/markdown-navigator/

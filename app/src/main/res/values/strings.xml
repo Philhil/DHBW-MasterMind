@@ -11,15 +11,71 @@
     <string name="btn_start_2player_game">Zwei Spieler Modus starten</string>
     <string name="btn_dissolve">Auflösen</string>
     <string name="btn_break">Pause</string>
-    <string name="btn_revert">Zug Rückgängig</string>
-    <string name="btn_check">Eingabe Prüfen</string>
+    <string name="btn_revert">Reihe rückgängig</string>
+    <string name="btn_check">Eingabe prüfen</string>
     <string name="btn_new_game">Neustart</string>
     <string name="btn_main_menue">Hauptmenü</string>
+    <string name="btn_yes">Ja</string>
+    <string name="btn_no">Nein</string>
 
-    <string name="label_ok">OK</string>
+    <string name="settings_number_of_colors">Anzahl der verschiedenen Farben für ein Set</string>
+    <string name="settings_number_of_holes">Anzahl der Löcher</string>
+    <string name="settings_empty_space">Leeres Feld als Farbe</string>
+    <string name="settings_multiple_color">Mehrfaches Auftreten einer Farbe</string>
+    <string name="settings_round">Anzahl der Runden</string>
+    <string name="settings_colors">Farben die im Spiel zur Verfügung stehen</string>
+    <string name="settings_matchfield">Aussehen des Spielfeldhintergrunds</string>
+    <string name="settings_backgroundWhite">Weiß</string>
+    <string name="settings_backgroundGrey">Grau</string>
+    <string name="settings_backgroundGreen">Grün</string>
+    <string name="settings_highscore_delete">Highscore Liste löschen</string>
+    <string name="settings_savedgames_delete">Gespeicherte Spielstände löschen</string>
+    <string name="settings_save">Speichern</string>
+    <string name="settings_discard">Verwerfen</string>
+
+    <string name="game_quit">Möchtest Du das Spiel wirklich beenden?</string>
+    <string name="game_dissolve">Möchtest Du das Spiel wirklich auflösen?</string>
+    <string name="game_dissolved">Du hast das Spiel aufgelöst!</string>
+    <string name="game_fail">Du hast es nicht geschafft den Code zu knacken!</string>
+
+    <string name="home_exitwarning">Möchtest Du die Anwendung wirklich verlassen?</string>
+
+    <string name="colorcode_text">Farbcode eingeben:</string>
+    <string name="colorcode_start">Play</string>
+
+    <string name="gamebreak_fortsetzen">Spiel fortsetzen</string>
+    <string name="gamebreak_abbrechen">Spiel abbrechen</string>
+    <string name="gamebreak_speichern">Spiel speichern</string>
+    <string name="gamebreak_hilfe">Hilfe</string>
+    <string name="gamebreak_break">Spiel pausiert</string>
+
+    <string name="label_weiter">Weiter</string>
+
+    <string name="impressum_description">
+        Dieses Spiel ist im Rahmen eines Projektes der Vorlesung Softwareengineering (Wintersemester 2016/2017)
+        an der Dualen Hochschule Baden-Württemberg/Stuttgart entstanden.
+    </string>
+
+    <string name="impressum_participaation">
+        \n\n <b>Teilnehmer der Projektgruppe:</b> \n
+    </string>
+    <string name="impressum_max"><b>Maximilian Bauknecht</b> \n (Projektmanagement und Controlling)\n</string>
+    <string name="impressum_philipp"><b>Philipp Holzner</b> \n (Algorithmik und Programmierung)\n</string>
+    <string name="impressum_philippe"><b>Philippe Käufer</b> \n (Testing und UI Implementierung)\n</string>
+    <string name="impressum_anja"><b>Anja Ohlhäuser</b> \n (UI und Material Design)\n</string>
+
+    <string name="preference_file_key">de.dhbw.stuttgart.mastermind.PREFERENCE_FILE_KEY</string>
+    <string name="prefkey_number_of_colors">NumberOfColors</string>
+    <string name="prefkey_multiple">Multiple</string>
+    <string name="prefkey_empty">Empty</string>
+    <string name="prefkey_number_of_holes">NumberOfHoles</string>
+    <string name="prefkey_number_of_rounds">NumberOfRounds</string>
+    <string name="prefkey_background_color">BackgroundColor</string>
+
+
+    <string name="header_nr">Nr.</string>
+    <string name="header_name">Name</string>
+
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_highscore_fragment">TODO: Highscore fragment</string>
-    <string name="hello_settings_fragment">TODO: Setting fragment</string>
     <string name="hello_help_fragment">TODO: Help fragment</string>
-
 </resources>
