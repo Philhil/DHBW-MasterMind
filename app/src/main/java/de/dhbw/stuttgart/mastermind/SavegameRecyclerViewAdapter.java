@@ -52,6 +52,7 @@ public class SavegameRecyclerViewAdapter extends RecyclerView.Adapter<SavegameRe
 
                     Intent intent = new Intent(v.getContext(), GameActivity.class);
                     intent.putExtra("saveGame", mValues.get(position).saveGame);
+                    intent.putExtra("id", Long.valueOf(mValues.get(position).id));
                     v.getContext().startActivity(intent);
 
                     mListener.onListFragmentInteraction(holder.mItem);

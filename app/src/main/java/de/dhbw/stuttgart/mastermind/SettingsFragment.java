@@ -101,7 +101,7 @@ public class SettingsFragment extends Fragment {
                 if (((CheckBox) v).isChecked())
                 {
                     _editor.putBoolean(getString(R.string.prefkey_empty), true);
-                    if (_anzFields <= _anzColors+1)
+                    if (_anzFields > _anzColors+1)
                     {
                         multipleBox.setChecked(true);
                         _editor.putBoolean(getString(R.string.prefkey_multiple), true);
@@ -110,7 +110,7 @@ public class SettingsFragment extends Fragment {
                 else
                 {
                     _editor.putBoolean(getString(R.string.prefkey_empty), false);
-                    if (_anzFields <= _anzColors)
+                    if (_anzFields > _anzColors)
                     {
                         multipleBox.setChecked(true);
                         _editor.putBoolean(getString(R.string.prefkey_multiple), true);
@@ -151,7 +151,7 @@ public class SettingsFragment extends Fragment {
                         break;
                     case R.id.number_of_colors_8:
                         _editor.putInt(getString(R.string.prefkey_number_of_colors), 8);
-                        _anzColors = 7;
+                        _anzColors = 8;
                         break;
                 }
                 if (emptyBox.isChecked())

@@ -53,14 +53,12 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/game_footer"
         android:layout_below="@+id/game_mastercode"
-        android:layout_centerHorizontal="true"
-        android:layout_weight="1">
+        android:layout_centerHorizontal="true">
         <LinearLayout
             android:id="@+id/game_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:layout_gravity="bottom"
             android:orientation="vertical">
         </LinearLayout>
     </ScrollView>

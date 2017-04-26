@@ -14,6 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionItemTarget;
 
 public class Colorcode extends AppCompatActivity implements View.OnClickListener{
 
@@ -26,9 +30,9 @@ public class Colorcode extends AppCompatActivity implements View.OnClickListener
     private int _bigPeg;
     private int _farbAuswPeg;
 
-    public Row FarbvorschlagRow;
-    public LinearLayout Farbauswahl;
-    public int ActiveField = -1;
+    private Row _farbvorschlagRow;
+    private LinearLayout _farbauswahl;
+    private int _activeField = -1;
 
 
     @Override
@@ -46,15 +50,14 @@ public class Colorcode extends AppCompatActivity implements View.OnClickListener
         _farbAuswPeg = _displayWidth/9;
         _bigPeg = _displayWidth/8;
 
-        CreateFarbauswahl(this);
-        ResetFarbvorschlagRow();
+        _farbauswahl = CreateFarbauswahl(this);
+        _farbvorschlagRow = ResetFarbvorschlagRow();
 
         // add a row with the buttons to touch
         LinearLayout farbvorschlag = (LinearLayout) findViewById(R.id.colorcode_farbvorschlag);
-        farbvorschlag.addView(Farbauswahl);
-        Farbauswahl.setVisibility(LinearLayout.INVISIBLE);
-        farbvorschlag.addView(CreateDisplayableRow(this, FarbvorschlagRow));
-
+        farbvorschlag.addView(_farbauswahl);
+        _farbauswahl.setVisibility(LinearLayout.INVISIBLE);
+        farbvorschlag.addView(CreateDisplayableRow(this, _farbvorschlagRow));
     }
 
     public void startGame(View view) {
@@ -64,12 +67,15 @@ public class Colorcode extends AppCompatActivity implements View.OnClickListener
         boolean eval = true;
         if (!_empty)
         {
-            //if all fields are filled when duplicates aren't allowed
+            //if all fields are filled when empty isn't allowed
             for (int i = 0; i < _anzFields; i++)
             {
-                if (FarbvorschlagRow.Fields[i].getColor() == -1)
+                if (_farbvorschlagRow.Fields[i].getColor() == -1)
                 {
                     eval = false;
+                    Toast toast = Toast.makeText(getApplicationContext(), "Leere Felder nicht erlaubt", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER,0,0);
+                    toast.show();
                     break;
                 }
             }
@@ -82,20 +88,23 @@ public class Colorcode extends AppCompatActivity implements View.OnClickListener
             //if all fields are filled unique, when multiple aren't allowed
             for (int i = 0; i < _anzFields; i++)
             {
-                if (!colors[FarbvorschlagRow.Fields[i].getColor()+1])
+                if (!colors[_farbvorschlagRow.Fields[i].getColor()+1])
                 {
-                    colors[FarbvorschlagRow.Fields[i].getColor()+1] = true;
+                    colors[_farbvorschlagRow.Fields[i].getColor()+1] = true;
                 }
                 else
                 {
                     eval = false;
+                    Toast toast = Toast.makeText(getApplicationContext(), "Doppelte Felder nicht erlaubt", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER,0,0);
+                    toast.show();
                     break;
                 }
             }
         }
         if (eval)
         {
-            masterrow = FarbvorschlagRow;
+            masterrow = _farbvorschlagRow;
             intent.putExtra("masterRow", masterrow);
             startActivity(intent);
             finish();
@@ -132,7 +141,7 @@ public class Colorcode extends AppCompatActivity implements View.OnClickListener
         return rowLayout;
     }
 
-    public void CreateFarbauswahl(Context context)
+    public LinearLayout CreateFarbauswahl(Context context)
     {
         LinearLayout ausw = new LinearLayout(context);
         ausw.setOrientation(LinearLayout.HORIZONTAL);
@@ -185,10 +194,10 @@ public class Colorcode extends AppCompatActivity implements View.OnClickListener
             ausw.addView(tmp);
         }
 
-        Farbauswahl = ausw;
+        return ausw;
     }
 
-    public void ResetFarbvorschlagRow()
+    public Row ResetFarbvorschlagRow()
     {
         Row tmp = new Row(_anzFields);
 
@@ -202,19 +211,19 @@ public class Colorcode extends AppCompatActivity implements View.OnClickListener
         tmp.RightColor = 0;
         tmp.RightPlace = 0;
 
-        FarbvorschlagRow = tmp;
+        return tmp;
     }
 
     public void ShowFarbauswahl(int id)
     {
-        Farbauswahl.setVisibility(LinearLayout.VISIBLE);
-        ActiveField = id;
+        _farbauswahl.setVisibility(LinearLayout.VISIBLE);
+        _activeField = id;
     }
 
     public void HideFarbauswahl()
     {
-        Farbauswahl.setVisibility(LinearLayout.INVISIBLE);
-        ActiveField = -1;
+        _farbauswahl.setVisibility(LinearLayout.INVISIBLE);
+        _activeField = -1;
     }
 
     @Override
@@ -226,57 +235,57 @@ public class Colorcode extends AppCompatActivity implements View.OnClickListener
         {
             //Buttons in farbauswahl
             case -1:
-                image = (ImageView) findViewById(ActiveField);
+                image = (ImageView) findViewById(_activeField);
                 image.setImageResource(R.mipmap.ic_slot);
-                FarbvorschlagRow.Fields[ActiveField-10].setColor(-1);
+                _farbvorschlagRow.Fields[_activeField -10].setColor(-1);
                 HideFarbauswahl();
                 break;
             case 0:
-                image = (ImageView) findViewById(ActiveField);
+                image = (ImageView) findViewById(_activeField);
                 image.setImageResource(R.mipmap.ic_blue);
-                FarbvorschlagRow.Fields[ActiveField-10].setColor(0);
+                _farbvorschlagRow.Fields[_activeField -10].setColor(0);
                 HideFarbauswahl();
                 break;
             case 1:
-                image = (ImageView) findViewById(ActiveField);
+                image = (ImageView) findViewById(_activeField);
                 image.setImageResource(R.mipmap.ic_green);
-                FarbvorschlagRow.Fields[ActiveField-10].setColor(1);
+                _farbvorschlagRow.Fields[_activeField -10].setColor(1);
                 HideFarbauswahl();
                 break;
             case 2:
-                image = (ImageView) findViewById(ActiveField);
+                image = (ImageView) findViewById(_activeField);
                 image.setImageResource(R.mipmap.ic_lightblue);
-                FarbvorschlagRow.Fields[ActiveField-10].setColor(2);
+                _farbvorschlagRow.Fields[_activeField -10].setColor(2);
                 HideFarbauswahl();
                 break;
             case 3:
-                image = (ImageView) findViewById(ActiveField);
+                image = (ImageView) findViewById(_activeField);
                 image.setImageResource(R.mipmap.ic_pink);
-                FarbvorschlagRow.Fields[ActiveField-10].setColor(3);
+                _farbvorschlagRow.Fields[_activeField -10].setColor(3);
                 HideFarbauswahl();
                 break;
             case 4:
-                image = (ImageView) findViewById(ActiveField);
+                image = (ImageView) findViewById(_activeField);
                 image.setImageResource(R.mipmap.ic_red);
-                FarbvorschlagRow.Fields[ActiveField-10].setColor(4);
+                _farbvorschlagRow.Fields[_activeField -10].setColor(4);
                 HideFarbauswahl();
                 break;
             case 5:
-                image = (ImageView) findViewById(ActiveField);
+                image = (ImageView) findViewById(_activeField);
                 image.setImageResource(R.mipmap.ic_yellow);
-                FarbvorschlagRow.Fields[ActiveField-10].setColor(5);
+                _farbvorschlagRow.Fields[_activeField -10].setColor(5);
                 HideFarbauswahl();
                 break;
             case 6:
-                image = (ImageView) findViewById(ActiveField);
+                image = (ImageView) findViewById(_activeField);
                 image.setImageResource(R.mipmap.ic_grey);
-                FarbvorschlagRow.Fields[ActiveField-10].setColor(6);
+                _farbvorschlagRow.Fields[_activeField -10].setColor(6);
                 HideFarbauswahl();
                 break;
             case 7:
-                image = (ImageView) findViewById(ActiveField);
+                image = (ImageView) findViewById(_activeField);
                 image.setImageResource(R.mipmap.ic_purple);
-                FarbvorschlagRow.Fields[ActiveField-10].setColor(7);
+                _farbvorschlagRow.Fields[_activeField -10].setColor(7);
                 HideFarbauswahl();
                 break;
             //Buttons in Farbvorschlag

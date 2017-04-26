@@ -94,13 +94,24 @@ public class SavegameDataSource
         return savegameItemList;
     }
 
-    public void deleteSavegameItem(SavegameItem savegameItem) {
-        long id = savegameItem.id;
+    public void updateSavegameItem(long id, String savegame)
+    {
+        if (id > 0)
+        {
+            ContentValues values = new ContentValues();
+            values.put(SavegameDbHelper.COLUMN_SAVEGAME, savegame);
 
-        database.delete(SavegameDbHelper.TABLE_SAVEGAME_LIST,
-                SavegameDbHelper.COLUMN_ID + "=" + id,
-                null);
+            database.update(SavegameDbHelper.TABLE_SAVEGAME_LIST, values, SavegameDbHelper.COLUMN_ID + "=" + id, null);
+        }
+    }
 
+    public void deleteSavegameItem(long id) {
+        if (id > 0)
+        {
+            database.delete(SavegameDbHelper.TABLE_SAVEGAME_LIST,
+                    SavegameDbHelper.COLUMN_ID + "=" + id,
+                    null);
+        }
         //Log.d(LOG_TAG, "Eintrag gelöscht! ID: " + id + " Inhalt: " + highscoreItem.toString());
     }
 
