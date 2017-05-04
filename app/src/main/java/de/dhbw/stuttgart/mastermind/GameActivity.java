@@ -390,7 +390,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
             }
             new AlertDialog.Builder(this)
                     .setMessage(msg)
-                    .setCancelable(true)
+                    .setCancelable(false)
                     .setNeutralButton("Neustart", new DialogInterface.OnClickListener()
                     {
                         public void onClick(final DialogInterface dialog, final int id)
@@ -436,7 +436,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
             name.setText("Spielername", TextView.BufferType.EDITABLE);
             new AlertDialog.Builder(this)
                     .setMessage(msg)
-                    .setCancelable(true)
+                    .setCancelable(false)
                     .setView(name)
                     .setNeutralButton("Neustart", new DialogInterface.OnClickListener()
                     {
@@ -614,7 +614,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
         _farbauswahl.setVisibility(LinearLayout.INVISIBLE);
         farbvorschlag.addView(CreateDisplayableRow(this, _farbforschlagRow));
 
-        LinearLayout gamefield = (LinearLayout) findViewById(R.id.game_field);
+        //LinearLayout gamefield = (LinearLayout) findViewById(R.id.game_field);
         int color = Color.TRANSPARENT;
         switch(_backgroundColor)
         {
@@ -628,7 +628,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
                 color = Color.WHITE;
                 break;
         }
-        gamefield.setBackgroundColor(color);
+        findViewById(R.id.game).setBackgroundColor(color);
 
 
         Button button = (Button) findViewById(R.id.btn_game_aufloesen);
@@ -697,7 +697,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
                 if (_saveGame)
                 {
                     new AlertDialog.Builder(this)
-                            .setCancelable(true)
+                            .setCancelable(false)
                             .setMessage(R.string.title_break)
                             .setNeutralButton(R.string.label_weiter, new DialogInterface.OnClickListener()
                             {
@@ -727,7 +727,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
                     name.setInputType(InputType.TYPE_CLASS_TEXT);
                     name.setText("Name", TextView.BufferType.EDITABLE);
                     new AlertDialog.Builder(this)
-                            .setCancelable(true)
+                            .setCancelable(false)
                             .setView(name)
                             .setMessage(R.string.title_break)
                             .setNeutralButton(R.string.label_weiter, new DialogInterface.OnClickListener()
