@@ -614,7 +614,6 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
         _farbauswahl.setVisibility(LinearLayout.INVISIBLE);
         farbvorschlag.addView(CreateDisplayableRow(this, _farbforschlagRow));
 
-        //LinearLayout gamefield = (LinearLayout) findViewById(R.id.game_field);
         int color = Color.TRANSPARENT;
         switch(_backgroundColor)
         {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +30,7 @@ public class Colorcode extends AppCompatActivity implements View.OnClickListener
     private int _displayWidth;
     private int _bigPeg;
     private int _farbAuswPeg;
+    private int _backgroundColor;
 
     private Row _farbvorschlagRow;
     private LinearLayout _farbauswahl;
@@ -58,6 +60,21 @@ public class Colorcode extends AppCompatActivity implements View.OnClickListener
         farbvorschlag.addView(_farbauswahl);
         _farbauswahl.setVisibility(LinearLayout.INVISIBLE);
         farbvorschlag.addView(CreateDisplayableRow(this, _farbvorschlagRow));
+
+        int color = Color.TRANSPARENT;
+        switch(_backgroundColor)
+        {
+            case R.string.settings_backgroundGreen:
+                color = Color.GREEN;
+                break;
+            case R.string.settings_backgroundGrey:
+                color = Color.GRAY;
+                break;
+            case R.string.settings_backgroundWhite:
+                color = Color.WHITE;
+                break;
+        }
+        findViewById(R.id.colorcode).setBackgroundColor(color);
     }
 
     public void startGame(View view) {
@@ -119,6 +136,7 @@ public class Colorcode extends AppCompatActivity implements View.OnClickListener
         _anzFields = sharedPref.getInt(getString(R.string.prefkey_number_of_holes), 4);
         _multiple = sharedPref.getBoolean(getString(R.string.prefkey_multiple), false);
         _empty = sharedPref.getBoolean(getString(R.string.prefkey_empty), false);
+        _backgroundColor = sharedPref.getInt(getString(R.string.prefkey_background_color), R.string.settings_backgroundWhite);
     }
 
     public LinearLayout CreateDisplayableRow(Context context, Row row)
