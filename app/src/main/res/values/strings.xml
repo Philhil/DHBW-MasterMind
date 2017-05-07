@@ -30,6 +30,7 @@
     <string name="settings_backgroundGreen">Grün</string>
     <string name="settings_highscore_delete">Highscore Liste löschen</string>
     <string name="settings_savedgames_delete">Gespeicherte Spielstände löschen</string>
+    <string name="settings_show_showcase">Interaktive Anleitung für einen Start wieder anzeigen</string>
     <string name="settings_save">Speichern</string>
     <string name="settings_discard">Verwerfen</string>
 
@@ -71,7 +72,9 @@
     <string name="prefkey_number_of_holes">NumberOfHoles</string>
     <string name="prefkey_number_of_rounds">NumberOfRounds</string>
     <string name="prefkey_background_color">BackgroundColor</string>
-
+    <string name="prefkey_help_home">HelpHome</string>
+    <string name="prefkey_help_game">HelpGame</string>
+    <string name="prefkey_help_colorcode">HelpColorcode</string>
 
     <string name="header_nr">Nr.</string>
     <string name="header_name">Name</string>

@@ -24,9 +24,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.view.View.OnClickListener;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -63,6 +68,10 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
     private Row _master;
     private LinearLayout _farbauswahl;
     private Row _farbforschlagRow;
+
+    private ShowcaseView _showcaseView;
+    private int _counter = 0;
+    private boolean _showHelp = false;
 
     public Row SetMaster(boolean same, boolean empty)
     {
@@ -528,6 +537,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
         _multiple = sharedPref.getBoolean(getString(R.string.prefkey_multiple), false);
         _empty = sharedPref.getBoolean(getString(R.string.prefkey_empty), false);
         _backgroundColor = sharedPref.getInt(getString(R.string.prefkey_background_color), R.string.settings_backgroundWhite);
+        _showHelp = sharedPref.getBoolean(getString(R.string.prefkey_help_game), true);
     }
 
     private void loadSaveGame(Savegame tmp)
@@ -639,7 +649,76 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
         button = (Button) findViewById(R.id.btn_game_rueckgaengig);
         button.setOnClickListener(this);
 
-        chronometer(true);
+        if (_showHelp)
+        {
+            createShowcase();
+
+            SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+
+            editor.putBoolean(getString(R.string.prefkey_help_game), false);
+            editor.commit();
+        }
+        else
+        {
+            chronometer(true);
+        }
+    }
+
+    private void createShowcase()
+    {
+        _showcaseView = new ShowcaseView.Builder(this)
+                .setTarget(Target.NONE)
+                .setContentTitle("Spiel spielen")
+                .setContentText("Hier versuchst du den Mastercode zu erraten. Wenn Du das Spiel gewinnst, kannst Du dich in die Highscoreliste eintragen.")
+                .setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        switch (_counter) {
+                            case 0:
+                                _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.game_footer)), true);
+                                _showcaseView.setContentTitle("Farbe auswählen");
+                                _showcaseView.setContentText("Hier kannst Du eine Farbe auswählen");
+                                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+                                params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+                                _showcaseView.setButtonPosition(params);
+                                break;
+                            case 1:
+                                _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.btn_game_aufloesen)), true);
+                                _showcaseView.setContentTitle("Spiel auflösen");
+                                _showcaseView.setContentText("Hier kannst Du das Spiel auflösen");
+                                break;
+                            case 2:
+                                _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.btn_game_pause)), true);
+                                _showcaseView.setContentTitle("Spiel pausieren");
+                                _showcaseView.setContentText("Hier kannst Du das Spiel pausieren und speichern");
+                                break;
+                            case 3:
+                                _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.btn_game_rueckgaengig)), true);
+                                _showcaseView.setContentTitle("Reihe rückgängig");
+                                _showcaseView.setContentText("Hier kannst Du eine Reihe rückgängig machen. Dadurch lässt sich aber bei Spielgewinn kein Highscore speichern.");
+                                break;
+                            case 4:
+                                _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.btn_game_pruefen)), true);
+                                _showcaseView.setContentTitle("Eingabe prüfen");
+                                _showcaseView.setContentText("Hier kannst Du deine Eingabe überprüfen");
+                                params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+                                params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+                                _showcaseView.setButtonPosition(params);
+                                break;
+                            case 5:
+                                _showcaseView.hide();
+                                chronometer(true);
+                                break;
+                        }
+                        _counter++;
+                    }
+                })
+                .build();
     }
 
     @Override

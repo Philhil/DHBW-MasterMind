@@ -2,9 +2,11 @@ package de.dhbw.stuttgart.mastermind;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,10 +15,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ActionItemTarget;
 import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 public class StartActivity extends AppCompatActivity implements HighscoreFragment.OnListFragmentInteractionListener, SavegameFragment.OnListFragmentInteractionListener {
 
@@ -31,6 +36,9 @@ public class StartActivity extends AppCompatActivity implements HighscoreFragmen
     private Fragment fragment;
     public static FragmentManager fragmentManager;
 
+    private ShowcaseView _showcaseView;
+    private int _counter = 0;
+    private boolean _showHelp;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -74,6 +82,89 @@ public class StartActivity extends AppCompatActivity implements HighscoreFragmen
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+        _showHelp = sharedPref.getBoolean(getString(R.string.prefkey_help_home), true);
+
+        if (_showHelp)
+        {
+            createShowcase();
+
+            SharedPreferences.Editor editor = sharedPref.edit();
+
+            editor.putBoolean(getString(R.string.prefkey_help_home), false);
+            editor.commit();
+        }
+    }
+
+    private void createShowcase()
+    {
+        _showcaseView = new ShowcaseView.Builder(this)
+                .setTarget(Target.NONE)
+                .setContentTitle("Mastermind")
+                .setContentText("Willkommen beim Spiel Mastermind.")
+                .setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        switch (_counter) {
+                            case 0:
+                                _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.button_startGame)), true);
+                                _showcaseView.setContentTitle("Spiel starten");
+                                _showcaseView.setContentText("Hier startest Du das Spiel gegen den Computer");
+                                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+                                params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+                                _showcaseView.setButtonPosition(params);
+                                break;
+                            case 1:
+                                _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.button_2playerGame)), true);
+                                _showcaseView.setContentTitle("Zweispielerspiel starten");
+                                _showcaseView.setContentText("Hier startest Du ein Spiel gegen einen zweiten Spieler");
+                                break;
+                            case 2:
+                                _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.button_loadGame)), true);
+                                _showcaseView.setContentTitle("Spiel laden");
+                                _showcaseView.setContentText("Hier kannst Du ein gespeichertes Spiel laden und fortsetzen");
+                                break;
+                            case 3:
+                                _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.navigation_home)), true);
+                                _showcaseView.setContentTitle("Home");
+                                _showcaseView.setContentText("Hier gelangst Du zum Hauptbildschirm, wo du die Spiele starten kannst");
+                                break;
+                            case 4:
+                                _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.navigation_highscore)), true);
+                                _showcaseView.setContentTitle("Highscore");
+                                _showcaseView.setContentText("Hier kannst Du die Highscoreliste anzeigen");
+                                break;
+                            case 5:
+                                _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.navigation_settings)), true);
+                                _showcaseView.setContentTitle("Einstellungen");
+                                _showcaseView.setContentText("Hier kannst Du die Spieleinstellungen vornehmen");
+                                params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+                                params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+                                _showcaseView.setButtonPosition(params);
+                                break;
+                            case 6:
+                                _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.navigation_help)), true);
+                                _showcaseView.setContentTitle("Hilfe");
+                                _showcaseView.setContentText("Hier kannst Du eine ausführliche Hilfe und Spielbeschreibung anzeigen");
+                                break;
+                            case 7:
+                                _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.navigation_impressum)), true);
+                                _showcaseView.setContentTitle("Impressum");
+                                _showcaseView.setContentText("Hier kannst du das Impressum anzeigen");
+                                break;
+                            case 8:
+                                _showcaseView.hide();
+                                break;
+                        }
+                        _counter++;
+                    }
+                })
+                .build();
     }
 
     @Override

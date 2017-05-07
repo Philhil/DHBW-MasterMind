@@ -367,6 +367,18 @@ public class SettingsFragment extends Fragment {
                         }).create().show();
             }
         });
+        Button showHelp = (Button) view.findViewById(R.id.show_showcase);
+        showHelp.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                _editor.putBoolean(getString(R.string.prefkey_help_home), true);
+                _editor.putBoolean(getString(R.string.prefkey_help_game), true);
+                _editor.putBoolean(getString(R.string.prefkey_help_colorcode), true);
+                _editor.commit();
+            }
+        });
 
         return view;
     }

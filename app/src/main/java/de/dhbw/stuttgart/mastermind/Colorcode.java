@@ -15,10 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.ActionItemTarget;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 public class Colorcode extends AppCompatActivity implements View.OnClickListener{
 
@@ -35,6 +36,10 @@ public class Colorcode extends AppCompatActivity implements View.OnClickListener
     private Row _farbvorschlagRow;
     private LinearLayout _farbauswahl;
     private int _activeField = -1;
+
+    private ShowcaseView _showcaseView;
+    private int _counter = 0;
+    private boolean _showHelp;
 
 
     @Override
@@ -75,6 +80,47 @@ public class Colorcode extends AppCompatActivity implements View.OnClickListener
                 break;
         }
         findViewById(R.id.colorcode).setBackgroundColor(color);
+
+        if (_showHelp)
+        {
+            createShowcase();
+
+            SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+
+            editor.putBoolean(getString(R.string.prefkey_help_colorcode), false);
+            editor.commit();
+        }
+    }
+
+    private void createShowcase()
+    {
+        _showcaseView = new ShowcaseView.Builder(this)
+                .setTarget(new ViewTarget(findViewById(R.id.colorcode_farbvorschlag)))
+                .setContentTitle("Farbe auswählen")
+                .setContentText("Hier kannst Du eine Farbe auswählen")
+                .setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        switch (_counter) {
+                            case 0:
+                                _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.colorcode_start)), true);
+                                _showcaseView.setContentTitle("Spiel starten");
+                                _showcaseView.setContentText("Hier startest du das Spiel für den zweiten Spieler");
+                                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+                                _showcaseView.setButtonPosition(params);
+                                break;
+                            case 1:
+                                _showcaseView.hide();
+                                break;
+                        }
+                        _counter++;
+                    }
+                })
+                .build();
     }
 
     public void startGame(View view) {
@@ -137,6 +183,7 @@ public class Colorcode extends AppCompatActivity implements View.OnClickListener
         _multiple = sharedPref.getBoolean(getString(R.string.prefkey_multiple), false);
         _empty = sharedPref.getBoolean(getString(R.string.prefkey_empty), false);
         _backgroundColor = sharedPref.getInt(getString(R.string.prefkey_background_color), R.string.settings_backgroundWhite);
+        _showHelp = sharedPref.getBoolean(getString(R.string.prefkey_help_colorcode), true);
     }
 
     public LinearLayout CreateDisplayableRow(Context context, Row row)

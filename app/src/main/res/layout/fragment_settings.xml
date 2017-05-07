@@ -300,6 +300,11 @@
                 android:layout_height="wrap_content"
                 android:text="@string/settings_savedgames_delete" />
 
+            <Button
+                android:id="@+id/show_showcase"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_show_showcase" />
 
         </LinearLayout>
     </ScrollView>
