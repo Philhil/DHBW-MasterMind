@@ -40,7 +40,7 @@ public class Colorcode extends AppCompatActivity implements View.OnClickListener
     private ShowcaseView _showcaseView;
     private int _counter = 0;
     private boolean _showHelp;
-
+    private boolean _helpShown = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +95,7 @@ public class Colorcode extends AppCompatActivity implements View.OnClickListener
 
     private void createShowcase()
     {
+        _helpShown = true;
         _showcaseView = new ShowcaseView.Builder(this)
                 .setTarget(new ViewTarget(findViewById(R.id.colorcode_farbvorschlag)))
                 .setContentTitle("Farbe auswählen")
@@ -114,6 +115,7 @@ public class Colorcode extends AppCompatActivity implements View.OnClickListener
                                 _showcaseView.setButtonPosition(params);
                                 break;
                             case 1:
+                                _helpShown = false;
                                 _showcaseView.hide();
                                 break;
                         }
@@ -296,90 +298,93 @@ public class Colorcode extends AppCompatActivity implements View.OnClickListener
     {
         ImageView image;
 
-        switch(v.getId())
+        if (!_helpShown)
         {
-            //Buttons in farbauswahl
-            case -1:
-                image = (ImageView) findViewById(_activeField);
-                image.setImageResource(R.mipmap.ic_slot);
-                _farbvorschlagRow.Fields[_activeField -10].setColor(-1);
-                HideFarbauswahl();
-                break;
-            case 0:
-                image = (ImageView) findViewById(_activeField);
-                image.setImageResource(R.mipmap.ic_blue);
-                _farbvorschlagRow.Fields[_activeField -10].setColor(0);
-                HideFarbauswahl();
-                break;
-            case 1:
-                image = (ImageView) findViewById(_activeField);
-                image.setImageResource(R.mipmap.ic_green);
-                _farbvorschlagRow.Fields[_activeField -10].setColor(1);
-                HideFarbauswahl();
-                break;
-            case 2:
-                image = (ImageView) findViewById(_activeField);
-                image.setImageResource(R.mipmap.ic_lightblue);
-                _farbvorschlagRow.Fields[_activeField -10].setColor(2);
-                HideFarbauswahl();
-                break;
-            case 3:
-                image = (ImageView) findViewById(_activeField);
-                image.setImageResource(R.mipmap.ic_pink);
-                _farbvorschlagRow.Fields[_activeField -10].setColor(3);
-                HideFarbauswahl();
-                break;
-            case 4:
-                image = (ImageView) findViewById(_activeField);
-                image.setImageResource(R.mipmap.ic_red);
-                _farbvorschlagRow.Fields[_activeField -10].setColor(4);
-                HideFarbauswahl();
-                break;
-            case 5:
-                image = (ImageView) findViewById(_activeField);
-                image.setImageResource(R.mipmap.ic_yellow);
-                _farbvorschlagRow.Fields[_activeField -10].setColor(5);
-                HideFarbauswahl();
-                break;
-            case 6:
-                image = (ImageView) findViewById(_activeField);
-                image.setImageResource(R.mipmap.ic_grey);
-                _farbvorschlagRow.Fields[_activeField -10].setColor(6);
-                HideFarbauswahl();
-                break;
-            case 7:
-                image = (ImageView) findViewById(_activeField);
-                image.setImageResource(R.mipmap.ic_purple);
-                _farbvorschlagRow.Fields[_activeField -10].setColor(7);
-                HideFarbauswahl();
-                break;
-            //Buttons in Farbvorschlag
-            case 10:
-                ShowFarbauswahl(v.getId());
-                break;
-            case 11:
-                ShowFarbauswahl(v.getId());
-                break;
-            case 12:
-                ShowFarbauswahl(v.getId());
-                break;
-            case 13:
-                ShowFarbauswahl(v.getId());
-                break;
-            case 14:
-                ShowFarbauswahl(v.getId());
-                break;
-            case 15:
-                ShowFarbauswahl(v.getId());
-                break;
-            case 16:
-                ShowFarbauswahl(v.getId());
-                break;
-            case 17:
-                ShowFarbauswahl(v.getId());
-                break;
-            default:
-                break;
+            switch (v.getId())
+            {
+                //Buttons in farbauswahl
+                case -1:
+                    image = (ImageView) findViewById(_activeField);
+                    image.setImageResource(R.mipmap.ic_slot);
+                    _farbvorschlagRow.Fields[_activeField - 10].setColor(-1);
+                    HideFarbauswahl();
+                    break;
+                case 0:
+                    image = (ImageView) findViewById(_activeField);
+                    image.setImageResource(R.mipmap.ic_blue);
+                    _farbvorschlagRow.Fields[_activeField - 10].setColor(0);
+                    HideFarbauswahl();
+                    break;
+                case 1:
+                    image = (ImageView) findViewById(_activeField);
+                    image.setImageResource(R.mipmap.ic_green);
+                    _farbvorschlagRow.Fields[_activeField - 10].setColor(1);
+                    HideFarbauswahl();
+                    break;
+                case 2:
+                    image = (ImageView) findViewById(_activeField);
+                    image.setImageResource(R.mipmap.ic_lightblue);
+                    _farbvorschlagRow.Fields[_activeField - 10].setColor(2);
+                    HideFarbauswahl();
+                    break;
+                case 3:
+                    image = (ImageView) findViewById(_activeField);
+                    image.setImageResource(R.mipmap.ic_pink);
+                    _farbvorschlagRow.Fields[_activeField - 10].setColor(3);
+                    HideFarbauswahl();
+                    break;
+                case 4:
+                    image = (ImageView) findViewById(_activeField);
+                    image.setImageResource(R.mipmap.ic_red);
+                    _farbvorschlagRow.Fields[_activeField - 10].setColor(4);
+                    HideFarbauswahl();
+                    break;
+                case 5:
+                    image = (ImageView) findViewById(_activeField);
+                    image.setImageResource(R.mipmap.ic_yellow);
+                    _farbvorschlagRow.Fields[_activeField - 10].setColor(5);
+                    HideFarbauswahl();
+                    break;
+                case 6:
+                    image = (ImageView) findViewById(_activeField);
+                    image.setImageResource(R.mipmap.ic_grey);
+                    _farbvorschlagRow.Fields[_activeField - 10].setColor(6);
+                    HideFarbauswahl();
+                    break;
+                case 7:
+                    image = (ImageView) findViewById(_activeField);
+                    image.setImageResource(R.mipmap.ic_purple);
+                    _farbvorschlagRow.Fields[_activeField - 10].setColor(7);
+                    HideFarbauswahl();
+                    break;
+                //Buttons in Farbvorschlag
+                case 10:
+                    ShowFarbauswahl(v.getId());
+                    break;
+                case 11:
+                    ShowFarbauswahl(v.getId());
+                    break;
+                case 12:
+                    ShowFarbauswahl(v.getId());
+                    break;
+                case 13:
+                    ShowFarbauswahl(v.getId());
+                    break;
+                case 14:
+                    ShowFarbauswahl(v.getId());
+                    break;
+                case 15:
+                    ShowFarbauswahl(v.getId());
+                    break;
+                case 16:
+                    ShowFarbauswahl(v.getId());
+                    break;
+                case 17:
+                    ShowFarbauswahl(v.getId());
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

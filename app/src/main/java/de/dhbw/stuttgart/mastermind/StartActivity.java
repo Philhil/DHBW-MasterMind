@@ -39,32 +39,36 @@ public class StartActivity extends AppCompatActivity implements HighscoreFragmen
     private ShowcaseView _showcaseView;
     private int _counter = 0;
     private boolean _showHelp;
+    private boolean _helpShown = false;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    fragment = new HomeFragment();
-                    break;
-                case R.id.navigation_highscore:
-                    fragment = new HighscoreFragment();
-                    break;
-                case R.id.navigation_settings:
-                    fragment = new SettingsFragment();
-                    break;
-                case R.id.navigation_help:
-                    fragment = new HelpFragment();
-                    break;
-                case R.id.navigation_impressum:
-                    fragment = new ImpressumFragment();
-                    break;
+            if (!_helpShown)
+            {
+                switch (item.getItemId())
+                {
+                    case R.id.navigation_home:
+                        fragment = new HomeFragment();
+                        break;
+                    case R.id.navigation_highscore:
+                        fragment = new HighscoreFragment();
+                        break;
+                    case R.id.navigation_settings:
+                        fragment = new SettingsFragment();
+                        break;
+                    case R.id.navigation_help:
+                        fragment = new HelpFragment();
+                        break;
+                    case R.id.navigation_impressum:
+                        fragment = new ImpressumFragment();
+                        break;
+                }
+                final FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.content, fragment).addToBackStack("Fragment").commit();
             }
-            final FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.content, fragment).addToBackStack("Fragment").commit();
-
             return true;
         }
 
@@ -99,6 +103,7 @@ public class StartActivity extends AppCompatActivity implements HighscoreFragmen
 
     private void createShowcase()
     {
+        _helpShown = true;
         _showcaseView = new ShowcaseView.Builder(this)
                 .setTarget(Target.NONE)
                 .setContentTitle("Mastermind")
@@ -158,6 +163,7 @@ public class StartActivity extends AppCompatActivity implements HighscoreFragmen
                                 _showcaseView.setContentText("Hier kannst du das Impressum anzeigen");
                                 break;
                             case 8:
+                                _helpShown = false;
                                 _showcaseView.hide();
                                 break;
                         }
@@ -193,21 +199,24 @@ public class StartActivity extends AppCompatActivity implements HighscoreFragmen
 
     public void startGame(View view) {
 
-        switch(view.getId())
+        if (!_helpShown)
         {
-            case R.id.button_startGame:
-                Intent intent = new Intent(this, GameActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.button_2playerGame:
-                Intent intent_colorcode = new Intent(this, Colorcode.class);
-                startActivity(intent_colorcode);
-                break;
-            case R.id.button_loadGame:
-                fragment = new SavegameFragment();
-                final FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.content, fragment).addToBackStack("SavegameFragment").commit();
-                break;
+            switch (view.getId())
+            {
+                case R.id.button_startGame:
+                    Intent intent = new Intent(this, GameActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.button_2playerGame:
+                    Intent intent_colorcode = new Intent(this, Colorcode.class);
+                    startActivity(intent_colorcode);
+                    break;
+                case R.id.button_loadGame:
+                    fragment = new SavegameFragment();
+                    final FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    transaction.replace(R.id.content, fragment).addToBackStack("SavegameFragment").commit();
+                    break;
+            }
         }
     }
 }
