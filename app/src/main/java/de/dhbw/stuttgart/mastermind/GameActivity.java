@@ -61,6 +61,8 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
     private long _pause_timeDifference = 0;
     private String _winTimestring;
 
+    private int _gameColors[];
+
     private int _activeField = -1;
     private int _activeRow = 0;
 
@@ -158,6 +160,22 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
         }
     }
 
+    public ImageView getPictureToColor(int color)
+    {
+        ImageView tmp = new ImageView(this);
+
+        if (color == -1)
+        {
+            tmp.setImageResource(R.mipmap.ic_slot);
+        }
+        else
+        {
+            tmp.setImageResource(_gameColors[color]);
+        }
+
+        return tmp;
+    }
+
     public LinearLayout CreateMasterRow(Context context, Row row)
     {
         LinearLayout rowLayout = new LinearLayout(context);
@@ -167,7 +185,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
 
         for (int i = 0; i < _anzFields; i++)
         {
-            ImageView tmp = row.Fields[i].getPicture(this);
+            ImageView tmp = getPictureToColor(row.Fields[i].getColor());
             tmp.setLayoutParams(new LinearLayout.LayoutParams(_bigPeg, _bigPeg));
             rowLayout.addView(tmp);
         }
@@ -184,7 +202,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
 
         for (int i = 0; i < _anzFields; i++)
         {
-            ImageView tmp = row.Fields[i].getPicture(this);
+            ImageView tmp = getPictureToColor(row.Fields[i].getColor());
             tmp.setLayoutParams(new LinearLayout.LayoutParams(_bigPeg, _bigPeg));
             tmp.setId(i + 10);
             tmp.setOnClickListener(this);
@@ -210,7 +228,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
 
         for (int i = 0; i < _anzFields; i++)
         {
-            ImageView tmp = row.Fields[i].getPicture(this);
+            ImageView tmp = getPictureToColor(row.Fields[i].getColor());
             tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPeg, _smallPeg));
             rowLayout.addView(tmp);
         }
@@ -297,7 +315,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
         for (int i = minval; i < _anzColors; i++)
         {
             ImageView tmp = new ImageView(this);
-            switch (i)
+            /*switch (i)
             {
                 case -1:
                     tmp.setImageResource(R.mipmap.ic_slot);
@@ -325,6 +343,15 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
                     break;
                 case 7:
                     tmp.setImageResource(R.mipmap.ic_purple);
+                    break;
+            }*/
+            switch(i)
+            {
+                case -1:
+                    tmp.setImageResource(R.mipmap.ic_slot);
+                    break;
+                default:
+                    tmp.setImageResource(_gameColors[i]);
                     break;
             }
             tmp.setLayoutParams(new LinearLayout.LayoutParams(_farbAuswPeg, _farbAuswPeg));
@@ -428,7 +455,8 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
 
             if (v.hasVibrator())
             {
-                long[] pattern = {0, 500, 110, 500, 110, 450, 110, 200, 110, 170, 40, 450, 110, 200, 110, 170, 40, 500};
+                //long[] pattern = {0, 500, 110, 500, 110, 450, 110, 200, 110, 170, 40, 450, 110, 200, 110, 170, 40, 500};
+                long[] pattern = {10,10};
 
                 v.vibrate(pattern, -1);
             }
@@ -539,6 +567,12 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
         _empty = sharedPref.getBoolean(getString(R.string.prefkey_empty), false);
         _backgroundColor = sharedPref.getInt(getString(R.string.prefkey_background_color), R.string.settings_backgroundWhite);
         _showHelp = sharedPref.getBoolean(getString(R.string.prefkey_help_game), true);
+        int arr[] = new int[8];
+        for(int i=0;i<8;i++)
+        {
+            arr[i] = sharedPref.getInt("color_" + i, 0);
+        }
+        _gameColors = arr;
     }
 
     private void loadSaveGame(Savegame tmp)
@@ -555,6 +589,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
         _farbforschlagRow = tmp.farbvorschlag;
         _activeRow = tmp.activeRow;
         _pause_timeDifference = tmp.pause_timeDifference;
+        _gameColors = tmp.gameColors;
 
         LinearLayout gamefield;
         gamefield = (LinearLayout) findViewById(R.id.game_field);
@@ -566,7 +601,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
 
     private Savegame getSavegame()
     {
-        return new Savegame(_rows, _master, _farbforschlagRow,_activeRow, _anzRows, _anzFields, _anzColors, _backgroundColor, _multiple, _empty, _undo, _singlePlayer, _pause_timeDifference);
+        return new Savegame(_rows, _master, _farbforschlagRow,_activeRow, _anzRows, _anzFields, _anzColors, _backgroundColor, _multiple, _empty, _undo, _singlePlayer, _pause_timeDifference, _gameColors);
     }
 
     @Override
@@ -950,49 +985,49 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
                     break;
                 case 0:
                     image = (ImageView) findViewById(_activeField);
-                    image.setImageResource(R.mipmap.ic_blue);
+                    image.setImageResource(_gameColors[0]);
                     _farbforschlagRow.Fields[_activeField - 10].setColor(0);
                     HideFarbauswahl();
                     break;
                 case 1:
                     image = (ImageView) findViewById(_activeField);
-                    image.setImageResource(R.mipmap.ic_green);
+                    image.setImageResource(_gameColors[1]);
                     _farbforschlagRow.Fields[_activeField - 10].setColor(1);
                     HideFarbauswahl();
                     break;
                 case 2:
                     image = (ImageView) findViewById(_activeField);
-                    image.setImageResource(R.mipmap.ic_lightblue);
+                    image.setImageResource(_gameColors[2]);
                     _farbforschlagRow.Fields[_activeField - 10].setColor(2);
                     HideFarbauswahl();
                     break;
                 case 3:
                     image = (ImageView) findViewById(_activeField);
-                    image.setImageResource(R.mipmap.ic_pink);
+                    image.setImageResource(_gameColors[3]);
                     _farbforschlagRow.Fields[_activeField - 10].setColor(3);
                     HideFarbauswahl();
                     break;
                 case 4:
                     image = (ImageView) findViewById(_activeField);
-                    image.setImageResource(R.mipmap.ic_red);
+                    image.setImageResource(_gameColors[4]);
                     _farbforschlagRow.Fields[_activeField - 10].setColor(4);
                     HideFarbauswahl();
                     break;
                 case 5:
                     image = (ImageView) findViewById(_activeField);
-                    image.setImageResource(R.mipmap.ic_yellow);
+                    image.setImageResource(_gameColors[5]);
                     _farbforschlagRow.Fields[_activeField - 10].setColor(5);
                     HideFarbauswahl();
                     break;
                 case 6:
                     image = (ImageView) findViewById(_activeField);
-                    image.setImageResource(R.mipmap.ic_grey);
+                    image.setImageResource(_gameColors[6]);
                     _farbforschlagRow.Fields[_activeField - 10].setColor(6);
                     HideFarbauswahl();
                     break;
                 case 7:
                     image = (ImageView) findViewById(_activeField);
-                    image.setImageResource(R.mipmap.ic_purple);
+                    image.setImageResource(_gameColors[7]);
                     _farbforschlagRow.Fields[_activeField - 10].setColor(7);
                     HideFarbauswahl();
                     break;

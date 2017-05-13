@@ -28,47 +28,6 @@ public class Field implements Parcelable
         _color = color;
     }
 
-    ImageView getPicture(Context context)
-    {
-        ImageView tmp = new ImageView(context);
-
-        switch(_color)
-        {
-            case -1:
-                tmp.setImageResource(R.mipmap.ic_slot);
-                break;
-            case 0:
-                tmp.setImageResource(R.mipmap.ic_blue);
-                break;
-            case 1:
-                tmp.setImageResource(R.mipmap.ic_green);
-                break;
-            case 2:
-                tmp.setImageResource(R.mipmap.ic_lightblue);
-                break;
-            case 3:
-                tmp.setImageResource(R.mipmap.ic_pink);
-                break;
-            case 4:
-                tmp.setImageResource(R.mipmap.ic_red);
-                break;
-            case 5:
-                tmp.setImageResource(R.mipmap.ic_yellow);
-                break;
-            case 6:
-                tmp.setImageResource(R.mipmap.ic_grey);
-                break;
-            case 7:
-                tmp.setImageResource(R.mipmap.ic_purple);
-                break;
-            default:
-                tmp.setImageResource(R.mipmap.ic_slot);
-                break;
-        }
-
-        return tmp;
-    }
-
     /* everything below here is for implementing Parcelable */
 
     @Override

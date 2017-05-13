@@ -21,8 +21,9 @@ public class Savegame
     public final boolean undo;
     public final boolean singlePlayer;
     public final long pause_timeDifference;
+    public final int[] gameColors;
 
-    public Savegame(Row[] game, Row master, Row farbvorschlag, int activeRow, int anzRows, int anzFields, int anzColors, int backgroundColor, boolean multiple, boolean empty, boolean undo, boolean singlePlayer, long pause_timeDifference) {
+    public Savegame(Row[] game, Row master, Row farbvorschlag, int activeRow, int anzRows, int anzFields, int anzColors, int backgroundColor, boolean multiple, boolean empty, boolean undo, boolean singlePlayer, long pause_timeDifference, int[] gameColors) {
         this.game = game;
         this.master = master;
         this.farbvorschlag = farbvorschlag;
@@ -36,6 +37,7 @@ public class Savegame
         this.undo = undo;
         this.singlePlayer = singlePlayer;
         this.pause_timeDifference = pause_timeDifference;
+        this.gameColors = gameColors;
     }
 
     @Override
