@@ -117,7 +117,7 @@ public class StartActivity extends AppCompatActivity implements HighscoreFragmen
                             case 0:
                                 _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.button_startGame)), true);
                                 _showcaseView.setContentTitle("Spiel starten");
-                                _showcaseView.setContentText("Hier startest Du das Spiel gegen den Computer");
+                                _showcaseView.setContentText("Hier startest Du das Spiel gegen den Computer.");
                                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                                 params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
                                 params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
@@ -126,27 +126,27 @@ public class StartActivity extends AppCompatActivity implements HighscoreFragmen
                             case 1:
                                 _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.button_2playerGame)), true);
                                 _showcaseView.setContentTitle("Zweispielerspiel starten");
-                                _showcaseView.setContentText("Hier startest Du ein Spiel gegen einen zweiten Spieler");
+                                _showcaseView.setContentText("Hier startest Du ein Spiel gegen einen zweiten Spieler.");
                                 break;
                             case 2:
                                 _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.button_loadGame)), true);
                                 _showcaseView.setContentTitle("Spiel laden");
-                                _showcaseView.setContentText("Hier kannst Du ein gespeichertes Spiel laden und fortsetzen");
+                                _showcaseView.setContentText("Hier kannst Du ein gespeichertes Spiel laden und fortsetzen.");
                                 break;
                             case 3:
                                 _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.navigation_home)), true);
                                 _showcaseView.setContentTitle("Home");
-                                _showcaseView.setContentText("Hier gelangst Du zum Hauptbildschirm, wo du die Spiele starten kannst");
+                                _showcaseView.setContentText("Hier gelangst Du zum Hauptbildschirm, von welchem Du die Spiele starten kannst.");
                                 break;
                             case 4:
                                 _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.navigation_highscore)), true);
                                 _showcaseView.setContentTitle("Highscore");
-                                _showcaseView.setContentText("Hier kannst Du die Highscoreliste anzeigen");
+                                _showcaseView.setContentText("Hier kannst Du die Highscoreliste anzeigen.");
                                 break;
                             case 5:
                                 _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.navigation_settings)), true);
                                 _showcaseView.setContentTitle("Einstellungen");
-                                _showcaseView.setContentText("Hier kannst Du die Spieleinstellungen vornehmen");
+                                _showcaseView.setContentText("Hier kannst Du die Spieleinstellungen vornehmen. Diese werden automatisch gespeichert.");
                                 params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                                 params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
                                 params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
@@ -155,12 +155,12 @@ public class StartActivity extends AppCompatActivity implements HighscoreFragmen
                             case 6:
                                 _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.navigation_help)), true);
                                 _showcaseView.setContentTitle("Hilfe");
-                                _showcaseView.setContentText("Hier kannst Du eine ausführliche Hilfe und Spielbeschreibung anzeigen");
+                                _showcaseView.setContentText("Hier kannst Du eine ausführliche Hilfe und Spielbeschreibung anzeigen.");
                                 break;
                             case 7:
                                 _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.navigation_impressum)), true);
                                 _showcaseView.setContentTitle("Impressum");
-                                _showcaseView.setContentText("Hier kannst du das Impressum anzeigen");
+                                _showcaseView.setContentText("Hier kannst Du das Impressum anzeigen.");
                                 break;
                             case 8:
                                 _helpShown = false;

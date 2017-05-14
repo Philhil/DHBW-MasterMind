@@ -781,6 +781,15 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
                 }).create().show();
     }
 
+    private void undoRow()
+    {
+        _undo = true;
+        LinearLayout gamefield = (LinearLayout) findViewById(R.id.game_field);
+        //gamefield.removeViewAt(_activeRow-1);
+        gamefield.removeViewAt(0);
+        _activeRow--;
+    }
+
     @Override
     public void onClick(View v)
     {
@@ -873,18 +882,56 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
                     chronometer(false);
                     break;
                 case R.id.btn_game_rueckgaengig:
-                    if (_activeRow > 0)
-                    {
-                        _undo = true;
-                        gamefield = (LinearLayout) findViewById(R.id.game_field);
-                        //gamefield.removeViewAt(_activeRow-1);
-                        gamefield.removeViewAt(0);
-                        _activeRow--;
-                    } else
+                    if (_activeRow == 0)
                     {
                         Toast toast = Toast.makeText(getApplicationContext(), "Keine Reihe verfügbar", Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER, 0, 0);
                         toast.show();
+                    }
+                    else
+                    {
+                        if (!_undo)
+                        {
+                            new AlertDialog.Builder(this)
+                                    .setMessage(R.string.game_undofirst)
+                                    .setCancelable(true)
+                                    .setNegativeButton(R.string.btn_yes, new DialogInterface.OnClickListener()
+                                    {
+                                        public void onClick(final DialogInterface dialog, final int id)
+                                        {
+                                            undoRow();
+                                        }
+                                    })
+                                    .setPositiveButton(R.string.btn_no, new DialogInterface.OnClickListener()
+                                    {
+                                        @Override
+                                        public void onClick(final DialogInterface dialog, final int which)
+                                        {
+                                            dialog.dismiss();
+                                        }
+                                    }).create().show();
+                        }
+                        else
+                        {
+                            new AlertDialog.Builder(this)
+                                    .setMessage(R.string.game_undo)
+                                    .setCancelable(true)
+                                    .setNegativeButton(R.string.btn_yes, new DialogInterface.OnClickListener()
+                                    {
+                                        public void onClick(final DialogInterface dialog, final int id)
+                                        {
+                                            undoRow();
+                                        }
+                                    })
+                                    .setPositiveButton(R.string.btn_no, new DialogInterface.OnClickListener()
+                                    {
+                                        @Override
+                                        public void onClick(final DialogInterface dialog, final int which)
+                                        {
+                                            dialog.dismiss();
+                                        }
+                                    }).create().show();
+                        }
                     }
                     break;
                 case R.id.btn_game_pruefen:
