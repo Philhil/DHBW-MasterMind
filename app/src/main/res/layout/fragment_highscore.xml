@@ -27,26 +27,4 @@
         android:layout_height="wrap_content"
         android:layout_weight=".15"
         android:textAppearance="?attr/textAppearanceListItem" />
-
-    <TextView
-        android:id="@+id/tries"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight=".07"
-        android:textAppearance="?attr/textAppearanceListItem" />
-
-    <TextView
-        android:id="@+id/colors"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight=".07"
-        android:textAppearance="?attr/textAppearanceListItem"/>
-
-    <TextView
-        android:id="@+id/fields"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight=".07"
-        android:textAppearance="?attr/textAppearanceListItem"/>
-
 </LinearLayout>
