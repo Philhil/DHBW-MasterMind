@@ -37,8 +37,12 @@ public class HighscoreFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         dataSource = new HighscoreDataSource(this.getContext());
         dataSource.open();
+
+        //sortet by fastest time
+        highscoreContent = dataSource.getAllHighscoreItems();
 
         //dataSource.deleteAllItems();
     }
@@ -50,11 +54,8 @@ public class HighscoreFragment extends Fragment {
 
         // Set the adapter
         if (view instanceof RecyclerView) {
-            Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
 
-            //sorted by fastest time
-            highscoreContent = dataSource.getAllHighscoreItems();
             if (highscoreContent.isEmpty())
             {
                 Toast toast = Toast.makeText(getContext(), "Keine Einträge vorhanden", Toast.LENGTH_SHORT);
