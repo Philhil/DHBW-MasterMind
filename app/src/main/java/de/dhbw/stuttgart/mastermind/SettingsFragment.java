@@ -794,7 +794,7 @@ public class SettingsFragment extends Fragment {
         int arr[] = new int[8];
         for(int i=0;i<8;i++)
         {
-            arr[i] = _sharedPref.getInt("color_" + i, 0);
+            arr[i] = _sharedPref.getInt("color_" + i, _pictures[i]);
         }
 
         return arr;
