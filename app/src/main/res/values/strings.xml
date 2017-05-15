@@ -82,6 +82,13 @@
     <string name="header_nr">Nr.</string>
     <string name="header_name">Name</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_help_fragment">TODO: Help fragment</string>
+    <string name="help_fragment_2_Spieler">Zwei Spieler Modus</string>
+    <string name="help_fragment_2_Spieler_text">Der Herausforderer legt zu Beginn des Spiels den Mastercode fest. Danach erfolgt der Spielverlauf wie im ein Spieler Modus. </string>
+
+    <string name="help_fragment_1_Spieler">Ein Spieler Modus</string>
+    <string name="help_fragment_1_Spieler_text_1">Der Spieler gibt seinen Farbvorschlag für den Mastercode ein und bestätigt dies mit „Farbvorschlag prüfen“. Nach Bestätigen des Farbvorschlags wird auf der rechten Seite durch Weißen und Schwarzen Pins der Erfolg oder Misserfolg dargestellt.</string>
+    <string name="help_fragment_1_Spieler_text_2">Ein schwarzer Pin wird für jede richtige Farbeangezeigt die auch an der richtigen Stelle ist. Ein weißer Pin wird für jede richtige Farbe, die aber noch nicht an der richtigen Stelle ist, angezeigt. Aus der Reihenfolge der weißen und schwarzen Pins kann man nicht darauf schließen für welche gesetzte Farbe dieser angezeigt wird. Eine freigelassene Stelle in der Erfolgsanzeige bedeutet das eine Farbe nicht richtig war.</string>
+    <string name="help_fragment_1_Spieler_text_3">Der Spieler hat gewonnen, wenn er den Mastercode erraten hat. Wenn der Mastercode in der vorgegebenen Runden Anzahl nicht erraten wurde, hat der Spieler verloren.</string>
+    <string name="help_fragment_1_Spieler_text_4">In den Einstellungen können die Runden Anzahl und die Anzahl der Farben angepasst werden.</string>
+
 </resources>
