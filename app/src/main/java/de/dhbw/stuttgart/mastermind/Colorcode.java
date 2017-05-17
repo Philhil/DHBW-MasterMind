@@ -180,6 +180,9 @@ public class Colorcode extends AppCompatActivity implements View.OnClickListener
 
     private void getSettingsFromPreferences()
     {
+        int[] pictures = {R.mipmap.ic_red, R.mipmap.ic_green, R.mipmap.ic_purple, R.mipmap.ic_blue, R.mipmap.ic_grey, R.mipmap.ic_pink, R.mipmap.ic_turquoise, R.mipmap.ic_yellow, R.mipmap.ic_brown};
+
+
         SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
 
         _anzColors = sharedPref.getInt(getString(R.string.prefkey_number_of_colors), 5);
@@ -191,7 +194,7 @@ public class Colorcode extends AppCompatActivity implements View.OnClickListener
         int arr[] = new int[8];
         for(int i=0;i<8;i++)
         {
-            arr[i] = sharedPref.getInt("color_" + i, 0);
+            arr[i] = sharedPref.getInt("color_" + i, pictures[i]);
         }
         _gameColors = arr;
     }
