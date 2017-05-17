@@ -1,5 +1,6 @@
 package de.dhbw.stuttgart.mastermind;
 
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -37,6 +38,15 @@ public class SavegameFragment extends Fragment
 
         dataSource = new SavegameDataSource(this.getContext());
         dataSource.open();
+
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preference_file_key), getActivity().MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        if (sharedPref.getBoolean("oldSavegameFormat", true))
+        {
+            dataSource.deleteAllItems();
+            editor.putBoolean("oldSavegameFormat", false).commit();
+        }
 
         //dataSource.deleteAllItems();
     }
