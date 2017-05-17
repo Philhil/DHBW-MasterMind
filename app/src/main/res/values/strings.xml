@@ -18,11 +18,12 @@
     <string name="btn_yes">Ja</string>
     <string name="btn_no">Nein</string>
 
+    <string name="settings_info">Einstellungen werden bei Veränderung automatisch gespeichert. Eine Bestätigung ist nicht notwendig.\n</string>
     <string name="settings_number_of_colors">Anzahl der verschiedenen Farben für ein Set</string>
     <string name="settings_number_of_holes">Anzahl der Löcher</string>
     <string name="settings_empty_space">Leeres Feld als Farbe</string>
     <string name="settings_multiple_color">Mehrfaches Auftreten einer Farbe</string>
-    <string name="settings_round">Anzahl der Runden</string>
+    <string name="settings_round">Anzahl der Versuche</string>
     <string name="settings_colors">Farben die im Spiel zur Verfügung stehen</string>
     <string name="settings_matchfield">Aussehen des Spielfeldhintergrunds</string>
     <string name="settings_backgroundWhite">Weiß</string>
@@ -30,10 +31,13 @@
     <string name="settings_backgroundGreen">Grün</string>
     <string name="settings_highscore_delete">Highscore Liste löschen</string>
     <string name="settings_savedgames_delete">Gespeicherte Spielstände löschen</string>
+    <string name="settings_show_showcase">Interaktive Anleitung erneut anzeigen</string>
     <string name="settings_save">Speichern</string>
     <string name="settings_discard">Verwerfen</string>
 
     <string name="game_quit">Möchtest Du das Spiel wirklich beenden?</string>
+    <string name="game_undofirst">Möchtest Du den letzten Versuch wirklich rückgängig machen? Danach kann kein Highscore gespeichert werden!</string>
+    <string name="game_undo">Möchtest Du den letzten Versuch wirklich rückgängig machen?</string>
     <string name="game_dissolve">Möchtest Du das Spiel wirklich auflösen?</string>
     <string name="game_dissolved">Du hast das Spiel aufgelöst!</string>
     <string name="game_fail">Du hast es nicht geschafft den Code zu knacken!</string>
@@ -71,11 +75,20 @@
     <string name="prefkey_number_of_holes">NumberOfHoles</string>
     <string name="prefkey_number_of_rounds">NumberOfRounds</string>
     <string name="prefkey_background_color">BackgroundColor</string>
-
+    <string name="prefkey_help_home">HelpHome</string>
+    <string name="prefkey_help_game">HelpGame</string>
+    <string name="prefkey_help_colorcode">HelpColorcode</string>
 
     <string name="header_nr">Nr.</string>
     <string name="header_name">Name</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_help_fragment">TODO: Help fragment</string>
+    <string name="help_fragment_2_Spieler">Zwei Spieler Modus</string>
+    <string name="help_fragment_2_Spieler_text">Der Herausforderer legt zu Beginn des Spiels den Mastercode fest. Danach erfolgt der Spielverlauf wie im „Ein Spieler Modus“. </string>
+
+    <string name="help_fragment_1_Spieler">Ein Spieler Modus</string>
+    <string name="help_fragment_1_Spieler_text_1">Der Spieler gibt seinen Farbvorschlag für den Mastercode ein und bestätigt diesen mit „Farbvorschlag prüfen“. Nach Bestätigung des Farbvorschlags wird rechts daneben durch weiße und schwarze Pins der Erfolg oder Misserfolg dargestellt.</string>
+    <string name="help_fragment_1_Spieler_text_2">Ein schwarzer Pin wird für jede richtige Farbe, die auch an der richtigen Stelle ist, angezeigt. Ein weißer Pin wird für jede richtige Farbe, die aber noch nicht an der richtigen Stelle ist, angezeigt. Aus der Reihenfolge der weißen und schwarzen Pins kann man nicht darauf schließen für welche gesetzte Farbe dieser Pin angezeigt wird. Eine freigelassene Stelle in der Erfolgsanzeige (weniger Pins als Farben) bedeutet, dass eine Farbe nicht richtig war.</string>
+    <string name="help_fragment_1_Spieler_text_3">Der Spieler hat gewonnen, wenn er den Mastercode erraten hat. Danach kann er sich in die Highscoreliste eintragen. Wenn der Mastercode in der vorgegebenen Anzahl Versuche nicht erraten wurde, hat der Spieler verloren.</string>
+    <string name="help_fragment_1_Spieler_text_4">In den Einstellungen können die verschiedenen Spielparameter (Anzahl Versuche, Anzahl Farben, etc.) angepasst werden.</string>
+
 </resources>

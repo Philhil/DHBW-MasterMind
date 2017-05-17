@@ -45,10 +45,10 @@ public class HighscoreRecyclerViewAdapter extends RecyclerView.Adapter<Highscore
 
         holder.mNameView.setText(mValues.get(position).name);
         holder.mDurationView.setText(mValues.get(position).duration);
-        holder.mTriesView.setText(String.valueOf(mValues.get(position).tries));
+        /*holder.mTriesView.setText(String.valueOf(mValues.get(position).tries));
         holder.mColorsView.setText(String.valueOf(mValues.get(position).colors));
         holder.mFieldsView.setText(String.valueOf(mValues.get(position).fields));
-
+*/
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,9 +76,6 @@ public class HighscoreRecyclerViewAdapter extends RecyclerView.Adapter<Highscore
         public final TextView mIdView;
         public final TextView mNameView;
         public final TextView mDurationView;
-        public final TextView mTriesView;
-        public final TextView mColorsView;
-        public final TextView mFieldsView;
 
         public HighscoreItem mItem;
 
@@ -89,9 +86,6 @@ public class HighscoreRecyclerViewAdapter extends RecyclerView.Adapter<Highscore
             mIdView = (TextView) view.findViewById(R.id.id);
             mNameView = (TextView) view.findViewById(R.id.name);
             mDurationView = (TextView) view.findViewById(R.id.time);
-            mTriesView = (TextView) view.findViewById(R.id.tries);
-            mColorsView = (TextView) view.findViewById(R.id.colors);
-            mFieldsView = (TextView) view.findViewById(R.id.fields);
         }
 
         @Override

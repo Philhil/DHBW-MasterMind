@@ -24,9 +24,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.view.View.OnClickListener;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -56,6 +61,8 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
     private long _pause_timeDifference = 0;
     private String _winTimestring;
 
+    private int _gameColors[];
+
     private int _activeField = -1;
     private int _activeRow = 0;
 
@@ -63,6 +70,11 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
     private Row _master;
     private LinearLayout _farbauswahl;
     private Row _farbforschlagRow;
+
+    private ShowcaseView _showcaseView;
+    private int _counter = 0;
+    private boolean _showHelp = false;
+    private boolean _helpShown = false;
 
     public Row SetMaster(boolean same, boolean empty)
     {
@@ -148,6 +160,22 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
         }
     }
 
+    public ImageView getPictureToColor(int color)
+    {
+        ImageView tmp = new ImageView(this);
+
+        if (color == -1)
+        {
+            tmp.setImageResource(R.mipmap.ic_slot);
+        }
+        else
+        {
+            tmp.setImageResource(_gameColors[color]);
+        }
+
+        return tmp;
+    }
+
     public LinearLayout CreateMasterRow(Context context, Row row)
     {
         LinearLayout rowLayout = new LinearLayout(context);
@@ -157,7 +185,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
 
         for (int i = 0; i < _anzFields; i++)
         {
-            ImageView tmp = row.Fields[i].getPicture(this);
+            ImageView tmp = getPictureToColor(row.Fields[i].getColor());
             tmp.setLayoutParams(new LinearLayout.LayoutParams(_bigPeg, _bigPeg));
             rowLayout.addView(tmp);
         }
@@ -174,7 +202,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
 
         for (int i = 0; i < _anzFields; i++)
         {
-            ImageView tmp = row.Fields[i].getPicture(this);
+            ImageView tmp = getPictureToColor(row.Fields[i].getColor());
             tmp.setLayoutParams(new LinearLayout.LayoutParams(_bigPeg, _bigPeg));
             tmp.setId(i + 10);
             tmp.setOnClickListener(this);
@@ -200,7 +228,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
 
         for (int i = 0; i < _anzFields; i++)
         {
-            ImageView tmp = row.Fields[i].getPicture(this);
+            ImageView tmp = getPictureToColor(row.Fields[i].getColor());
             tmp.setLayoutParams(new LinearLayout.LayoutParams(_smallPeg, _smallPeg));
             rowLayout.addView(tmp);
         }
@@ -287,7 +315,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
         for (int i = minval; i < _anzColors; i++)
         {
             ImageView tmp = new ImageView(this);
-            switch (i)
+            /*switch (i)
             {
                 case -1:
                     tmp.setImageResource(R.mipmap.ic_slot);
@@ -315,6 +343,15 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
                     break;
                 case 7:
                     tmp.setImageResource(R.mipmap.ic_purple);
+                    break;
+            }*/
+            switch(i)
+            {
+                case -1:
+                    tmp.setImageResource(R.mipmap.ic_slot);
+                    break;
+                default:
+                    tmp.setImageResource(_gameColors[i]);
                     break;
             }
             tmp.setLayoutParams(new LinearLayout.LayoutParams(_farbAuswPeg, _farbAuswPeg));
@@ -390,7 +427,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
             }
             new AlertDialog.Builder(this)
                     .setMessage(msg)
-                    .setCancelable(true)
+                    .setCancelable(false)
                     .setNeutralButton("Neustart", new DialogInterface.OnClickListener()
                     {
                         public void onClick(final DialogInterface dialog, final int id)
@@ -418,7 +455,8 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
 
             if (v.hasVibrator())
             {
-                long[] pattern = {0, 500, 110, 500, 110, 450, 110, 200, 110, 170, 40, 450, 110, 200, 110, 170, 40, 500};
+                //long[] pattern = {0, 500, 110, 500, 110, 450, 110, 200, 110, 170, 40, 450, 110, 200, 110, 170, 40, 500};
+                long[] pattern = {10,10};
 
                 v.vibrate(pattern, -1);
             }
@@ -436,7 +474,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
             name.setText("Spielername", TextView.BufferType.EDITABLE);
             new AlertDialog.Builder(this)
                     .setMessage(msg)
-                    .setCancelable(true)
+                    .setCancelable(false)
                     .setView(name)
                     .setNeutralButton("Neustart", new DialogInterface.OnClickListener()
                     {
@@ -520,6 +558,9 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
 
     private void getSettingsFromPreferences()
     {
+        int[] pictures = {R.mipmap.ic_red, R.mipmap.ic_green, R.mipmap.ic_purple, R.mipmap.ic_blue, R.mipmap.ic_grey, R.mipmap.ic_pink, R.mipmap.ic_turquoise, R.mipmap.ic_yellow, R.mipmap.ic_brown};
+
+
         SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
 
         _anzColors = sharedPref.getInt(getString(R.string.prefkey_number_of_colors), 5);
@@ -528,6 +569,13 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
         _multiple = sharedPref.getBoolean(getString(R.string.prefkey_multiple), false);
         _empty = sharedPref.getBoolean(getString(R.string.prefkey_empty), false);
         _backgroundColor = sharedPref.getInt(getString(R.string.prefkey_background_color), R.string.settings_backgroundWhite);
+        _showHelp = sharedPref.getBoolean(getString(R.string.prefkey_help_game), true);
+        int arr[] = new int[8];
+        for(int i=0;i<8;i++)
+        {
+            arr[i] = sharedPref.getInt("color_" + i, pictures[i]);
+        }
+        _gameColors = arr;
     }
 
     private void loadSaveGame(Savegame tmp)
@@ -544,6 +592,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
         _farbforschlagRow = tmp.farbvorschlag;
         _activeRow = tmp.activeRow;
         _pause_timeDifference = tmp.pause_timeDifference;
+        _gameColors = tmp.gameColors;
 
         LinearLayout gamefield;
         gamefield = (LinearLayout) findViewById(R.id.game_field);
@@ -555,7 +604,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
 
     private Savegame getSavegame()
     {
-        return new Savegame(_rows, _master, _farbforschlagRow,_activeRow, _anzRows, _anzFields, _anzColors, _backgroundColor, _multiple, _empty, _undo, _singlePlayer, _pause_timeDifference);
+        return new Savegame(_rows, _master, _farbforschlagRow,_activeRow, _anzRows, _anzFields, _anzColors, _backgroundColor, _multiple, _empty, _undo, _singlePlayer, _pause_timeDifference, _gameColors);
     }
 
     @Override
@@ -614,7 +663,6 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
         _farbauswahl.setVisibility(LinearLayout.INVISIBLE);
         farbvorschlag.addView(CreateDisplayableRow(this, _farbforschlagRow));
 
-        LinearLayout gamefield = (LinearLayout) findViewById(R.id.game_field);
         int color = Color.TRANSPARENT;
         switch(_backgroundColor)
         {
@@ -628,7 +676,7 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
                 color = Color.WHITE;
                 break;
         }
-        gamefield.setBackgroundColor(color);
+        findViewById(R.id.game).setBackgroundColor(color);
 
 
         Button button = (Button) findViewById(R.id.btn_game_aufloesen);
@@ -640,7 +688,78 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
         button = (Button) findViewById(R.id.btn_game_rueckgaengig);
         button.setOnClickListener(this);
 
-        chronometer(true);
+        if (_showHelp)
+        {
+            createShowcase();
+
+            SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+
+            editor.putBoolean(getString(R.string.prefkey_help_game), false);
+            editor.commit();
+        }
+        else
+        {
+            chronometer(true);
+        }
+    }
+
+    private void createShowcase()
+    {
+        _helpShown = true;
+        _showcaseView = new ShowcaseView.Builder(this)
+                .setTarget(Target.NONE)
+                .setContentTitle("Spiel spielen")
+                .setContentText("Hier versuchst du den Mastercode zu erraten. Wenn Du das Spiel gewinnst, kannst Du dich in die Highscoreliste eintragen.")
+                .setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        switch (_counter) {
+                            case 0:
+                                _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.game_footer)), true);
+                                _showcaseView.setContentTitle("Farbe auswählen");
+                                _showcaseView.setContentText("Hier kannst Du eine Farbe auswählen");
+                                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+                                params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+                                _showcaseView.setButtonPosition(params);
+                                break;
+                            case 1:
+                                _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.btn_game_aufloesen)), true);
+                                _showcaseView.setContentTitle("Spiel auflösen");
+                                _showcaseView.setContentText("Hier kannst Du das Spiel auflösen");
+                                break;
+                            case 2:
+                                _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.btn_game_pause)), true);
+                                _showcaseView.setContentTitle("Spiel pausieren");
+                                _showcaseView.setContentText("Hier kannst Du das Spiel pausieren und speichern");
+                                break;
+                            case 3:
+                                _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.btn_game_rueckgaengig)), true);
+                                _showcaseView.setContentTitle("Reihe rückgängig");
+                                _showcaseView.setContentText("Hier kannst Du eine Reihe rückgängig machen. Dadurch lässt sich aber bei Spielgewinn kein Highscore speichern.");
+                                break;
+                            case 4:
+                                _showcaseView.setShowcase(new ViewTarget(findViewById(R.id.btn_game_pruefen)), true);
+                                _showcaseView.setContentTitle("Eingabe prüfen");
+                                _showcaseView.setContentText("Hier kannst Du deine Eingabe überprüfen");
+                                params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+                                params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+                                _showcaseView.setButtonPosition(params);
+                                break;
+                            case 5:
+                                _helpShown = false;
+                                _showcaseView.hide();
+                                chronometer(true);
+                                break;
+                        }
+                        _counter++;
+                    }
+                })
+                .build();
     }
 
     @Override
@@ -665,286 +784,331 @@ public class GameActivity extends AppCompatActivity implements OnClickListener
                 }).create().show();
     }
 
+    private void undoRow()
+    {
+        _undo = true;
+        LinearLayout gamefield = (LinearLayout) findViewById(R.id.game_field);
+        //gamefield.removeViewAt(_activeRow-1);
+        gamefield.removeViewAt(0);
+        _activeRow--;
+    }
+
     @Override
     public void onClick(View v)
     {
         ImageView image;
         LinearLayout gamefield;
 
-        switch(v.getId())
+        if (!_helpShown)
         {
-            case R.id.btn_game_aufloesen:
-                new AlertDialog.Builder(this)
-                        .setMessage(R.string.game_dissolve)
-                        .setCancelable(true)
-                        .setNegativeButton(R.string.btn_yes, new DialogInterface.OnClickListener()
-                        {
-                            public void onClick(final DialogInterface dialog, final int id)
+            switch (v.getId())
+            {
+                case R.id.btn_game_aufloesen:
+                    new AlertDialog.Builder(this)
+                            .setMessage(R.string.game_dissolve)
+                            .setCancelable(true)
+                            .setNegativeButton(R.string.btn_yes, new DialogInterface.OnClickListener()
                             {
-                                gameHasEnded();
-                            }
-                        })
-                        .setPositiveButton(R.string.btn_no, new DialogInterface.OnClickListener()
+                                public void onClick(final DialogInterface dialog, final int id)
+                                {
+                                    gameHasEnded();
+                                }
+                            })
+                            .setPositiveButton(R.string.btn_no, new DialogInterface.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(final DialogInterface dialog, final int which)
+                                {
+                                    dialog.dismiss();
+                                }
+                            }).create().show();
+                    break;
+                case R.id.btn_game_pause:
+                    if (_saveGame)
+                    {
+                        new AlertDialog.Builder(this)
+                                .setCancelable(false)
+                                .setMessage(R.string.title_break)
+                                .setNeutralButton(R.string.label_weiter, new DialogInterface.OnClickListener()
+                                {
+                                    @Override
+                                    public void onClick(final DialogInterface dialog, final int which)
+                                    {
+                                        dialog.dismiss();
+                                        chronometer(true);
+                                    }
+                                }).setPositiveButton("Spiel überspeichern", new DialogInterface.OnClickListener()
                         {
                             @Override
                             public void onClick(final DialogInterface dialog, final int which)
                             {
+                                SavegameDataSource ds = new SavegameDataSource(GameActivity.this);
+                                ds.open();
+                                ds.updateSavegameItem(getIntent().getLongExtra("id", -1), getSavegame().toString());
+                                ds.close();
                                 dialog.dismiss();
+                                finish();
                             }
                         }).create().show();
-                break;
-            case R.id.btn_game_pause:
-                if (_saveGame)
-                {
-                    new AlertDialog.Builder(this)
-                            .setCancelable(true)
-                            .setMessage(R.string.title_break)
-                            .setNeutralButton(R.string.label_weiter, new DialogInterface.OnClickListener()
-                            {
-                                @Override
-                                public void onClick(final DialogInterface dialog, final int which)
-                                {
-                                    dialog.dismiss();
-                                    chronometer(true);
-                                }
-                            }).setPositiveButton("Spiel überspeichern", new DialogInterface.OnClickListener()
+                    } else
                     {
-                        @Override
-                        public void onClick(final DialogInterface dialog, final int which)
-                        {
-                            SavegameDataSource ds = new SavegameDataSource(GameActivity.this);
-                            ds.open();
-                            ds.updateSavegameItem(getIntent().getLongExtra("id", -1), getSavegame().toString());
-                            ds.close();
-                            dialog.dismiss();
-                            finish();
-                        }
-                    }).create().show();
-                }
-                else
-                {
-                    final EditText name = new EditText(this);
-                    name.setInputType(InputType.TYPE_CLASS_TEXT);
-                    name.setText("Name", TextView.BufferType.EDITABLE);
-                    new AlertDialog.Builder(this)
-                            .setCancelable(true)
-                            .setView(name)
-                            .setMessage(R.string.title_break)
-                            .setNeutralButton(R.string.label_weiter, new DialogInterface.OnClickListener()
-                            {
-                                @Override
-                                public void onClick(final DialogInterface dialog, final int which)
+                        final EditText name = new EditText(this);
+                        name.setInputType(InputType.TYPE_CLASS_TEXT);
+                        name.setText("Name", TextView.BufferType.EDITABLE);
+                        new AlertDialog.Builder(this)
+                                .setCancelable(false)
+                                .setView(name)
+                                .setMessage(R.string.title_break)
+                                .setNeutralButton(R.string.label_weiter, new DialogInterface.OnClickListener()
                                 {
-                                    dialog.dismiss();
-                                    chronometer(true);
-                                }
-                            }).setPositiveButton("Spiel speichern", new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(final DialogInterface dialog, final int which)
+                                    @Override
+                                    public void onClick(final DialogInterface dialog, final int which)
+                                    {
+                                        dialog.dismiss();
+                                        chronometer(true);
+                                    }
+                                }).setPositiveButton("Spiel speichern", new DialogInterface.OnClickListener()
                         {
-                            SavegameDataSource ds = new SavegameDataSource(GameActivity.this);
-                            ds.open();
-                            ds.createSavegameItem(name.getText().toString(), getSavegame().toString());
-                            ds.close();
-                            dialog.dismiss();
-                            finish();
-                        }
-                    }).create().show();
-                }
+                            @Override
+                            public void onClick(final DialogInterface dialog, final int which)
+                            {
+                                SavegameDataSource ds = new SavegameDataSource(GameActivity.this);
+                                ds.open();
+                                ds.createSavegameItem(name.getText().toString(), getSavegame().toString());
+                                ds.close();
+                                dialog.dismiss();
+                                finish();
+                            }
+                        }).create().show();
+                    }
 
-                chronometer(false);
-                break;
-            case R.id.btn_game_rueckgaengig:
-                if (_activeRow >0)
-                {
-                    _undo = true;
+                    chronometer(false);
+                    break;
+                case R.id.btn_game_rueckgaengig:
+                    if (_activeRow == 0)
+                    {
+                        Toast toast = Toast.makeText(getApplicationContext(), "Keine Reihe verfügbar", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                    }
+                    else
+                    {
+                        if (!_undo)
+                        {
+                            new AlertDialog.Builder(this)
+                                    .setMessage(R.string.game_undofirst)
+                                    .setCancelable(true)
+                                    .setNegativeButton(R.string.btn_yes, new DialogInterface.OnClickListener()
+                                    {
+                                        public void onClick(final DialogInterface dialog, final int id)
+                                        {
+                                            undoRow();
+                                        }
+                                    })
+                                    .setPositiveButton(R.string.btn_no, new DialogInterface.OnClickListener()
+                                    {
+                                        @Override
+                                        public void onClick(final DialogInterface dialog, final int which)
+                                        {
+                                            dialog.dismiss();
+                                        }
+                                    }).create().show();
+                        }
+                        else
+                        {
+                            new AlertDialog.Builder(this)
+                                    .setMessage(R.string.game_undo)
+                                    .setCancelable(true)
+                                    .setNegativeButton(R.string.btn_yes, new DialogInterface.OnClickListener()
+                                    {
+                                        public void onClick(final DialogInterface dialog, final int id)
+                                        {
+                                            undoRow();
+                                        }
+                                    })
+                                    .setPositiveButton(R.string.btn_no, new DialogInterface.OnClickListener()
+                                    {
+                                        @Override
+                                        public void onClick(final DialogInterface dialog, final int which)
+                                        {
+                                            dialog.dismiss();
+                                        }
+                                    }).create().show();
+                        }
+                    }
+                    break;
+                case R.id.btn_game_pruefen:
                     gamefield = (LinearLayout) findViewById(R.id.game_field);
-                    //gamefield.removeViewAt(_activeRow-1);
-                    gamefield.removeViewAt(0);
-                    _activeRow--;
-                }
-                else
-                {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Keine Reihe verfügbar", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER,0,0);
-                    toast.show();
-                }
-                break;
-            case R.id.btn_game_pruefen:
-                gamefield = (LinearLayout) findViewById(R.id.game_field);
 
-                boolean eval = true;
-                if (!_empty)
-                {
-                    //if all fields are filled when duplicates aren't allowed
-                    for (int i = 0; i < _anzFields; i++)
+                    boolean eval = true;
+                    if (!_empty)
                     {
-                        if (_farbforschlagRow.Fields[i].getColor() == -1)
+                        //if all fields are filled when duplicates aren't allowed
+                        for (int i = 0; i < _anzFields; i++)
                         {
-                            eval = false;
-                            Toast toast = Toast.makeText(getApplicationContext(), "Leere Felder nicht erlaubt", Toast.LENGTH_SHORT);
-                            toast.setGravity(Gravity.CENTER,0,0);
-                            toast.show();
-                            break;
+                            if (_farbforschlagRow.Fields[i].getColor() == -1)
+                            {
+                                eval = false;
+                                Toast toast = Toast.makeText(getApplicationContext(), "Leere Felder nicht erlaubt", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
+                                break;
+                            }
                         }
                     }
-                }
-                if (!_multiple && eval)
-                {
-                    boolean colors[];
-                    colors = new boolean[_anzColors+1];
-
-                    //if all fields are filled unique, when multiple aren't allowed
-                    for (int i = 0; i < _anzFields; i++)
+                    if (!_multiple && eval)
                     {
-                        if (!colors[_farbforschlagRow.Fields[i].getColor()+1])
+                        boolean colors[];
+                        colors = new boolean[_anzColors + 1];
+
+                        //if all fields are filled unique, when multiple aren't allowed
+                        for (int i = 0; i < _anzFields; i++)
                         {
-                            colors[_farbforschlagRow.Fields[i].getColor()+1] = true;
-                        }
-                        else
-                        {
-                            eval = false;
-                            Toast toast = Toast.makeText(getApplicationContext(), "Doppelte Felder nicht erlaubt", Toast.LENGTH_SHORT);
-                            toast.setGravity(Gravity.CENTER,0,0);
-                            toast.show();
-                            break;
+                            if (!colors[_farbforschlagRow.Fields[i].getColor() + 1])
+                            {
+                                colors[_farbforschlagRow.Fields[i].getColor() + 1] = true;
+                            } else
+                            {
+                                eval = false;
+                                Toast toast = Toast.makeText(getApplicationContext(), "Doppelte Felder nicht erlaubt", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
+                                break;
+                            }
                         }
                     }
-                }
-                if (eval)
-                {
-                    _rows[_activeRow] = _farbforschlagRow;
-                    if (EvaluateFarbvorschlagRow(_activeRow))
+                    if (eval)
                     {
-                        long minutes = (((SystemClock.elapsedRealtime() - ((Chronometer) findViewById(R.id.time)).getBase()) / 1000))/60;
-                        long seconds = (((SystemClock.elapsedRealtime() - ((Chronometer) findViewById(R.id.time)).getBase()) / 1000))%60;
+                        _rows[_activeRow] = _farbforschlagRow;
+                        if (EvaluateFarbvorschlagRow(_activeRow))
+                        {
+                            long minutes = (((SystemClock.elapsedRealtime() - ((Chronometer) findViewById(R.id.time)).getBase()) / 1000)) / 60;
+                            long seconds = (((SystemClock.elapsedRealtime() - ((Chronometer) findViewById(R.id.time)).getBase()) / 1000)) % 60;
 
-                        _winTimestring = String.format("%02d", minutes) + ":" + String.format("%02d", seconds);
+                            _winTimestring = String.format("%02d", minutes) + ":" + String.format("%02d", seconds);
 
+                            //gamefield.addView(CreateDisplayableRowWithPins(this, _rows[_activeRow]));
+                            gamefield.addView(CreateDisplayableRowWithPins(this, _rows[_activeRow]), 0);
+                            if (_activeRow == 0)
+                            {
+                                ShowPopup("Glückwunsch! Du hast das Spiel nach " + _winTimestring + " Sekunden und einem Zug gewonnen!", true, true);
+                            } else
+                            {
+                                ShowPopup("Glückwunsch! Du hast das Spiel nach " + _winTimestring + " in " + (_activeRow + 1) + " Zügen gewonnen!", true, true);
+                            }
+                            break;
+                        }
                         //gamefield.addView(CreateDisplayableRowWithPins(this, _rows[_activeRow]));
-                        gamefield.addView(CreateDisplayableRowWithPins(this, _rows[_activeRow]),0);
-                        if (_activeRow == 0)
+                        gamefield.addView(CreateDisplayableRowWithPins(this, _rows[_activeRow]), 0);
+                        _activeRow++;
+                        if (_activeRow == _anzRows)
                         {
-                            ShowPopup("Glückwunsch! Du hast das Spiel nach " + _winTimestring + " Sekunden und einem Zug gewonnen!", true, true);
+                            ShowPopup("Du hast es nicht geschafft den Code zu knacken!", true, false);
+                            break;
                         }
-                        else
-                        {
-                            ShowPopup("Glückwunsch! Du hast das Spiel nach " + _winTimestring + " in " + (_activeRow + 1) + " Zügen gewonnen!", true, true);
-                        }
-                        break;
+                        _farbforschlagRow = ResetFarbvorschlagRow();
+                        UpdateFarbvorschlagRow();
                     }
-                    //gamefield.addView(CreateDisplayableRowWithPins(this, _rows[_activeRow]));
-                    gamefield.addView(CreateDisplayableRowWithPins(this, _rows[_activeRow]),0);
-                    _activeRow++;
-                    if (_activeRow == _anzRows)
+                    break;
+                case R.id.btn_main_menue:
+                    finish();
+                    break;
+                case R.id.btn_new_game:
+                    final Intent again;
+                    if (_singlePlayer)
                     {
-                        ShowPopup("Du hast es nicht geschafft den Code zu knacken!", true, false);
-                        break;
+                        again = new Intent(this, GameActivity.class);
+                    } else
+                    {
+                        again = new Intent(this, Colorcode.class);
                     }
-                    _farbforschlagRow = ResetFarbvorschlagRow();
-                    UpdateFarbvorschlagRow();
-                }
-                break;
-            case R.id.btn_main_menue:
-                finish();
-                break;
-            case R.id.btn_new_game:
-                final Intent again;
-                if (_singlePlayer)
-                {
-                    again = new Intent(this, GameActivity.class);
-                }
-                else
-                {
-                    again = new Intent(this, Colorcode.class);
-                }
-                again.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                finish();
-                startActivity(again);
-                break;
-            //Buttons in farbauswahl
-            case -1:
-                image = (ImageView) findViewById(_activeField);
-                image.setImageResource(R.mipmap.ic_slot);
-                _farbforschlagRow.Fields[_activeField -10].setColor(-1);
-                HideFarbauswahl();
-                break;
-            case 0:
-                image = (ImageView) findViewById(_activeField);
-                image.setImageResource(R.mipmap.ic_blue);
-                _farbforschlagRow.Fields[_activeField -10].setColor(0);
-                HideFarbauswahl();
-                break;
-            case 1:
-                image = (ImageView) findViewById(_activeField);
-                image.setImageResource(R.mipmap.ic_green);
-                _farbforschlagRow.Fields[_activeField -10].setColor(1);
-                HideFarbauswahl();
-                break;
-            case 2:
-                image = (ImageView) findViewById(_activeField);
-                image.setImageResource(R.mipmap.ic_lightblue);
-                _farbforschlagRow.Fields[_activeField -10].setColor(2);
-                HideFarbauswahl();
-                break;
-            case 3:
-                image = (ImageView) findViewById(_activeField);
-                image.setImageResource(R.mipmap.ic_pink);
-                _farbforschlagRow.Fields[_activeField -10].setColor(3);
-                HideFarbauswahl();
-                break;
-            case 4:
-                image = (ImageView) findViewById(_activeField);
-                image.setImageResource(R.mipmap.ic_red);
-                _farbforschlagRow.Fields[_activeField -10].setColor(4);
-                HideFarbauswahl();
-                break;
-            case 5:
-                image = (ImageView) findViewById(_activeField);
-                image.setImageResource(R.mipmap.ic_yellow);
-                _farbforschlagRow.Fields[_activeField -10].setColor(5);
-                HideFarbauswahl();
-                break;
-            case 6:
-                image = (ImageView) findViewById(_activeField);
-                image.setImageResource(R.mipmap.ic_grey);
-                _farbforschlagRow.Fields[_activeField -10].setColor(6);
-                HideFarbauswahl();
-                break;
-            case 7:
-                image = (ImageView) findViewById(_activeField);
-                image.setImageResource(R.mipmap.ic_purple);
-                _farbforschlagRow.Fields[_activeField -10].setColor(7);
-                HideFarbauswahl();
-                break;
-            //Buttons in Farbvorschlag
-            case 10:
-                ShowFarbauswahl(v.getId());
-                break;
-            case 11:
-                ShowFarbauswahl(v.getId());
-                break;
-            case 12:
-                ShowFarbauswahl(v.getId());
-                break;
-            case 13:
-                ShowFarbauswahl(v.getId());
-                break;
-            case 14:
-                ShowFarbauswahl(v.getId());
-                break;
-            case 15:
-                ShowFarbauswahl(v.getId());
-                break;
-            case 16:
-                ShowFarbauswahl(v.getId());
-                break;
-            case 17:
-                ShowFarbauswahl(v.getId());
-                break;
-            default:
-                break;
+                    again.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    finish();
+                    startActivity(again);
+                    break;
+                //Buttons in farbauswahl
+                case -1:
+                    image = (ImageView) findViewById(_activeField);
+                    image.setImageResource(R.mipmap.ic_slot);
+                    _farbforschlagRow.Fields[_activeField - 10].setColor(-1);
+                    HideFarbauswahl();
+                    break;
+                case 0:
+                    image = (ImageView) findViewById(_activeField);
+                    image.setImageResource(_gameColors[0]);
+                    _farbforschlagRow.Fields[_activeField - 10].setColor(0);
+                    HideFarbauswahl();
+                    break;
+                case 1:
+                    image = (ImageView) findViewById(_activeField);
+                    image.setImageResource(_gameColors[1]);
+                    _farbforschlagRow.Fields[_activeField - 10].setColor(1);
+                    HideFarbauswahl();
+                    break;
+                case 2:
+                    image = (ImageView) findViewById(_activeField);
+                    image.setImageResource(_gameColors[2]);
+                    _farbforschlagRow.Fields[_activeField - 10].setColor(2);
+                    HideFarbauswahl();
+                    break;
+                case 3:
+                    image = (ImageView) findViewById(_activeField);
+                    image.setImageResource(_gameColors[3]);
+                    _farbforschlagRow.Fields[_activeField - 10].setColor(3);
+                    HideFarbauswahl();
+                    break;
+                case 4:
+                    image = (ImageView) findViewById(_activeField);
+                    image.setImageResource(_gameColors[4]);
+                    _farbforschlagRow.Fields[_activeField - 10].setColor(4);
+                    HideFarbauswahl();
+                    break;
+                case 5:
+                    image = (ImageView) findViewById(_activeField);
+                    image.setImageResource(_gameColors[5]);
+                    _farbforschlagRow.Fields[_activeField - 10].setColor(5);
+                    HideFarbauswahl();
+                    break;
+                case 6:
+                    image = (ImageView) findViewById(_activeField);
+                    image.setImageResource(_gameColors[6]);
+                    _farbforschlagRow.Fields[_activeField - 10].setColor(6);
+                    HideFarbauswahl();
+                    break;
+                case 7:
+                    image = (ImageView) findViewById(_activeField);
+                    image.setImageResource(_gameColors[7]);
+                    _farbforschlagRow.Fields[_activeField - 10].setColor(7);
+                    HideFarbauswahl();
+                    break;
+                //Buttons in Farbvorschlag
+                case 10:
+                    ShowFarbauswahl(v.getId());
+                    break;
+                case 11:
+                    ShowFarbauswahl(v.getId());
+                    break;
+                case 12:
+                    ShowFarbauswahl(v.getId());
+                    break;
+                case 13:
+                    ShowFarbauswahl(v.getId());
+                    break;
+                case 14:
+                    ShowFarbauswahl(v.getId());
+                    break;
+                case 15:
+                    ShowFarbauswahl(v.getId());
+                    break;
+                case 16:
+                    ShowFarbauswahl(v.getId());
+                    break;
+                case 17:
+                    ShowFarbauswahl(v.getId());
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
